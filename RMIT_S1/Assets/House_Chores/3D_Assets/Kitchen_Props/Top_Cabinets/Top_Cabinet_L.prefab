@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 1228800700079742748}
   - component: {fileID: 2783866876337197241}
   - component: {fileID: 91971283996042355}
-  - component: {fileID: 2331311048122878425}
+  - component: {fileID: 6472899951214919785}
+  - component: {fileID: 5685093644566273256}
+  - component: {fileID: 322802112196793953}
   m_Layer: 0
   m_Name: Top_Cabinet_L
   m_TagString: Untagged
@@ -31,6 +33,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1556313875924616228}
+  - {fileID: 7033926595106458612}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -83,8 +86,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2331311048122878425
-BoxCollider:
+--- !u!64 &6472899951214919785
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -93,9 +96,51 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.56591266, y: 0.9004556, z: 0.2979876}
-  m_Center: {x: 0, y: 0.4502278, z: 0}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3214249473846899083, guid: 65c622779997eb542854c34b9c3ebffc, type: 3}
+--- !u!114 &5685093644566273256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893274452820575654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ebabdd182b1e954da5d47ee31010690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currDoorType: 1
+  triggerID: 0
+  isAccessable: 1
+  canUseKey: 0
+  oneTimeOnly: 0
+  keyTypeID: 0
+--- !u!114 &322802112196793953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893274452820575654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1c3b082b6bafb43bc4fb3abebfd4e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currType: 1
+  triggerID: 0
+  doorClose: {fileID: 7831571495857145577}
+  doorOpen: {fileID: 3286444482282500361}
+  moveSpeed: 0
+  rotationSpeed: 360
+  _isOpened: 0
+  _isOnHold: 0
+  audDoor: {fileID: 0}
+  sfxDoorClose: {fileID: 0}
+  sfxDoorOpen: {fileID: 0}
 --- !u!1 &3286444482282500361
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,9 +152,8 @@ GameObject:
   - component: {fileID: 1556313875924616228}
   - component: {fileID: 2306681665601305710}
   - component: {fileID: 7536840432431373801}
-  - component: {fileID: 7352736847635817288}
   m_Layer: 0
-  m_Name: Top_Cabinet_L_Door
+  m_Name: Open_Pivot_Top_Cabinet_L_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,13 +166,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3286444482282500361}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.6087617, z: -0, w: 0.79335314}
   m_LocalPosition: {x: -0.28295624, y: 0.45022792, z: 0.16786134}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1228800700079742748}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -75, z: 0}
 --- !u!33 &2306681665601305710
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -178,13 +222,95 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7352736847635817288
+--- !u!1 &7831571495857145577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7033926595106458612}
+  - component: {fileID: 2008965554841869980}
+  - component: {fileID: 4323373081270778249}
+  - component: {fileID: 6155809248890964842}
+  m_Layer: 11
+  m_Name: Close_Pivot_Top_Cabinet_L_Door
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7033926595106458612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7831571495857145577}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.28295624, y: 0.45022792, z: 0.16786134}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1228800700079742748}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &2008965554841869980
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7831571495857145577}
+  m_Mesh: {fileID: -1875317036031525036, guid: 65c622779997eb542854c34b9c3ebffc, type: 3}
+--- !u!23 &4323373081270778249
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7831571495857145577}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2447696620454189106, guid: 65c622779997eb542854c34b9c3ebffc, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6155809248890964842
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3286444482282500361}
+  m_GameObject: {fileID: 7831571495857145577}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
