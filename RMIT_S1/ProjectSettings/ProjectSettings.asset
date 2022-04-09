@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: GRENADEable
-  productName: Character_Place_&_Simulation_2210
+  productName: House_Chores
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -146,7 +146,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Standalone: com.GRENADEable.CharacterPlaceSimulation2210
+    Standalone: com.GRENADEable.HouseChores
   buildNumber:
     Standalone: 0
     iPhone: 0

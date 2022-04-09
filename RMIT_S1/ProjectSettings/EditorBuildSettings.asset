@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Khatim_Menu.unity
+    path: Assets/Scenes/House_Menu.unity
     guid: 787fb04093e321047976c5479ad411c7
   - enabled: 1
-    path: Assets/Scenes/Khatim_Test.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/House_Main.unity
+    guid: 5891732e08fa12043a7adeefe79d1e0f
   m_configObjects: {}

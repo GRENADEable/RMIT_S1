@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.04950465, g: 0.040596843, b: 0.023943268, a: 1}
+  m_IndirectSpecularColor: {r: 0.17561312, g: 0.21974233, b: 0.30206844, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: fc1a0f658cef83c4d970bfd5cb2f5c59, type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 068138285e762864f92a2f68714a197f, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 0703e481442dab54d8ab148e23bf0a8b, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: a940397b8871a544facfafbde5f2519c, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 183881793}
   - component: {fileID: 183881792}
   m_Layer: 7
-  m_Name: Ground_Col
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +174,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 8057fe47d4d930948a9926ad4bc21a1e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -443,13 +443,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.9642185, y: 0.015381953, z: 0.25836155, w: -0.057406057}
+  m_LocalRotation: {x: 0.8018944, y: -0.14428958, z: 0.21486698, w: 0.5384961}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 186.814, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 112.235, y: -30, z: 0}
 --- !u!1001 &1000092525
 PrefabInstance:
   m_ObjectHideFlags: 0
