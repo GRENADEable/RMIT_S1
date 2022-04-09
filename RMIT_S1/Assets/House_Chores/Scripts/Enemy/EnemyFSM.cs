@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace MadInc
+namespace Khatim
 {
     public class EnemyFSM : MonoBehaviour
     {

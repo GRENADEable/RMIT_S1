@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GRENADEable
+namespace Khatim
 {
     [CreateAssetMenu(fileName = "Passcode_Data", menuName = "Objectives/PasscodeData")]
     public class PasscodeData : ScriptableObject

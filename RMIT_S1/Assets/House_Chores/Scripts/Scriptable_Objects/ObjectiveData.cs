@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GRENADEable
+namespace Khatim
 {
     [CreateAssetMenu(fileName = "Objective_Data", menuName = "Objectives/ObjectiveData")]
     public class ObjectiveData : ScriptableObject

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace MadInc
+namespace Khatim
 {
     public class DoorInteraction : MonoBehaviour
     {

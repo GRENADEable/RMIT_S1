@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MadInc
+namespace Khatim
 {
     public class DoorCheck : MonoBehaviour
     {

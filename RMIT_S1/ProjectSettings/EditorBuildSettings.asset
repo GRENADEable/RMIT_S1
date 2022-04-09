@@ -7,8 +7,8 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/House_Chores/Scenes/House_Menu.unity
-    guid: 787fb04093e321047976c5479ad411c7
+    guid: c5b899fc054e5694b83c87cf2a9e6317
   - enabled: 1
     path: Assets/House_Chores/Scenes/House_Main.unity
-    guid: 5891732e08fa12043a7adeefe79d1e0f
+    guid: 19df8eca43dfb7f4592912cdceab3268
   m_configObjects: {}

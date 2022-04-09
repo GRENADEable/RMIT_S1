@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MadInc
+namespace Khatim
 {
     public class AudioManager : MonoBehaviour
     {

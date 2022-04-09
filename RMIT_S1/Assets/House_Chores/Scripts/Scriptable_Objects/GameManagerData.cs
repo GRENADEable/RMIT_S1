@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MadInc
+namespace Khatim
 {
     [CreateAssetMenu(fileName = "GameManager_Data", menuName = "Managers/GameManagerData")]
     public class GameManagerData : ScriptableObject

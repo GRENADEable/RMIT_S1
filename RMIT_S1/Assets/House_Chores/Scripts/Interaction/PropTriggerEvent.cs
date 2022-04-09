@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MadInc
+namespace Khatim
 {
     public class PropTriggerEvent : MonoBehaviour
     {

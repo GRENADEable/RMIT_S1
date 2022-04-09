@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace MadInc
+namespace Khatim
 {
     public class HideInBed : MonoBehaviour
     {

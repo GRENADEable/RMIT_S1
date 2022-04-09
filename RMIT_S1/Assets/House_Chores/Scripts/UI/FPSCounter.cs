@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GRENADEable
+namespace Khatim
 {
     public class FPSCounter : MonoBehaviour
     {

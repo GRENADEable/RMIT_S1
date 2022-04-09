@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 
-namespace MadInc
+namespace Khatim
 {
     public class GameManager : MonoBehaviour
     {
