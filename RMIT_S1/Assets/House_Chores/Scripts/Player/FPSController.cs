@@ -117,11 +117,11 @@ namespace Khatim
             }
         }
 
-        //void OnTriggerEnter(Collider other)
-        //{
-        //    if (other.CompareTag("Death_Box"))
-        //        Application.LoadLevel(Application.loadedLevel);
-        //}
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Death_Box"))
+                Application.LoadLevel(Application.loadedLevel);
+        }
 
         #endregion
 
