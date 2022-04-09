@@ -3,22 +3,25 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Examine_Pos
+  - Enemy
+  - Death_Box
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - Ground
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Interactable
+  - PostLayer
+  - GroundLayer
+  - PropLayer
+  - KeyLayer
+  - DoorLayer
+  - PropHoldLayer
+  - BattLayer
   - 
   - 
   - 
