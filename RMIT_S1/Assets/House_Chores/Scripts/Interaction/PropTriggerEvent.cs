@@ -16,6 +16,10 @@ namespace Khatim
         [SerializeField]
         [Tooltip("Keep this bool check according to what is the intial state of the prop")]
         private bool isPropOn = default;
+
+        [SerializeField]
+        [Tooltip("Does the Prop have On and Off States?")]
+        private bool isToggleable = default;
         #endregion
 
         #region Events
@@ -41,17 +45,22 @@ namespace Khatim
         /// </summary>
         public void InteractPropRaycast()
         {
-            if (triggerCount == 0 || (_currTrigger < triggerCount))
+            if (isToggleable)
             {
-                isPropOn = !isPropOn;
+                if (triggerCount == 0 || (_currTrigger < triggerCount))
+                {
+                    isPropOn = !isPropOn;
 
-                if (isPropOn)
-                    OnPropOnEvent?.Invoke();
-                else
-                    OnPropOffEvent?.Invoke();
+                    if (isPropOn)
+                        OnPropOnEvent?.Invoke();
+                    else
+                        OnPropOffEvent?.Invoke();
 
-                _currTrigger++;
+                    _currTrigger++;
+                }
             }
+            else
+                OnPropOnEvent?.Invoke();
         }
         #endregion
     }

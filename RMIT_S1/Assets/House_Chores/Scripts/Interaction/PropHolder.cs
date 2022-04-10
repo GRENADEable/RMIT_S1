@@ -37,12 +37,6 @@ namespace Khatim
         private LayerMask propLayer;
         #endregion
 
-        #region Buttons
-        [SerializeField]
-        [Tooltip("Drop Button GameObject")]
-        private GameObject dropButton = default;
-        #endregion
-
         #region Events
 
         #region Int Events
@@ -143,10 +137,6 @@ namespace Khatim
 
                             HoldItem(_hit.collider.gameObject);
 
-#if !UNITY_STANDALONE
-                            dropButton.SetActive(true);
-#endif
-
                             _isHoldingItem = true;
                             _canPickItems = false;
                             //Debug.Log("Holding Item");
@@ -164,9 +154,6 @@ namespace Khatim
                     _tempPickItem.EndInteraction();
                     _isHoldingItem = false;
                     _canPickItems = true;
-#if !UNITY_STANDALONE
-                    dropButton.SetActive(false);
-#endif
                     //Debug.Log("Dropping Item");
                 }
             }

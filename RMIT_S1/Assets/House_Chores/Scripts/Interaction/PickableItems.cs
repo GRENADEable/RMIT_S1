@@ -8,6 +8,8 @@ namespace Khatim
 
         #region Examine Variables
         [Space, Header("Examine Variables")]
+        private bool _isInteractable;
+        public bool IsInteractable { get { return _isInteractable; } set { _isInteractable = value; } }
 
         [Tooltip("Vector3 position offset of the Examine GameObject")]
         public Vector3 holdPropPosOffset = Vector3.zero;
@@ -57,6 +59,8 @@ namespace Khatim
             _intialObjScale = transform.localScale;
             _intialRot = transform.rotation;
         }
+
+        public void OnInteractable() => IsInteractable = true;
 
         public void StartInteraction()
         {
