@@ -45,6 +45,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gmData: {fileID: 11400000, guid: 91f923fb84573134595a7790a12794b8, type: 2}
   isCursorDisabled: 1
+  objData:
+  - {fileID: 11400000, guid: c16ab4a3545688749b4e62efc951bd5d, type: 2}
+  - {fileID: 11400000, guid: 240823a833036b64ba2414778482c76a, type: 2}
+  - {fileID: 11400000, guid: 59bef4ee2de3c1b41be196c2c51d5844, type: 2}
   pausePanel: {fileID: 0}
   pauseButtons:
   - {fileID: 0}
@@ -53,3 +57,4 @@ MonoBehaviour:
   - {fileID: 0}
   hudPanel: {fileID: 0}
   fadeBG: {fileID: 0}
+  objText: {fileID: 0}

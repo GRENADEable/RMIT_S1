@@ -9,6 +9,8 @@ namespace Khatim
     public class GameManager : MonoBehaviour
     {
         #region Serialized Variables
+
+        #region Datas
         [Space, Header("Data")]
         [SerializeField]
         [Tooltip("GameManager Scriptable Object")]
@@ -17,6 +19,11 @@ namespace Khatim
         [SerializeField]
         [Tooltip("Do you want to disable Cursor?")]
         private bool isCursorDisabled = default;
+
+        [SerializeField]
+        [Tooltip("Array of Objective Scriptable Objects")]
+        private ObjectiveData[] objData = default;
+        #endregion
 
         #region UI
 
@@ -37,10 +44,13 @@ namespace Khatim
         [Tooltip("The Player's HUD UI GameObject")]
         private GameObject hudPanel;
 
-        [Space, Header("Fade UI")]
         [SerializeField]
         [Tooltip("Fade panel Animation Component")]
         private Animator fadeBG = default;
+
+        [SerializeField]
+        [Tooltip("Objective Text Component")]
+        private TextMeshProUGUI objText = default;
         #endregion
 
         #endregion
@@ -61,16 +71,25 @@ namespace Khatim
         void OnEnable()
         {
             EnemyFSM.OnPlayerDeath += OnPlayerDeathEventReceived;
+
+            CoffeeObjective.OnShowObj2 += OnShowObj2EventReceived;
+            CoffeeObjective.OnShowObj3 += OnShowObj3EventReceived;
         }
 
         void OnDisable()
         {
             EnemyFSM.OnPlayerDeath -= OnPlayerDeathEventReceived;
+
+            CoffeeObjective.OnShowObj2 -= OnShowObj2EventReceived;
+            CoffeeObjective.OnShowObj3 -= OnShowObj3EventReceived;
         }
 
         void OnDestroy()
         {
             EnemyFSM.OnPlayerDeath -= OnPlayerDeathEventReceived;
+
+            CoffeeObjective.OnShowObj2 -= OnShowObj2EventReceived;
+            CoffeeObjective.OnShowObj3 -= OnShowObj3EventReceived;
         }
         #endregion
 
@@ -78,6 +97,7 @@ namespace Khatim
         {
             gmData.ChangeGameState("Intro");
             StartCoroutine(StartDelay());
+            ShowObjectiveNum(0);
 
             if (isCursorDisabled)
                 gmData.DisableCursor();
@@ -139,6 +159,11 @@ namespace Khatim
         /// This enables the player controls;
         /// </summary>
         public void OnIntroEndStartGame() => StartCoroutine(StartDelay());
+        #endregion
+
+        #region Objectives
+
+        void ShowObjectiveNum(int objNum) => objText.text = objData[objNum].objectiveMessage;
         #endregion
 
         #endregion
@@ -264,6 +289,20 @@ namespace Khatim
                 gmData.ChangeGameState("Game");
             }
         }
+        #endregion
+
+        #region Objectives UI
+        /// <summary>
+        /// Subbed to event from CoffeeObjective;
+        /// Shows 2nd Objective;
+        /// </summary>
+        void OnShowObj2EventReceived() => ShowObjectiveNum(1);
+
+        /// <summary>
+        /// Subbed to event from CoffeeObjective;
+        /// Shows 3rd Objective;
+        /// </summary>
+        void OnShowObj3EventReceived() => ShowObjectiveNum(2);
         #endregion
 
         #endregion

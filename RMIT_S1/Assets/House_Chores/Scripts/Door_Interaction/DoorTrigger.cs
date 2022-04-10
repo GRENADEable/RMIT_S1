@@ -5,11 +5,11 @@ namespace Khatim
     public class DoorTrigger : MonoBehaviour
     {
         #region Serialized Variables
-        [Space, Header("Enums")]
-        [SerializeField]
-        private DoorType currDoorType = DoorType.Door;
+        //[Space, Header("Enums")]
+        //[SerializeField]
+        //private DoorType currDoorType = DoorType.Door;
 
-        private enum DoorType { Other, Door, Locker, Vent };
+        //private enum DoorType { Other, Door, Locker, Vent };
 
         [SerializeField]
         [Tooltip("Use iD numbers above zero as zero is default number. This is used to distinguish which door it will send events to")]
@@ -85,9 +85,10 @@ namespace Khatim
                     canUseKey = false;
                     oneTimeOnly = false;
                     OnKeyUsed?.Invoke();
+                    //isAccessable = false;
 
-                    if (currDoorType == DoorType.Vent)
-                        isAccessable = false;
+                    //if (currDoorType == DoorType.Vent)
+                    //    isAccessable = false;
                 }
                 else
                     OnDoorTrigger?.Invoke(triggerID);
@@ -98,16 +99,16 @@ namespace Khatim
         #endregion
 
         #region Events
-        /// <summary>
-        /// Subbed to Event from GameManager Script;
-        /// Sets all the doors interactable;
-        /// </summary>
-        /// <param name="isInteractable"> If true, door can be interacted. If false, door can't be interacted; </param>
-        void OnDoorInteractableEventReceived(bool isInteractable)
-        {
-            if (currDoorType == DoorType.Door)
-                isAccessable = true;
-        }
+        ///// <summary>
+        ///// Subbed to Event from GameManager Script;
+        ///// Sets all the doors interactable;
+        ///// </summary>
+        ///// <param name="isInteractable"> If true, door can be interacted. If false, door can't be interacted; </param>
+        //void OnDoorInteractableEventReceived(bool isInteractable)
+        //{
+        //    if (currDoorType == DoorType.Door)
+        //        isAccessable = true;
+        //}
         #endregion
     }
 }
