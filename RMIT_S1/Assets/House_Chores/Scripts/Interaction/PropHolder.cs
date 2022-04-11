@@ -35,6 +35,10 @@ namespace Khatim
         [SerializeField]
         [Tooltip("Prop Layer for Ray")]
         private LayerMask propLayer;
+
+        //[SerializeField]
+        //[Tooltip("Prop Layer for Ray")]
+        //private LayerMask obstacleLayer;
         #endregion
 
         #region Events
@@ -62,9 +66,10 @@ namespace Khatim
         [Header("Interact Raycast")]
         private Camera _cam = default;
         [SerializeField] private bool _isHitting = default;
+        //[SerializeField] private bool _isBlocking = default;
         private bool _isInteractHoldButtonPressed = default;
         private bool _isInteractDropButtonPressed = default;
-        [SerializeField] private bool _isHoldingItem = default;
+        private bool _isHoldingItem = default;
         private Ray _ray = default;
         private RaycastHit _hit = default;
 
@@ -118,13 +123,14 @@ namespace Khatim
         void RaycastCheckProp()
         {
             _isHitting = Physics.Raycast(_ray, out _hit, rayDistance, propLayer);
+            //_isBlocking = Physics.Raycast(_ray, rayDistance, obstacleLayer);
 
             if (isDebugging)
                 Debug.DrawRay(_ray.origin, _ray.direction * rayDistance, _isHitting ? Color.red : Color.white);
 
             if (_canPickItems)
             {
-                if (_isHitting)
+                if (_isHitting /*&& !_isBlocking*/)
                 {
                     // Hold Item or Pickup;
                     if (_isInteractHoldButtonPressed)

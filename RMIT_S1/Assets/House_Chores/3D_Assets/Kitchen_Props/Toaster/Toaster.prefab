@@ -533,7 +533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toastDelay: 1
   donutPrefab: {fileID: 7648609159696127695, guid: 2f29daafec2e71341aac5d2c81ada6b8, type: 3}
-  donutForce: 15
+  donutForce: 9
   donutSpawnPos:
   - {fileID: 3975611673545454735}
   - {fileID: 5700886037536996869}
