@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 5158498073097246204}
   - component: {fileID: 8086619125133122137}
   - component: {fileID: 6331364492674363027}
-  - component: {fileID: 6937936164992402907}
+  - component: {fileID: 8509167848710554655}
   - component: {fileID: 9044739596609698358}
   m_Layer: 0
   m_Name: Big_Cupboard
@@ -166,7 +166,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6937936164992402907
+--- !u!64 &8509167848710554655
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,7 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebabdd182b1e954da5d47ee31010690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currDoorType: 1
   triggerID: 0
   isAccessable: 1
   canUseKey: 0

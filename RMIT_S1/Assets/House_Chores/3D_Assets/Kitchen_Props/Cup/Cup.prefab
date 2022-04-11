@@ -11,9 +11,6 @@ GameObject:
   - component: {fileID: 6632933572140480005}
   - component: {fileID: 7756098395524905376}
   - component: {fileID: 5496578664175619434}
-  - component: {fileID: 367155209109726725}
-  - component: {fileID: 6359704431724483177}
-  - component: {fileID: 6595047273343701266}
   m_Layer: 0
   m_Name: Cup
   m_TagString: Untagged
@@ -84,45 +81,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &367155209109726725
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6289058473833557183}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.092583224
-  m_Height: 0.20081082
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.0961421, z: 0}
---- !u!135 &6359704431724483177
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6289058473833557183}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.12640665
-  m_Center: {x: 0, y: 0.13, z: 0}
---- !u!114 &6595047273343701266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6289058473833557183}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8eb78b20c4c1a742a0dd77e5b2ac863, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  holdPropPosOffset: {x: 0, y: 0, z: 0}
-  holdPropRotOffset: {x: 0, y: 0, z: 0}
-  holdPropScale: {x: 1, y: 1, z: 1}

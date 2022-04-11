@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 190540760882768535}
   - component: {fileID: 3822206273020585266}
   - component: {fileID: 1364523699893015032}
-  - component: {fileID: 4557226239318435925}
+  - component: {fileID: 7099492681093218292}
   - component: {fileID: 4176850103484376657}
   - component: {fileID: 3029156113778373175}
   m_Layer: 0
@@ -86,7 +86,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4557226239318435925
+--- !u!64 &7099492681093218292
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,7 +112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebabdd182b1e954da5d47ee31010690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currDoorType: 1
   triggerID: 0
   isAccessable: 1
   canUseKey: 0
