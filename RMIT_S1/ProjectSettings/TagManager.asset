@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Death_Box
   - Remote
+  - Brot
+  - Bread
   layers:
   - Default
   - TransparentFX

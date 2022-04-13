@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 7806289596744621727}
   - component: {fileID: 169487013}
   m_Layer: 11
-  m_Name: Toaster
+  m_Name: Toaster_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

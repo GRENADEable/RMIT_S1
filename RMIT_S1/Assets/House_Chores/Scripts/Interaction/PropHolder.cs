@@ -65,6 +65,12 @@ namespace Khatim
         /// Makes the remove Interactable;
         /// </summary>
         public static event SendEventsBool OnRemotePicked;
+
+        /// <summary>
+        /// Event sent from Propholder to ToastObjective;
+        /// Makes the toaster run away from the player when the player gets near it;
+        /// </summary>
+        public static event SendEventsBool OnToasterRun;
         #endregion
 
         #endregion
@@ -155,6 +161,9 @@ namespace Khatim
 
                             if (_tempPickItem.GetComponent<TVRemote>() != null)
                                 OnRemotePicked?.Invoke(true);
+
+                            if(_tempPickItem.gameObject.CompareTag("Brot"))
+
 
                             _isHoldingItem = true;
                             _canPickItems = false;
