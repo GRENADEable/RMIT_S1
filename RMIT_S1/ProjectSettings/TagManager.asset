@@ -7,6 +7,7 @@ TagManager:
   - Examine_Pos
   - Enemy
   - Death_Box
+  - Remote
   layers:
   - Default
   - TransparentFX

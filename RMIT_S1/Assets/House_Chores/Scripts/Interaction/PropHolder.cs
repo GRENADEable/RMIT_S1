@@ -29,12 +29,12 @@ namespace Khatim
         #region Interact Raycast
         [Space, Header("Interact Raycast")]
         [SerializeField]
-        [Tooltip("Ray distance for interaction")]
-        private float rayDistance = default;
-
-        [SerializeField]
         [Tooltip("Prop Layer for Ray")]
         private LayerMask propLayer;
+
+        [SerializeField]
+        [Tooltip("Ray distance for interaction")]
+        private float rayDistance = default;
 
         //[SerializeField]
         //[Tooltip("Prop Layer for Ray")]
@@ -65,7 +65,7 @@ namespace Khatim
         #region Private Variables
         [Header("Interact Raycast")]
         private Camera _cam = default;
-        [SerializeField] private bool _isHitting = default;
+        private bool _isHitting = default;
         //[SerializeField] private bool _isBlocking = default;
         private bool _isInteractHoldButtonPressed = default;
         private bool _isInteractDropButtonPressed = default;
@@ -77,6 +77,7 @@ namespace Khatim
         private bool _canPickItems = true;
         private PickableItems _tempPickItem = default;
         private GameObject _tempObjReference = default;
+        private TVRemote _remote = default;
         #endregion
 
         #region Unity Callbacks
@@ -140,6 +141,11 @@ namespace Khatim
                             _isInteractHoldButtonPressed = false;
                             _tempPickItem = _hit.collider.GetComponent<PickableItems>();
                             _tempPickItem.StartInteraction();
+                            if (_hit.collider.GetComponent<TVRemote>() != null)
+                            {
+                                _remote = _tempPickItem.GetComponent<TVRemote>();
+                                _remote.enabled = true;
+                            }
 
                             HoldItem(_hit.collider.gameObject);
 
@@ -158,6 +164,8 @@ namespace Khatim
                 {
                     DropItem();
                     _tempPickItem.EndInteraction();
+                    _remote.enabled = false;
+                    _remote = null;
                     _isHoldingItem = false;
                     _canPickItems = true;
                     //Debug.Log("Dropping Item");

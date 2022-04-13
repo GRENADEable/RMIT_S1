@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e43e7a5e9cf373f47b3ec030804244e2
+guid: 5b77e49588e87ac4792a0c51541a8ab2
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
@@ -7,18 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_Stove
-    second: {fileID: 2100000, guid: 579c266939d35db40b676e5649596f17, type: 2}
+      name: mat_TV
+    second: {fileID: 2100000, guid: 5acde1d52ed05a24782b99fb4f8f3b73, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_Stove_Black
-    second: {fileID: 2100000, guid: 0abbacef2aaa36f4f8d5803fb6e650ab, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: mat_Stove_Glass
-    second: {fileID: 2100000, guid: 71b83d95da6f06e40add804a439ebed2, type: 2}
+      name: mat_TV_Screen
+    second: {fileID: 2100000, guid: d4f2da8262519714abc491411e3c8a7a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

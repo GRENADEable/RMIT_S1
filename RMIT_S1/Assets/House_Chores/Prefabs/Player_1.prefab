@@ -393,12 +393,10 @@ MonoBehaviour:
   isDebugging: 0
   propHoldPos: {fileID: 0}
   propDropPos: {fileID: 4890158160333000141}
-  rayDistance: 2
   propLayer:
     serializedVersion: 2
     m_Bits: 512
-  _isHitting: 0
-  _isHoldingItem: 0
+  rayDistance: 2
 --- !u!114 &7487013725878558385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,7 +404,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2083094658953299107}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a65d220f441028446949188c1fdc750a, type: 3}
   m_Name: 
