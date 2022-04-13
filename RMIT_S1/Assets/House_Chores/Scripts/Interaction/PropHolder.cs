@@ -58,6 +58,15 @@ namespace Khatim
         public static event SendEventsInt OnKeyDrop;
         #endregion
 
+        #region Bool Events
+        public delegate void SendEventsBool(bool isPicked);
+        /// <summary>
+        /// Event sent from PropHolder to TVRemote;
+        /// Makes the remove Interactable;
+        /// </summary>
+        public static event SendEventsBool OnRemotePicked;
+        #endregion
+
         #endregion
 
         #endregion
@@ -77,7 +86,6 @@ namespace Khatim
         private bool _canPickItems = true;
         private PickableItems _tempPickItem = default;
         private GameObject _tempObjReference = default;
-        private TVRemote _remote = default;
         #endregion
 
         #region Unity Callbacks
@@ -141,17 +149,14 @@ namespace Khatim
                             _isInteractHoldButtonPressed = false;
                             _tempPickItem = _hit.collider.GetComponent<PickableItems>();
                             _tempPickItem.StartInteraction();
-                            if (_hit.collider.GetComponent<TVRemote>() != null)
-                            {
-                                _remote = _tempPickItem.GetComponent<TVRemote>();
-                                _remote.enabled = true;
-                            }
 
                             HoldItem(_hit.collider.gameObject);
 
+                            if (_tempPickItem.GetComponent<TVRemote>() != null)
+                                OnRemotePicked?.Invoke(true);
+
                             _isHoldingItem = true;
                             _canPickItems = false;
-                            //Debug.Log("Holding Item");
                         }
                     }
                 }
@@ -164,11 +169,9 @@ namespace Khatim
                 {
                     DropItem();
                     _tempPickItem.EndInteraction();
-                    _remote.enabled = false;
-                    _remote = null;
+                    OnRemotePicked?.Invoke(false);
                     _isHoldingItem = false;
                     _canPickItems = true;
-                    //Debug.Log("Dropping Item");
                 }
             }
         }
