@@ -33,6 +33,7 @@ namespace Khatim
         private bool _isInteractButtonPressed = default;
         private Ray _ray = default;
         private RaycastHit _hit = default;
+        private PropHighlight _highlightProp;
         #endregion
 
         #region Unity Callbacks
@@ -115,15 +116,35 @@ namespace Khatim
                     if (_hit.collider.GetComponentInParent<PropTriggerEvent>() != null)
                         _hit.collider.GetComponentInParent<PropTriggerEvent>().InteractPropRaycast();
 
-                    if (_hit.collider.GetComponent<HideInBed>() != null)
-                        _hit.collider.GetComponent<HideInBed>().HideInThisBed();
+                    //if (_hit.collider.GetComponent<HideInBed>() != null)
+                    //    _hit.collider.GetComponent<HideInBed>().HideInThisBed();
 
                     // Temp fix for interaction with new input Systems;
                     _isInteractButtonPressed = false;
                 }
+
+                if (_hit.collider.GetComponentInParent<PropHighlight>() != null)
+                {
+                    _highlightProp = _hit.collider.GetComponentInParent<PropHighlight>();
+                    _highlightProp.HighLightObject(true);
+                }
+                else
+                    DisableHightlight();
+
             }
+            else
+                DisableHightlight();
         }
         #endregion
+
+        void DisableHightlight()
+        {
+            if (_highlightProp != null)
+            {
+                _highlightProp.HighLightObject(false);
+                _highlightProp = null;
+            }
+        }
 
         #endregion
 

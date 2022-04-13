@@ -84,4 +84,4 @@ MonoBehaviour:
   - {fileID: 2800000, guid: c0c73e516e1631f41934c85772332f59, type: 3}
   - {fileID: 2800000, guid: 987714cb6ad9d17428d4fdd22b2f7120, type: 3}
   tvMesh: {fileID: 0}
-  _currImgIndex: 0
+  stoveScreenMesh: {fileID: 0}

@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 9084935353969717353, guid: b9e611daff407e847b7a0bd99d3930c4, type: 3}
+  - {fileID: 2100000, guid: f8c2b2b34a0b1dd449abbeeb7ddaee55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -140,7 +140,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 9084935353969717353, guid: b9e611daff407e847b7a0bd99d3930c4, type: 3}
+  - {fileID: 2100000, guid: f8c2b2b34a0b1dd449abbeeb7ddaee55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -281,7 +281,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 9084935353969717353, guid: b9e611daff407e847b7a0bd99d3930c4, type: 3}
+  - {fileID: 2100000, guid: f8c2b2b34a0b1dd449abbeeb7ddaee55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -394,7 +394,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 9084935353969717353, guid: b9e611daff407e847b7a0bd99d3930c4, type: 3}
+  - {fileID: 2100000, guid: f8c2b2b34a0b1dd449abbeeb7ddaee55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -431,6 +431,7 @@ GameObject:
   - component: {fileID: 471251971367193379}
   - component: {fileID: 8992380162162193136}
   - component: {fileID: 7806289596744621727}
+  - component: {fileID: 169487013}
   m_Layer: 11
   m_Name: Toaster
   m_TagString: Untagged
@@ -483,8 +484,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7474147945415964569, guid: b9e611daff407e847b7a0bd99d3930c4, type: 3}
-  - {fileID: 9084935353969717353, guid: b9e611daff407e847b7a0bd99d3930c4, type: 3}
+  - {fileID: 2100000, guid: d2cf86608341c3d489f57137d64f94ae, type: 2}
+  - {fileID: 2100000, guid: f8c2b2b34a0b1dd449abbeeb7ddaee55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -577,6 +578,21 @@ MonoBehaviour:
   audDoor: {fileID: 0}
   sfxDoorClose: {fileID: 0}
   sfxDoorOpen: {fileID: 0}
+--- !u!114 &169487013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8728122166851212976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473fe9c7e40f2db4193f4403b7e8c034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasChildren: 0
+  hasRootMesh: 1
+  childrenObjs: []
 --- !u!1 &8867527096715790329
 GameObject:
   m_ObjectHideFlags: 0

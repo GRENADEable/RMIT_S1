@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1145876223592343937}
   - component: {fileID: 2589774803865150927}
   - component: {fileID: 4513442388515127611}
+  - component: {fileID: 3708309077452863375}
   m_Layer: 9
   m_Name: TV_Remote
   m_TagString: Remote
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4981593336725360293, guid: 9e2cdb8fc741f184682e6595f6a7d6a3, type: 3}
+  - {fileID: 2100000, guid: a536738bc5c608c4cab0eac8e393280e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,3 +142,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90bdc9d937a070342ab970b285014b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3708309077452863375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6666894408545254724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473fe9c7e40f2db4193f4403b7e8c034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasChildren: 0
+  childrenObjs: []

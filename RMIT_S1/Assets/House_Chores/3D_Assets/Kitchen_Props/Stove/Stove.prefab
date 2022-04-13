@@ -89,6 +89,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Khatim.ScreenImageManager, Khatim
+        m_MethodName: OnToggleScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnPropOffEvent:
     m_PersistentCalls:
       m_Calls:
@@ -116,6 +128,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Khatim.ScreenImageManager, Khatim
+        m_MethodName: OnToggleScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1589792883720524442
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,7 +151,7 @@ GameObject:
   - component: {fileID: 3716209440432098068}
   - component: {fileID: 6042882482211862799}
   - component: {fileID: 5149126527615670471}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Stove_Knob_Right_Off
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4904,6 +4928,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Khatim.ScreenImageManager, Khatim
+        m_MethodName: OnToggleScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnPropOffEvent:
     m_PersistentCalls:
       m_Calls:
@@ -4923,6 +4959,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Khatim.ScreenImageManager, Khatim
+        m_MethodName: OnToggleScreen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5023,7 +5071,7 @@ GameObject:
   - component: {fileID: 2699042127116459269}
   - component: {fileID: 7436447977647995688}
   - component: {fileID: 2338383138214024557}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Stove_Knob_Left_On
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5104,7 +5152,7 @@ GameObject:
   - component: {fileID: 5972949412832479940}
   - component: {fileID: 6607792688137192043}
   - component: {fileID: 6412953688305268099}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Stove_Knob_Left_Off
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5187,6 +5235,7 @@ GameObject:
   - component: {fileID: 8247726729938995267}
   - component: {fileID: 7328581874419274955}
   - component: {fileID: 7328581874419274954}
+  - component: {fileID: 535508998}
   m_Layer: 11
   m_Name: Stove
   m_TagString: Untagged
@@ -5344,6 +5393,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &535508998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7599036790152735126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473fe9c7e40f2db4193f4403b7e8c034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasChildren: 0
+  hasRootMesh: 1
+  childrenObjs: []
 --- !u!1 &9156862700039105008
 GameObject:
   m_ObjectHideFlags: 0
@@ -5355,7 +5419,7 @@ GameObject:
   - component: {fileID: 5348178973280310813}
   - component: {fileID: 6581998096133723030}
   - component: {fileID: 5659983364298608083}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Stove_Knob_Right_On
   m_TagString: Untagged
   m_Icon: {fileID: 0}

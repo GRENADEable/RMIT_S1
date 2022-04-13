@@ -86,6 +86,7 @@ namespace Khatim
         private bool _canPickItems = true;
         private PickableItems _tempPickItem = default;
         private GameObject _tempObjReference = default;
+        private PropHighlight _highlightProp;
         #endregion
 
         #region Unity Callbacks
@@ -159,7 +160,17 @@ namespace Khatim
                             _canPickItems = false;
                         }
                     }
+
+                    if (_hit.collider.GetComponentInParent<PropHighlight>() != null)
+                    {
+                        _highlightProp = _hit.collider.GetComponentInParent<PropHighlight>();
+                        _highlightProp.HighLightObject(true);
+                    }
+                    else
+                        DisableHightlight();
                 }
+                else
+                    DisableHightlight();
             }
 
             if (!_isHitting)
@@ -226,6 +237,15 @@ namespace Khatim
         /// </summary>
         void ResetValues() => _tempObjReference = null;
         #endregion
+
+        void DisableHightlight()
+        {
+            if (_highlightProp != null)
+            {
+                _highlightProp.HighLightObject(false);
+                _highlightProp = null;
+            }
+        }
 
         #endregion
 

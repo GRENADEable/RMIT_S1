@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currType: 1
-  triggerID: -3
+  triggerID: 0
   doorClose: {fileID: 521766087127773913}
   doorOpen: {fileID: 1710093703354747710}
   moveSpeed: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currType: 1
-  triggerID: -1
+  triggerID: -2
   doorClose: {fileID: 8564807312962254172}
   doorOpen: {fileID: 1558635012061409081}
   moveSpeed: 0
@@ -645,7 +645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currType: 1
-  triggerID: -2
+  triggerID: -1
   doorClose: {fileID: 4280051131180743156}
   doorOpen: {fileID: 5370842791129446808}
   moveSpeed: 0
@@ -814,7 +814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currType: 1
-  triggerID: 0
+  triggerID: -3
   doorClose: {fileID: 5684316105399593126}
   doorOpen: {fileID: 7918255072972133972}
   moveSpeed: 0

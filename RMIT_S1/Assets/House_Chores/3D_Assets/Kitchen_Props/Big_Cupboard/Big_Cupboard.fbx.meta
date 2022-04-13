@@ -3,7 +3,12 @@ guid: 95c38f781656fea45b1067d4774c7511
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_Big_Cupboard
+    second: {fileID: 2100000, guid: 1a103bdac047a044cbb60cca44f52b85, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
