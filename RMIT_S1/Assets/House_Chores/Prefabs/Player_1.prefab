@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 2083094658953299104}
   - component: {fileID: 7435943363830009425}
   - component: {fileID: 2083094659595051433}
-  - component: {fileID: 7487013725878558385}
   - component: {fileID: 528442405540605160}
   m_Layer: 3
   m_Name: Player_1
@@ -263,7 +262,7 @@ MonoBehaviour:
     m_ActionName: Player/Drop[/XInputControllerWindows/buttonWest,/Keyboard/f]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7487013725878558385}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GRENADEable.FlashLight, Assembly-CSharp
         m_MethodName: OnLightToggle
         m_Mode: 0
@@ -397,27 +396,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   rayDistance: 2
---- !u!114 &7487013725878558385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2083094658953299107}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a65d220f441028446949188c1fdc750a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gmData: {fileID: 11400000, guid: 91f923fb84573134595a7790a12794b8, type: 2}
-  isDebugging: 0
-  rayDistance: 2
-  battLayer:
-    serializedVersion: 2
-    m_Bits: 8192
-  isToggleable: 1
-  flashLightSceneObj: {fileID: 0}
-  followSpeed: 10
 --- !u!114 &528442405540605160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,7 +537,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2867377793360847744}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.3, z: 0.5}
+  m_LocalPosition: {x: 0, y: 1.6999999, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2083094658953299114}

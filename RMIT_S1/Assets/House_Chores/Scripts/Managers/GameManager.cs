@@ -59,6 +59,16 @@ namespace Khatim
 
         #endregion
 
+        #region Bread
+        [SerializeField]
+        [Tooltip("Bread GameObject")]
+        private GameObject bread;
+
+        [SerializeField]
+        [Tooltip("Bread Spawn Positions")]
+        private Transform[] brotPos;
+        #endregion
+
         #endregion
 
         #region Private Variables
@@ -70,24 +80,18 @@ namespace Khatim
         #region Events
         void OnEnable()
         {
-            EnemyFSM.OnPlayerDeath += OnPlayerDeathEventReceived;
-
             CoffeeObjective.OnShowObj2 += OnShowObj2EventReceived;
             CoffeeObjective.OnShowObj3 += OnShowObj3EventReceived;
         }
 
         void OnDisable()
         {
-            EnemyFSM.OnPlayerDeath -= OnPlayerDeathEventReceived;
-
             CoffeeObjective.OnShowObj2 -= OnShowObj2EventReceived;
             CoffeeObjective.OnShowObj3 -= OnShowObj3EventReceived;
         }
 
         void OnDestroy()
         {
-            EnemyFSM.OnPlayerDeath -= OnPlayerDeathEventReceived;
-
             CoffeeObjective.OnShowObj2 -= OnShowObj2EventReceived;
             CoffeeObjective.OnShowObj3 -= OnShowObj3EventReceived;
         }
@@ -101,6 +105,8 @@ namespace Khatim
 
             if (isCursorDisabled)
                 gmData.DisableCursor();
+
+            SetBrotPos();
         }
 
         void Update()
@@ -162,8 +168,20 @@ namespace Khatim
         #endregion
 
         #region Objectives
-
+        /// <summary>
+        /// Shows objective depending on the objective Number from the Scriptable Object;
+        /// </summary>
+        /// <param name="objNum"> Must have int index objective number; </param>
         void ShowObjectiveNum(int objNum) => objText.text = objData[objNum].objectiveMessage;
+
+        /// <summary>
+        /// Sets bread spawn Position when the Scene starts;
+        /// </summary>
+        void SetBrotPos()
+        {
+            int index = Random.Range(0, brotPos.Length);
+            bread.transform.position = brotPos[index].position;
+        }
         #endregion
 
         #endregion
@@ -261,14 +279,6 @@ namespace Khatim
                 }
             }
         }
-        #endregion
-
-        #region Player
-        /// <summary>
-        /// Subbed to event from EnemyFSM Script;
-        /// Just fades Panel to black and sends the User to Main Menu;
-        /// </summary>
-        void OnPlayerDeathEventReceived() => StartCoroutine(KillPlayerDelay());
         #endregion
 
         #region UI

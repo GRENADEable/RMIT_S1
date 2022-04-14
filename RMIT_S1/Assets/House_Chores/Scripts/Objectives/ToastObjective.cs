@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Khatim
@@ -6,28 +7,50 @@ namespace Khatim
     public class ToastObjective : MonoBehaviour
     {
         #region Serialized Variables
-        [SerializeField]
-        [Tooltip("Toaster Cooking Time")]
-        private float toastDelay = 2f;
 
-        [Space, Header("Donut Variables")]
+        #region Toaster Variables
         [SerializeField]
-        [Tooltip("Donut GameObject")]
-        private GameObject donutPrefab = default;
+        [Tooltip("Transform Move Component")]
+        private Transform[] movePos = default;
 
         [SerializeField]
-        [Tooltip("Donut Shoot Force")]
-        private float donutForce = 1f;
+        [Tooltip("Move Speed")]
+        private float moveSpeed = default;
 
         [SerializeField]
-        [Tooltip("Donut Spawn Positions")]
-        private Transform[] donutSpawnPos = default;
+        [Tooltip("Move Speed")]
+        private float rotationSpeed = default;
+
+        [SerializeField]
+        [Tooltip("Min Distance to Point")]
+        private float minDistance = default;
+
+        [SerializeField]
+        [Tooltip("Brot bake Timer")]
+        private float brotBakeTime = default;
+        #endregion
+
+        #region Brot Variables
+        [SerializeField]
+        [Tooltip("Brot Prefab")]
+        private GameObject brotPrefab = default;
+
+        [SerializeField]
+        [Tooltip("Brot Shoot Force")]
+        private float shootForce = default;
+
+        [SerializeField]
+        [Tooltip("Brot Spawn Positions")]
+        private Transform[] brotSpawnPos = default;
+        #endregion
         #endregion
 
         #region Private Variables
-        private SwingController _swController = default;
-        private DoorTrigger _door = default;
-        private bool _isTriggered = default;
+        private int _currPos = default;
+        private bool isMoving;
+        private float distance = default;
+        private int _currBrots = default;
+        private List<GameObject> brots = new List<GameObject>();
         #endregion
 
         #region Unity Callbacks
@@ -35,66 +58,108 @@ namespace Khatim
         #region Events
         void OnEnable()
         {
+            PropHolder.OnToasterRun += OnToasterRunEventReceived;
 
+            ToastReceiver.OnBrotAdded += OnBrotAddedEventReceived;
         }
 
         void OnDisable()
         {
+            PropHolder.OnToasterRun -= OnToasterRunEventReceived;
 
+            ToastReceiver.OnBrotAdded -= OnBrotAddedEventReceived;
         }
 
         void OnDestroy()
         {
+            PropHolder.OnToasterRun -= OnToasterRunEventReceived;
 
+            ToastReceiver.OnBrotAdded -= OnBrotAddedEventReceived;
         }
         #endregion
 
-        void Start()
-        {
-            _swController = GetComponent<SwingController>();
-            _door = GetComponent<DoorTrigger>();
-        }
+        void Start() => isMoving = false;
 
         void Update()
         {
-            if (_swController.IsDoorOpened() && !_isTriggered)
+            DistanceCheck();
+
+            if (isMoving)
             {
-                _isTriggered = true;
-                StartCoroutine(ToastBreadDelay());
-                gameObject.layer = LayerMask.NameToLayer("Default");
+                transform.position = Vector3.MoveTowards(transform.position, movePos[_currPos].position, moveSpeed * Time.deltaTime);
+                transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
             }
+
         }
         #endregion
 
         #region My Functions
-        /// <summary>
-        /// Spawns the donut when the coroutine ends;
-        /// </summary>
-        void SpawnDonut()
+        void DistanceCheck()
         {
-            for (int i = 0; i < donutSpawnPos.Length; i++)
+            distance = Vector3.Distance(transform.position, movePos[_currPos].position);
+
+            if (distance <= minDistance)
             {
-                GameObject donutObj = Instantiate(donutPrefab, donutSpawnPos[i].position, donutSpawnPos[i].rotation);
-                donutObj.GetComponent<Rigidbody>().AddForce(donutObj.transform.forward * donutForce, ForceMode.Impulse);
+                _currPos++;
+
+                if (_currPos >= movePos.Length)
+                    _currPos = 0;
+            }
+        }
+
+        void ShootBrot()
+        {
+            for (int i = 0; i < brots.Count; i++)
+                Destroy(brots[i]);
+
+            for (int i = 0; i < brotSpawnPos.Length; i++)
+            {
+                GameObject donutObj = Instantiate(brotPrefab, brotSpawnPos[i].position, brotSpawnPos[i].rotation);
+                donutObj.GetComponent<Rigidbody>().AddForce(donutObj.transform.forward * shootForce, ForceMode.Impulse);
             }
         }
         #endregion
 
         #region Coroutines
         /// <summary>
-        /// Delays the toaster button;
+        /// Adds baking delay before shooting the bread out;
         /// </summary>
-        /// <returns> Float delay; </returns>
-        IEnumerator ToastBreadDelay()
+        /// <returns> Float Delay; </returns>
+        IEnumerator BrotBake()
         {
-            yield return new WaitForSeconds(toastDelay);
-            _door.InteractDoor(gameObject);
-            SpawnDonut();
+            yield return new WaitForSeconds(brotBakeTime);
+            ShootBrot();
         }
         #endregion
 
         #region Events
+        /// <summary>
+        /// Subbed to event from PropHolder;
+        /// Activates the toaster to move around;
+        /// </summary>
+        /// <param name="isRunning"></param>
+        void OnToasterRunEventReceived(bool isRunning)
+        {
+            if (isRunning)
+                isMoving = true;
+            //else
+            //    isMoving = false;
+        }
 
+        /// <summary>
+        /// Subbed to event from ToastReceiver;
+        /// Increments the total brot counter by 1;
+        /// </summary>
+        /// <param name="obj"> Brot GameObject </param>
+        void OnBrotAddedEventReceived(GameObject obj)
+        {
+            brots.Add(obj);
+
+            _currBrots++;
+
+            if (_currBrots >= 2)
+                StartCoroutine(BrotBake());
+        }
         #endregion
     }
 }

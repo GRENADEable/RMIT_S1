@@ -116,9 +116,6 @@ namespace Khatim
                     if (_hit.collider.GetComponentInParent<PropTriggerEvent>() != null)
                         _hit.collider.GetComponentInParent<PropTriggerEvent>().InteractPropRaycast();
 
-                    //if (_hit.collider.GetComponent<HideInBed>() != null)
-                    //    _hit.collider.GetComponent<HideInBed>().HideInThisBed();
-
                     // Temp fix for interaction with new input Systems;
                     _isInteractButtonPressed = false;
                 }

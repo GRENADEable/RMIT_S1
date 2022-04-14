@@ -8,8 +8,8 @@ TagManager:
   - Enemy
   - Death_Box
   - Remote
-  - Brot
-  - Bread
+  - Toaster_R
+  - Toaster_L
   layers:
   - Default
   - TransparentFX

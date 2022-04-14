@@ -162,8 +162,8 @@ namespace Khatim
                             if (_tempPickItem.GetComponent<TVRemote>() != null)
                                 OnRemotePicked?.Invoke(true);
 
-                            if(_tempPickItem.gameObject.CompareTag("Brot"))
-
+                            if (_tempPickItem.gameObject.CompareTag("Brot"))
+                                OnToasterRun?.Invoke(true);
 
                             _isHoldingItem = true;
                             _canPickItems = false;
@@ -190,6 +190,7 @@ namespace Khatim
                     DropItem();
                     _tempPickItem.EndInteraction();
                     OnRemotePicked?.Invoke(false);
+                    OnToasterRun?.Invoke(false);
                     _isHoldingItem = false;
                     _canPickItems = true;
                 }

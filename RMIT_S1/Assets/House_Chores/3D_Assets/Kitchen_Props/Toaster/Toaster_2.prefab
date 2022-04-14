@@ -313,12 +313,12 @@ GameObject:
   m_Component:
   - component: {fileID: 412222909727528755}
   m_Layer: 0
-  m_Name: Pivot_Toaster_Buttons_Open
+  m_Name: Toaster_Button_Not_Done
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &412222909727528755
 Transform:
   m_ObjectHideFlags: 0
@@ -428,6 +428,8 @@ GameObject:
   - component: {fileID: 5027301294069400495}
   - component: {fileID: 7070784102782121829}
   - component: {fileID: 1077430455786736431}
+  - component: {fileID: 5097806601193250196}
+  - component: {fileID: 8486439228637423170}
   - component: {fileID: 471251971367193379}
   m_Layer: 0
   m_Name: Toaster_2
@@ -515,8 +517,34 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.31490132, y: 0.25429124, z: 0.5757129}
-  m_Center: {x: 0, y: 0.12714562, z: 0}
+  m_Size: {x: 0.31490132, y: 0.19848701, z: 0.5757129}
+  m_Center: {x: 0, y: 0.09924351, z: 0}
+--- !u!65 &5097806601193250196
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8728122166851212976}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.030261122, y: 0.07500082, z: 0.57571286}
+  m_Center: {x: 0.06519653, y: 0.21679083, z: 0}
+--- !u!65 &8486439228637423170
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8728122166851212976}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.03026112, y: 0.07500082, z: 0.57571286}
+  m_Center: {x: -0.06519653, y: 0.21679083, z: 0}
 --- !u!114 &471251971367193379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,12 +557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8be7a49b82eb2448adf9ce4f4c125e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toastDelay: 1
-  donutPrefab: {fileID: 7648609159696127695, guid: 2f29daafec2e71341aac5d2c81ada6b8, type: 3}
-  donutForce: 9
-  donutSpawnPos:
-  - {fileID: 3975611673545454735}
-  - {fileID: 5700886037536996869}
+  moveSpeed: 0
 --- !u!1 &8867527096715790329
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,7 +568,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7894748097271772398}
   m_Layer: 0
-  m_Name: Pivot_Toaster_Buttons_Closed
+  m_Name: Toaster_Button_Done
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
