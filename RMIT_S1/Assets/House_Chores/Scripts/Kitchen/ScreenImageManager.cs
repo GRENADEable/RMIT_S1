@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Khatim
@@ -18,6 +16,16 @@ namespace Khatim
         [SerializeField]
         [Tooltip("Stove Glass Mesh")]
         private MeshRenderer stoveScreenMesh = default;
+
+        #region Events
+        public delegate void SendEvents();
+        /// <summary>
+        /// Event sent from ScreenImageManager to GameManager Script;
+        /// Changes to the 7th Objective;
+        /// </summary>
+        public static event SendEvents OnShowObj7;
+        #endregion
+
         #endregion
 
         #region Private Variables
@@ -48,6 +56,9 @@ namespace Khatim
         {
             tvMesh.gameObject.SetActive(!tvMesh.gameObject.activeSelf);
             stoveScreenMesh.gameObject.SetActive(!stoveScreenMesh.gameObject.activeSelf);
+
+            if (tvMesh.gameObject.activeInHierarchy)
+                OnShowObj7?.Invoke();
         }
 
         void ChangeImage(int index)

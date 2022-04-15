@@ -9,13 +9,19 @@ namespace Khatim
         #region Events
         public delegate void SendEvents();
         /// <summary>
-        /// Event sent from CoffeeObjective to GameManager;
+        /// Event sent from CoffeeObjective to GameManager Script;
+        /// Changes to the 1st Objective;
+        /// </summary>
+        public static event SendEvents OnShowObj1;
+
+        /// <summary>
+        /// Event sent from CoffeeObjective to GameManager Script;
         /// Changes to the 2nd Objective;
         /// </summary>
         public static event SendEvents OnShowObj2;
 
         /// <summary>
-        /// Event sent from CoffeeObjective to GameManager;
+        /// Event sent from CoffeeObjective to GameManager Script;
         /// Changes to the 3rd Objective;
         /// </summary>
         public static event SendEvents OnShowObj3;
@@ -38,10 +44,7 @@ namespace Khatim
         #endregion
 
         #region Unity Callbacks
-        void Start()
-        {
-            _coffeeAnim = GetComponent<Animator>();
-        }
+        void Start() => _coffeeAnim = GetComponent<Animator>();
         #endregion
 
         #region My Functions
@@ -50,7 +53,10 @@ namespace Khatim
             if (_currCoffeeObj == CurrObjective.Right)
                 _coffeeAnim.Play("Coffee_Pour_Right_Anim");
             else
+            {
+                OnShowObj1?.Invoke();
                 _coffeeAnim.Play("Coffee_Pour_Wrong_Anim");
+            }
         }
 
         public void SwitchRightCoffee()

@@ -10,7 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fedfeb605ec614491b51077a043002, type: 3}
-  m_Name: Obj_5_Data
+  m_Name: Obj_6_Data
   m_EditorClassIdentifier: 
-  objectiveMessage: "Ugh, the bread has a mind of its own, not hungry anymore. \nLet's
-    watch some TV. Now where is the remote?"
+  objectiveMessage: Hmmmm that's not right. That's not the screen

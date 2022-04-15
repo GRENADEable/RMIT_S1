@@ -52,6 +52,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 59bef4ee2de3c1b41be196c2c51d5844, type: 2}
   - {fileID: 11400000, guid: 7522e47f4b2cc524fa184af3d18213e7, type: 2}
   - {fileID: 11400000, guid: 3b3e81e2dafed2742a65f7eca180034d, type: 2}
+  - {fileID: 11400000, guid: a5cac0ab93a850f4384f61e054b69f1d, type: 2}
+  - {fileID: 11400000, guid: 8ec830a48f5ab184baaef84400f841c8, type: 2}
+  - {fileID: 11400000, guid: e5882e72f3b32604aa5bcd4edbdd806e, type: 2}
   pausePanel: {fileID: 0}
   pauseButtons:
   - {fileID: 0}
@@ -62,12 +65,34 @@ MonoBehaviour:
   fadeBG: {fileID: 0}
   objText: {fileID: 0}
   stoveObj: {fileID: 0}
-  remoteObj: {fileID: 0}
+  tvRemoveObj: {fileID: 0}
   binLidObj: {fileID: 0}
+  fridgeRot: {fileID: 0}
+  fridgeDoors:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  stoveKnobL: {fileID: 0}
+  stoveKnobR: {fileID: 0}
   plantPotObj: {fileID: 0}
   brot1: {fileID: 0}
   brot2: {fileID: 0}
-  brotPos: []
+  brotPos:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _currObjective: 0
 --- !u!114 &1252332891
 MonoBehaviour:

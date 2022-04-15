@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2303683510362130534}
   - component: {fileID: 124013690686784589}
   - component: {fileID: 2557250160739167523}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fridge_Door_Wrong_3_Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +417,7 @@ GameObject:
   - component: {fileID: 5925787877176301253}
   - component: {fileID: 6279847819790091890}
   - component: {fileID: 9140521983256524300}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fridge_Door_Wrong_2_Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,12 +667,12 @@ GameObject:
   - component: {fileID: 7554827358390270203}
   - component: {fileID: 6766741147779790869}
   - component: {fileID: 1720477785324787767}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fridge_Door_Correct_Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5556559487286212082
 Transform:
@@ -963,7 +963,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6451623045771721717}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0670d3223eacd345a7d7d870509ab74, type: 3}
   m_Name: 
@@ -1076,7 +1076,7 @@ GameObject:
   - component: {fileID: 4860889797955307175}
   - component: {fileID: 2095531497592930370}
   - component: {fileID: 225792707452498221}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fridge_Door_Wrong_1_Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}

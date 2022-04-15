@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 382117567899991725}
   - component: {fileID: 6832161106340583988}
   - component: {fileID: 459385388292304612}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Stove_Knobs_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4850,7 +4850,7 @@ GameObject:
   - component: {fileID: 3901542799518772237}
   - component: {fileID: 4867040195465117176}
   - component: {fileID: 8683301435901325183}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Stove_Knobs_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}

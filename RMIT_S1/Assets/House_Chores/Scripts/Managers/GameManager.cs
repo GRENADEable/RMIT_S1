@@ -70,6 +70,18 @@ namespace Khatim
         private GameObject binLidObj = default;
 
         [SerializeField]
+        [Tooltip("Fridge Rotation Script")]
+        private FridgeRotation fridgeRot = default;
+
+        [SerializeField]
+        [Tooltip("Fridge Doors GameObject")]
+        private GameObject[] fridgeDoors = default;
+
+        [SerializeField]
+        [Tooltip("Stove Knob GameObject")]
+        private GameObject stoveKnobL = default, stoveKnobR = default;
+
+        [SerializeField]
         [Tooltip("Plant Pot GameObject")]
         private GameObject plantPotObj = default;
         #endregion
@@ -89,6 +101,15 @@ namespace Khatim
         private Transform[] brotPos;
         #endregion
 
+        #region Events
+        public delegate void SendEvents();
+        /// <summary>
+        /// Event sent from GameManager to TvRemove Script;
+        /// Disables TV remove Objective;
+        /// </summary>
+        public static event SendEvents OnRemoteObjDisable;
+        #endregion
+
         #endregion
 
         #region Private Variables
@@ -103,29 +124,44 @@ namespace Khatim
         #region Events
         void OnEnable()
         {
+            CoffeeObjective.OnShowObj1 += OnShowObj1EventReceived;
             CoffeeObjective.OnShowObj2 += OnShowObj2EventReceived;
             CoffeeObjective.OnShowObj3 += OnShowObj3EventReceived;
 
             ToastObjective.OnShowObj4 += OnShowObj4EventReceived;
             ToastObjective.OnShowObj5 += OnShowObj5EventReceived;
+
+            TVRemote.OnShowObj6 += OnShowObj6EventReceived;
+
+            ScreenImageManager.OnShowObj7 += OnShowObj7EventReceived;
         }
 
         void OnDisable()
         {
+            CoffeeObjective.OnShowObj1 -= OnShowObj1EventReceived;
             CoffeeObjective.OnShowObj2 -= OnShowObj2EventReceived;
             CoffeeObjective.OnShowObj3 -= OnShowObj3EventReceived;
 
             ToastObjective.OnShowObj4 -= OnShowObj4EventReceived;
             ToastObjective.OnShowObj5 -= OnShowObj5EventReceived;
+
+            TVRemote.OnShowObj6 -= OnShowObj6EventReceived;
+
+            ScreenImageManager.OnShowObj7 -= OnShowObj7EventReceived;
         }
 
         void OnDestroy()
         {
+            CoffeeObjective.OnShowObj1 -= OnShowObj1EventReceived;
             CoffeeObjective.OnShowObj2 -= OnShowObj2EventReceived;
             CoffeeObjective.OnShowObj3 -= OnShowObj3EventReceived;
 
             ToastObjective.OnShowObj4 -= OnShowObj4EventReceived;
             ToastObjective.OnShowObj5 -= OnShowObj5EventReceived;
+
+            TVRemote.OnShowObj6 -= OnShowObj6EventReceived;
+
+            ScreenImageManager.OnShowObj7 -= OnShowObj7EventReceived;
         }
         #endregion
 
@@ -208,7 +244,7 @@ namespace Khatim
         {
             objText.text = objData[objNum].objectiveMessage;
             _currObjective = objNum;
-            SetInteraction(_currObjective);
+            //SetInteraction(_currObjective);
         }
 
         /// <summary>
@@ -220,16 +256,16 @@ namespace Khatim
             brot1.transform.position = brotPos[index].position;
         }
 
-        void SetInteraction(int objective)
-        {
-            if (objective == 1)
-                stoveObj.layer = LayerMask.NameToLayer(_doorLayer);
+        //void SetInteraction(int objective)
+        //{
+        //    if (objective == 1)
+        //        stoveObj.layer = LayerMask.NameToLayer(_doorLayer);
 
-            if (objective == 2)
-            {
-                stoveObj.layer = LayerMask.NameToLayer(_defaultLayer);
-            }
-        }
+        //    if (objective == 2)
+        //    {
+        //        stoveObj.layer = LayerMask.NameToLayer(_defaultLayer);
+        //    }
+        //}
         #endregion
 
         #endregion
@@ -352,6 +388,12 @@ namespace Khatim
         #region Objectives UI
         /// <summary>
         /// Subbed to event from CoffeeObjective;
+        /// Changes stove interaction;
+        /// </summary>
+        void OnShowObj1EventReceived() => stoveObj.layer = LayerMask.NameToLayer(_doorLayer);
+
+        /// <summary>
+        /// Subbed to event from CoffeeObjective;
         /// Shows 2nd Objective;
         /// </summary>
         void OnShowObj2EventReceived() => ShowObjectiveNum(1);
@@ -363,6 +405,7 @@ namespace Khatim
         void OnShowObj3EventReceived()
         {
             ShowObjectiveNum(2);
+            stoveObj.layer = LayerMask.NameToLayer(_defaultLayer);
             brot1.SetActive(true);
         }
 
@@ -384,7 +427,36 @@ namespace Khatim
         void OnShowObj5EventReceived()
         {
             ShowObjectiveNum(4);
+            fridgeRot.enabled = true;
+
+            for (int i = 0; i < fridgeDoors.Length; i++)
+                fridgeDoors[i].layer = LayerMask.NameToLayer(_doorLayer);
+
             tvRemoveObj.SetActive(true);
+        }
+
+        /// <summary>
+        /// Subbed to event from TVRemote;
+        /// Shows 6th Objective;
+        /// </summary>
+        void OnShowObj6EventReceived()
+        {
+            ShowObjectiveNum(5);
+            stoveKnobR.layer = LayerMask.NameToLayer(_doorLayer);
+            stoveKnobL.layer = LayerMask.NameToLayer(_doorLayer);
+        }
+
+        /// <summary>
+        /// Subbed to event from ScreenImageManager;
+        /// Shows 7th Objective;
+        /// </summary>
+        void OnShowObj7EventReceived()
+        {
+            ShowObjectiveNum(6);
+            stoveKnobR.layer = LayerMask.NameToLayer(_defaultLayer);
+            stoveKnobL.layer = LayerMask.NameToLayer(_defaultLayer);
+            plantPotObj.layer = LayerMask.NameToLayer(_doorLayer);
+            OnRemoteObjDisable?.Invoke();
         }
         #endregion
 
