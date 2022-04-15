@@ -50,6 +50,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c16ab4a3545688749b4e62efc951bd5d, type: 2}
   - {fileID: 11400000, guid: 240823a833036b64ba2414778482c76a, type: 2}
   - {fileID: 11400000, guid: 59bef4ee2de3c1b41be196c2c51d5844, type: 2}
+  - {fileID: 11400000, guid: 7522e47f4b2cc524fa184af3d18213e7, type: 2}
+  - {fileID: 11400000, guid: 3b3e81e2dafed2742a65f7eca180034d, type: 2}
   pausePanel: {fileID: 0}
   pauseButtons:
   - {fileID: 0}
@@ -59,6 +61,14 @@ MonoBehaviour:
   hudPanel: {fileID: 0}
   fadeBG: {fileID: 0}
   objText: {fileID: 0}
+  stoveObj: {fileID: 0}
+  remoteObj: {fileID: 0}
+  binLidObj: {fileID: 0}
+  plantPotObj: {fileID: 0}
+  brot1: {fileID: 0}
+  brot2: {fileID: 0}
+  brotPos: []
+  _currObjective: 0
 --- !u!114 &1252332891
 MonoBehaviour:
   m_ObjectHideFlags: 0

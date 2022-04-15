@@ -10,8 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fedfeb605ec614491b51077a043002, type: 3}
-  m_Name: Obj_3_Data
+  m_Name: Obj_5_Data
   m_EditorClassIdentifier: 
-  objectiveMessage: 'Alright!!!, Let''s toast some bread
-
-    Check the cupboards'
+  objectiveMessage: Phew.... me tried. Let's watch some TV.

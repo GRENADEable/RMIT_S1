@@ -43,6 +43,22 @@ namespace Khatim
         [Tooltip("Brot Spawn Positions")]
         private Transform[] brotSpawnPos = default;
         #endregion
+
+        #region Events
+        public delegate void SendEvents();
+        /// <summary>
+        /// Event sent from ToastObjective to GameManager Script;
+        /// Updates the Objective to 4;
+        /// </summary>
+        public static event SendEvents OnShowObj4;
+
+        /// <summary>
+        /// Event sent from ToastObjective to GameManager Script;
+        /// Updates the Objective to 5;
+        /// </summary>
+        public static event SendEvents OnShowObj5;
+        #endregion
+
         #endregion
 
         #region Private Variables
@@ -128,6 +144,7 @@ namespace Khatim
         IEnumerator BrotBake()
         {
             yield return new WaitForSeconds(brotBakeTime);
+            OnShowObj5?.Invoke();
             ShootBrot();
         }
         #endregion
@@ -156,6 +173,9 @@ namespace Khatim
             brots.Add(obj);
 
             _currBrots++;
+
+            if (_currBrots == 1)
+                OnShowObj4?.Invoke();
 
             if (_currBrots >= 2)
                 StartCoroutine(BrotBake());

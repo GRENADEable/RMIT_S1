@@ -679,6 +679,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4464460000673612146, guid: 2f9f2be09957c0c4eacfa461c6dbb9ca, type: 3}
   m_PrefabInstance: {fileID: 93512511}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &117846815 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6666894408545254724, guid: af004d68cff775e43b61fe079c815330, type: 3}
+  m_PrefabInstance: {fileID: 5784021555932124884}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &119829508 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
@@ -7290,6 +7295,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Brot_Main_2
       objectReference: {fileID: 0}
+    - target: {fileID: 5436039939416563134, guid: 63300e05a9ea0d241b2da7ce8fe6fbef, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63300e05a9ea0d241b2da7ce8fe6fbef, type: 3}
 --- !u!4 &732323762 stripped
@@ -7981,6 +7990,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 357199e3bb912734f89467cf32993397, type: 3}
+--- !u!1 &958631560 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3220536174847328735, guid: 2eb390bc8fef7b34e9fda16edf8960ae, type: 3}
+  m_PrefabInstance: {fileID: 6264517245130150130}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &965929764
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9449,6 +9463,11 @@ MonoBehaviour:
   - {fileID: 1707512080}
   - {fileID: 688815887}
   - {fileID: 1040765233}
+--- !u!1 &1248877842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7599036790152735126, guid: b2742c4f0d8a2674aa601a845e6bdd4c, type: 3}
+  m_PrefabInstance: {fileID: 7328581874002480368}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1252332889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9521,6 +9540,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5854246816284019563}
     - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
+      propertyPath: brot1
+      value: 
+      objectReference: {fileID: 5854246816284019563}
+    - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
+      propertyPath: brot2
+      value: 
+      objectReference: {fileID: 1614416965}
+    - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
+      propertyPath: bread1
+      value: 
+      objectReference: {fileID: 5854246816284019563}
+    - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
+      propertyPath: bread2
+      value: 
+      objectReference: {fileID: 1614416965}
+    - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
       propertyPath: fadeBG
       value: 
       objectReference: {fileID: 467479734}
@@ -9533,13 +9568,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3340820942076197108}
     - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
+      propertyPath: stoveObj
+      value: 
+      objectReference: {fileID: 1248877842}
+    - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
+      propertyPath: binLidObj
+      value: 
+      objectReference: {fileID: 2055326405}
+    - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
+      propertyPath: remoteObj
+      value: 
+      objectReference: {fileID: 117846815}
+    - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 3340820941971642791}
     - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
-      propertyPath: isCursorDisabled
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: plantPotObj
+      value: 
+      objectReference: {fileID: 958631560}
+    - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
+      propertyPath: tvRemoveObj
+      value: 
+      objectReference: {fileID: 117846815}
     - target: {fileID: 2877991442902536487, guid: d567aaaaef8fd8c4681f0f0c56e66658, type: 3}
       propertyPath: brotPos.Array.size
       value: 14
@@ -15770,6 +15821,11 @@ Transform:
   m_Father: {fileID: 1969203788}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1614416965 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5436039939416563134, guid: 63300e05a9ea0d241b2da7ce8fe6fbef, type: 3}
+  m_PrefabInstance: {fileID: 732323761}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1614887162
 GameObject:
   m_ObjectHideFlags: 0
@@ -18124,6 +18180,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4464460000673612146, guid: 2f9f2be09957c0c4eacfa461c6dbb9ca, type: 3}
   m_PrefabInstance: {fileID: 2028494924}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2055326405 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 77467537932650809, guid: 1979975d93357ef43bd973d366caa03f, type: 3}
+  m_PrefabInstance: {fileID: 1639914189}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2057790710
 GameObject:
   m_ObjectHideFlags: 0
@@ -18903,6 +18964,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Brot_Main_1
       objectReference: {fileID: 0}
+    - target: {fileID: 5436039939416563134, guid: 63300e05a9ea0d241b2da7ce8fe6fbef, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63300e05a9ea0d241b2da7ce8fe6fbef, type: 3}
 --- !u!23 &2029804048024581106
@@ -19302,7 +19367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6327066582276171774, guid: af004d68cff775e43b61fe079c815330, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.02
+      value: 0.019999951
       objectReference: {fileID: 0}
     - target: {fileID: 6327066582276171774, guid: af004d68cff775e43b61fe079c815330, type: 3}
       propertyPath: m_LocalPosition.y
@@ -19310,7 +19375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6327066582276171774, guid: af004d68cff775e43b61fe079c815330, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.345
+      value: 0.34500027
       objectReference: {fileID: 0}
     - target: {fileID: 6327066582276171774, guid: af004d68cff775e43b61fe079c815330, type: 3}
       propertyPath: m_LocalRotation.w
@@ -19322,7 +19387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6327066582276171774, guid: af004d68cff775e43b61fe079c815330, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.3886553
+      value: 0.38865533
       objectReference: {fileID: 0}
     - target: {fileID: 6327066582276171774, guid: af004d68cff775e43b61fe079c815330, type: 3}
       propertyPath: m_LocalRotation.z
@@ -19343,6 +19408,10 @@ PrefabInstance:
     - target: {fileID: 6666894408545254724, guid: af004d68cff775e43b61fe079c815330, type: 3}
       propertyPath: m_Name
       value: TV_Remote
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666894408545254724, guid: af004d68cff775e43b61fe079c815330, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af004d68cff775e43b61fe079c815330, type: 3}
@@ -19405,10 +19474,6 @@ PrefabInstance:
     - target: {fileID: 6451623045771721717, guid: fdd49fe561094454ab6213dd7962cd0a, type: 3}
       propertyPath: m_Name
       value: Fridge
-      objectReference: {fileID: 0}
-    - target: {fileID: 6451623045771721717, guid: fdd49fe561094454ab6213dd7962cd0a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdd49fe561094454ab6213dd7962cd0a, type: 3}
@@ -19710,6 +19775,14 @@ PrefabInstance:
       propertyPath: OnPropOffEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 2000850620}
+    - target: {fileID: 1297225010131533248, guid: b2742c4f0d8a2674aa601a845e6bdd4c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2635954002338285210, guid: b2742c4f0d8a2674aa601a845e6bdd4c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7079345389150532396, guid: b2742c4f0d8a2674aa601a845e6bdd4c, type: 3}
       propertyPath: m_RootOrder
       value: 5

@@ -55,17 +55,37 @@ namespace Khatim
 
         #endregion
 
-        #region Player
+        #region Objective Props
+        [Space, Header("Objective Props")]
+        [SerializeField]
+        [Tooltip("Stove GameObject")]
+        private GameObject stoveObj = default;
 
+        [SerializeField]
+        [Tooltip("Remote GameObject")]
+        private GameObject tvRemoveObj = default;
+
+        [SerializeField]
+        [Tooltip("Bin Lid GameObject")]
+        private GameObject binLidObj = default;
+
+        [SerializeField]
+        [Tooltip("Plant Pot GameObject")]
+        private GameObject plantPotObj = default;
         #endregion
 
-        #region Bread
+        #region Brot
+        [Space, Header("Brot Variables")]
         [SerializeField]
-        [Tooltip("Bread GameObject")]
-        private GameObject bread;
+        [Tooltip("Brot1 GameObject")]
+        private GameObject brot1;
 
         [SerializeField]
-        [Tooltip("Bread Spawn Positions")]
+        [Tooltip("Brot2 GameObject")]
+        private GameObject brot2;
+
+        [SerializeField]
+        [Tooltip("Brot Spawn Positions")]
         private Transform[] brotPos;
         #endregion
 
@@ -73,6 +93,9 @@ namespace Khatim
 
         #region Private Variables
         private bool _isPaused = default;
+        [SerializeField] private int _currObjective = default;
+        private const string _doorLayer = "DoorLayer";
+        private const string _defaultLayer = "Default";
         #endregion
 
         #region Unity Callbacks
@@ -82,18 +105,27 @@ namespace Khatim
         {
             CoffeeObjective.OnShowObj2 += OnShowObj2EventReceived;
             CoffeeObjective.OnShowObj3 += OnShowObj3EventReceived;
+
+            ToastObjective.OnShowObj4 += OnShowObj4EventReceived;
+            ToastObjective.OnShowObj5 += OnShowObj5EventReceived;
         }
 
         void OnDisable()
         {
             CoffeeObjective.OnShowObj2 -= OnShowObj2EventReceived;
             CoffeeObjective.OnShowObj3 -= OnShowObj3EventReceived;
+
+            ToastObjective.OnShowObj4 -= OnShowObj4EventReceived;
+            ToastObjective.OnShowObj5 -= OnShowObj5EventReceived;
         }
 
         void OnDestroy()
         {
             CoffeeObjective.OnShowObj2 -= OnShowObj2EventReceived;
             CoffeeObjective.OnShowObj3 -= OnShowObj3EventReceived;
+
+            ToastObjective.OnShowObj4 -= OnShowObj4EventReceived;
+            ToastObjective.OnShowObj5 -= OnShowObj5EventReceived;
         }
         #endregion
 
@@ -172,7 +204,12 @@ namespace Khatim
         /// Shows objective depending on the objective Number from the Scriptable Object;
         /// </summary>
         /// <param name="objNum"> Must have int index objective number; </param>
-        void ShowObjectiveNum(int objNum) => objText.text = objData[objNum].objectiveMessage;
+        void ShowObjectiveNum(int objNum)
+        {
+            objText.text = objData[objNum].objectiveMessage;
+            _currObjective = objNum;
+            SetInteraction(_currObjective);
+        }
 
         /// <summary>
         /// Sets bread spawn Position when the Scene starts;
@@ -180,7 +217,18 @@ namespace Khatim
         void SetBrotPos()
         {
             int index = Random.Range(0, brotPos.Length);
-            bread.transform.position = brotPos[index].position;
+            brot1.transform.position = brotPos[index].position;
+        }
+
+        void SetInteraction(int objective)
+        {
+            if (objective == 1)
+                stoveObj.layer = LayerMask.NameToLayer(_doorLayer);
+
+            if (objective == 2)
+            {
+                stoveObj.layer = LayerMask.NameToLayer(_defaultLayer);
+            }
         }
         #endregion
 
@@ -312,7 +360,32 @@ namespace Khatim
         /// Subbed to event from CoffeeObjective;
         /// Shows 3rd Objective;
         /// </summary>
-        void OnShowObj3EventReceived() => ShowObjectiveNum(2);
+        void OnShowObj3EventReceived()
+        {
+            ShowObjectiveNum(2);
+            brot1.SetActive(true);
+        }
+
+        /// <summary>
+        /// Subbed to event from ToastObjective;
+        /// Shows 4th Objective;
+        /// </summary>
+        void OnShowObj4EventReceived()
+        {
+            ShowObjectiveNum(3);
+            binLidObj.layer = LayerMask.NameToLayer(_doorLayer);
+            brot2.SetActive(true);
+        }
+
+        /// <summary>
+        /// Subbed to event from ToastObjective;
+        /// Shows 5th Objective;
+        /// </summary>
+        void OnShowObj5EventReceived()
+        {
+            ShowObjectiveNum(4);
+            tvRemoveObj.SetActive(true);
+        }
         #endregion
 
         #endregion
