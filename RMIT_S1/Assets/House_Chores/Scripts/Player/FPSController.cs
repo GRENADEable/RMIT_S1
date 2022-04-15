@@ -109,7 +109,7 @@ namespace Khatim
 
         void Update()
         {
-            if (gmData.currState == GameManagerData.GameState.Game)
+            if (gmData.currState == GameManagerData.GameState.Game || gmData.currState == GameManagerData.GameState.Outro)
             {
                 GroundCheck();
                 PlayerCurrStance();

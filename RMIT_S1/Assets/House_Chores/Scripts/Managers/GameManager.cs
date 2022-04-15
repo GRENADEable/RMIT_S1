@@ -58,6 +58,10 @@ namespace Khatim
         #region Objective Props
         [Space, Header("Objective Props")]
         [SerializeField]
+        [Tooltip("Coffee GameObject")]
+        private GameObject coffeeObj = default;
+
+        [SerializeField]
         [Tooltip("Stove GameObject")]
         private GameObject stoveObj = default;
 
@@ -134,6 +138,8 @@ namespace Khatim
             TVRemote.OnShowObj6 += OnShowObj6EventReceived;
 
             ScreenImageManager.OnShowObj7 += OnShowObj7EventReceived;
+
+            PlantObjective.OnShowObj8 += OnShowObj8EventReceived;
         }
 
         void OnDisable()
@@ -148,6 +154,8 @@ namespace Khatim
             TVRemote.OnShowObj6 -= OnShowObj6EventReceived;
 
             ScreenImageManager.OnShowObj7 -= OnShowObj7EventReceived;
+
+            PlantObjective.OnShowObj8 -= OnShowObj8EventReceived;
         }
 
         void OnDestroy()
@@ -162,6 +170,8 @@ namespace Khatim
             TVRemote.OnShowObj6 -= OnShowObj6EventReceived;
 
             ScreenImageManager.OnShowObj7 -= OnShowObj7EventReceived;
+
+            PlantObjective.OnShowObj8 -= OnShowObj8EventReceived;
         }
         #endregion
 
@@ -255,17 +265,6 @@ namespace Khatim
             int index = Random.Range(0, brotPos.Length);
             brot1.transform.position = brotPos[index].position;
         }
-
-        //void SetInteraction(int objective)
-        //{
-        //    if (objective == 1)
-        //        stoveObj.layer = LayerMask.NameToLayer(_doorLayer);
-
-        //    if (objective == 2)
-        //    {
-        //        stoveObj.layer = LayerMask.NameToLayer(_defaultLayer);
-        //    }
-        //}
         #endregion
 
         #endregion
@@ -281,18 +280,6 @@ namespace Khatim
             fadeBG.Play("Fade_In");
             yield return new WaitForSeconds(0.5f);
             gmData.ChangeGameState("Game");
-        }
-
-        /// <summary>
-        /// Kills the player with a Delay;
-        /// </summary>
-        /// <returns> Float Delay; </returns>
-        IEnumerator KillPlayerDelay()
-        {
-            fadeBG.Play("Fade_Out");
-            gmData.ChangeGameState("Dead");
-            yield return new WaitForSeconds(0.5f);
-            fadeBG.Play("Fade_In");
         }
 
         /// <summary>
@@ -330,6 +317,18 @@ namespace Khatim
             yield return new WaitForSeconds(0.5f);
             gmData.QuitGame();
         }
+
+        /// <summary>
+        /// Ends with Delay;
+        /// </summary>
+        /// <returns> Float Delay; </returns>
+        IEnumerator EndDelay()
+        {
+            yield return new WaitForSeconds(12f);
+            fadeBG.Play("Fade_Out_Slow");
+            yield return new WaitForSeconds(6f);
+            gmData.ChangeLevel(0);
+        }
         #endregion
 
         #region Events
@@ -341,7 +340,8 @@ namespace Khatim
         /// <param name="context"> Parameter Checks if the button is pressed or not; </param>
         public void OnPauseToggle(InputAction.CallbackContext context)
         {
-            if (context.started && (gmData.currState != GameManagerData.GameState.Intro || gmData.currState != GameManagerData.GameState.End))
+            //if (context.started && (gmData.currState != GameManagerData.GameState.Intro || gmData.currState != GameManagerData.GameState.End))
+            if (context.started && gmData.currState == GameManagerData.GameState.Game)
             {
                 _isPaused = !_isPaused;
 
@@ -406,6 +406,7 @@ namespace Khatim
         {
             ShowObjectiveNum(2);
             stoveObj.layer = LayerMask.NameToLayer(_defaultLayer);
+            coffeeObj.layer = LayerMask.NameToLayer(_defaultLayer);
             brot1.SetActive(true);
         }
 
@@ -457,6 +458,17 @@ namespace Khatim
             stoveKnobL.layer = LayerMask.NameToLayer(_defaultLayer);
             plantPotObj.layer = LayerMask.NameToLayer(_doorLayer);
             OnRemoteObjDisable?.Invoke();
+        }
+
+        /// <summary>
+        /// Subbed to event from PlantObjective;
+        /// Shows 8th Objective;
+        /// </summary>
+        void OnShowObj8EventReceived()
+        {
+            ShowObjectiveNum(7);
+            gmData.ChangeGameState("Outro");
+            StartCoroutine(EndDelay());
         }
         #endregion
 

@@ -41,7 +41,7 @@ namespace Khatim
         #region Unity Callbacks
         void Update()
         {
-            if (gmData.currState == GameManagerData.GameState.Game)
+            if (gmData.currState == GameManagerData.GameState.Game || gmData.currState == GameManagerData.GameState.Outro)
                 LookAround();
         }
         #endregion
@@ -49,13 +49,9 @@ namespace Khatim
         #region My Functions
         void LookAround()
         {
-#if  UNITY_STANDALONE
             float mouseX = _lookInput.x * mouseSensPC * Time.deltaTime;
             float mouseY = _lookInput.y * mouseSensPC * Time.deltaTime;
-#else
-            float mouseX = _lookInput.x * mouseSensMobile * Time.deltaTime;
-            float mouseY = _lookInput.y * mouseSensMobile * Time.deltaTime;
-#endif
+
             _xRotate -= mouseY;
             _xRotate = Mathf.Clamp(_xRotate, minXClamp, maxXClamp);
 

@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 1086736261549621003}
   - component: {fileID: 8559558841844709915}
   - component: {fileID: 8158086819277099848}
+  - component: {fileID: 5193057293235179095}
   m_Layer: 0
   m_Name: Plant_Pot
   m_TagString: Untagged
@@ -215,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerCount: 0
   isPropOn: 0
-  isToggleable: 1
+  isToggleable: 0
   OnPropOnEvent:
     m_PersistentCalls:
       m_Calls:
@@ -249,6 +250,18 @@ MonoBehaviour:
   hasChildren: 0
   hasRootMesh: 1
   childrenObjs: []
+--- !u!114 &5193057293235179095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3220536174847328735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc8d72dcb57ef14e8fdce85ea824321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &1294840130338171367
 BoxCollider:
   m_ObjectHideFlags: 0
