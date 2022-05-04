@@ -6,7 +6,7 @@ using TMPro;
 
 namespace Khatim_F2
 {
-    public class GameManagerMenu : MonoBehaviour
+    public class GameManagerLobby : MonoBehaviour
     {
         #region Serialized Variables
 

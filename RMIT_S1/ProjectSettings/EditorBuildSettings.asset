@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Unammed_Game/Scenes/Unnamed_Menu.unity
     guid: 2bd13ff5abd0dbc43b7a69db74d0e206
   - enabled: 1
-    path: Assets/Unammed_Game/Scenes/Unnamed_Main.unity
+    path: Assets/Unnamed_Game/Scenes/Unnamed_Platform_Duel.unity
     guid: 3826c03f4bcd6e14692bff11cacd8cc9
   m_configObjects: {}

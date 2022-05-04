@@ -136,7 +136,6 @@ namespace Khatim
             if (!IsCrouching)
                 _isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-
             if (_isGrounded && _vel.y < 0)
                 _vel.y = -2f;
 

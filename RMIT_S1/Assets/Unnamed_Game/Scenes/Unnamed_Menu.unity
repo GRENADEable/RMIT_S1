@@ -289,7 +289,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 927986022}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GRENADEable.GameManagerMenu, Assembly-CSharp
         m_MethodName: OnClick_QuitGame
         m_Mode: 1
@@ -473,6 +473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
@@ -555,14 +556,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 927986020}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd1e848c6b2378c45ac789b1de8e8928, type: 3}
+  m_Script: {fileID: 11500000, guid: ea93b7e6e19678d4db363668d421fb20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gmData: {fileID: 11400000, guid: 91f923fb84573134595a7790a12794b8, type: 2}
-  fadeBG: {fileID: 1113723880}
-  menuButtons:
-  - {fileID: 1955191586}
-  - {fileID: 565498868}
 --- !u!1 &1068530788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1036,7 +1032,7 @@ GameObject:
   - component: {fileID: 1729538398}
   - component: {fileID: 1729538397}
   m_Layer: 5
-  m_Name: House_Title
+  m_Name: Unnamed_Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1081,7 +1077,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: House Chores
+  m_text: Unnamed Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1241,7 +1237,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 927986022}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GRENADEable.GameManagerMenu, Assembly-CSharp
         m_MethodName: OnClick_StartGame
         m_Mode: 1
@@ -1307,7 +1303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2119553789
 MonoBehaviour:
   m_ObjectHideFlags: 0
