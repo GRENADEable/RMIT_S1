@@ -289,8 +289,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GRENADEable.GameManagerMenu, Assembly-CSharp
+      - m_Target: {fileID: 927986022}
+        m_TargetAssemblyTypeName: Khatim_F2.GameManagerLobby, Khatim.F2
         m_MethodName: OnClick_QuitGame
         m_Mode: 1
         m_Arguments:
@@ -559,6 +559,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea93b7e6e19678d4db363668d421fb20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gmData: {fileID: 11400000, guid: 03e78d39d1486324f9ff28be5b9940de, type: 2}
+  fadeBG: {fileID: 1113723880}
+  menuButtons:
+  - {fileID: 1955191586}
+  - {fileID: 565498868}
 --- !u!1 &1068530788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1237,8 +1242,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GRENADEable.GameManagerMenu, Assembly-CSharp
+      - m_Target: {fileID: 927986022}
+        m_TargetAssemblyTypeName: Khatim_F2.GameManagerLobby, Khatim.F2
         m_MethodName: OnClick_StartGame
         m_Mode: 1
         m_Arguments:

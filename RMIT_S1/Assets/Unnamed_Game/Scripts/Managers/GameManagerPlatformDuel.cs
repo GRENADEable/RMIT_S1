@@ -21,10 +21,26 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Fade panel Animation Component")]
         private Animator fadeBG = default;
+
+        #region Events Bool
+        public delegate void SendEventsBool(bool isSwitched);
+        /// <summary>
+        /// Event sent from GameManagerPlatformDuel to PlayerControllerBall Script;
+        /// Inverts the Player Controls;
+        /// </summary>
+        public static event SendEventsBool OnControlsSwitched;
+
+        /// <summary>
+        /// Event sent from GameManagerPlatformDuel to PlayerControllerBall Script;
+        /// Stops the player from Jumping;
+        /// </summary>
+        public static event SendEventsBool OnControlsJump;
+        #endregion
+
         #endregion
 
         #region Private Variables
-
+        private bool _isSwitchingControls;
         #endregion
 
         #region Unity Callbacks
@@ -53,7 +69,13 @@ namespace Khatim_F2
 
         void Update()
         {
-
+            // Testing Control Switch;
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                _isSwitchingControls = !_isSwitchingControls;
+                OnControlsSwitched?.Invoke(_isSwitchingControls);
+                OnControlsJump?.Invoke(_isSwitchingControls);
+            }
         }
         #endregion
 

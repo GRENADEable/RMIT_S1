@@ -38,16 +38,28 @@ namespace Khatim_F2
         #endregion
 
         #region Private Variables
+
+        #region Player Movement
         [Header("Player Movemnt")]
         private Vector3 _movement = default;
+        private bool IsJumping { get => _isJumping; set => _isJumping = value; }
         private bool _isJumping = default;
+        private bool _canJump = default;
+        private bool IsSwitchedControls { get => _isSwitchedControls; set => _isSwitchedControls = value; }
+        private bool _isSwitchedControls = default;
+        #endregion
 
+        #region Player Components
         [Header("Player Components")]
         private Rigidbody _rg = default;
         //private Collider _col = default;
+        #endregion
 
+        #region Player Grounding
         [Header("Ground Check")]
         private bool _isGrounded = default;
+        #endregion
+
         #endregion
 
         #region Unity Callbacks
@@ -55,17 +67,20 @@ namespace Khatim_F2
         #region Events
         void OnEnable()
         {
-
+            GameManagerPlatformDuel.OnControlsSwitched += OnControlsSwitchedEventReceived;
+            GameManagerPlatformDuel.OnControlsJump += OnControlsJumpEventReceived;
         }
 
         void OnDisable()
         {
-
+            GameManagerPlatformDuel.OnControlsSwitched -= OnControlsSwitchedEventReceived;
+            GameManagerPlatformDuel.OnControlsJump -= OnControlsJumpEventReceived;
         }
 
         void OnDestroy()
         {
-
+            GameManagerPlatformDuel.OnControlsSwitched -= OnControlsSwitchedEventReceived;
+            GameManagerPlatformDuel.OnControlsJump -= OnControlsJumpEventReceived;
         }
         #endregion
 
@@ -100,8 +115,13 @@ namespace Khatim_F2
         {
             float xMove = _movement.x;
             float yMove = _movement.y;
+            Vector3 movement;
 
-            Vector3 movement = new Vector3(xMove, 0f, yMove).normalized;
+            if (IsSwitchedControls)
+                movement = new Vector3(xMove, 0f, yMove).normalized;
+            else
+                movement = new Vector3(-xMove, 0f, -yMove).normalized;
+
             _rg.AddForce(moveForceMulti * Time.deltaTime * movement, ForceMode.Impulse);
             _rg.velocity = Vector3.ClampMagnitude(_rg.velocity, forceClamp);
         }
@@ -111,9 +131,9 @@ namespace Khatim_F2
         /// </summary>
         void JumpPlayer()
         {
-            if (_isGrounded && _isJumping)
+            if (_isGrounded && IsJumping && _canJump)
             {
-                _isJumping = false;
+                IsJumping = false;
                 _rg.AddForce(Vector3.up * jumpForceMulti, ForceMode.Impulse);
                 Debug.Log("Jumping");
             }
@@ -123,25 +143,21 @@ namespace Khatim_F2
         #endregion
 
         #region Events
+
+        #region Input System
         /// <summary>
         /// Tied to new Input System;
         /// Reads the Vector 2D Input from the Player for Movement;
         /// </summary>
         /// <param name="context"> Parameter from the new Input System; </param>
-        public void OnMovePlayer(InputAction.CallbackContext context)
-        {
-            _movement = context.ReadValue<Vector2>();
-        }
+        public void OnMovePlayer(InputAction.CallbackContext context) => _movement = context.ReadValue<Vector2>();
 
         /// <summary>
         /// Tied to new Input System;
         /// Reads the Button Input from the Player for Jumping;
         /// </summary>
         /// <param name="context"> Parameter from the new Input System; </param>
-        public void OnJumpPlayer(InputAction.CallbackContext context)
-        {
-            _isJumping = context.ReadValueAsButton();
-        }
+        public void OnJumpPlayer(InputAction.CallbackContext context) => IsJumping = context.ReadValueAsButton();
 
         //public void OnControlsGained()
         //{
@@ -154,6 +170,33 @@ namespace Khatim_F2
         //    _rg.isKinematic = true;
         //    _col.isTrigger = true;
         //}
+        #endregion
+
+        /// <summary>
+        /// Subbed to event from GameManagerPlatformDuel Script;
+        /// Inverts the controls of the players;
+        /// </summary>
+        /// <param name="isSwitch"> If True, switch Controls and vice versa; </param>
+        void OnControlsSwitchedEventReceived(bool isSwitch)
+        {
+            if (isSwitch)
+                IsSwitchedControls = true;
+            else
+                IsSwitchedControls = false;
+        }
+
+        /// <summary>
+        /// Subbed to event from GameManagerPlatformDuel Script;
+        /// Stops the player from Jumping;
+        /// </summary>
+        /// <param name="isJumping"> If True, Player can jump and vice versa; </param>
+        void OnControlsJumpEventReceived(bool isJumping)
+        {
+            if (isJumping)
+                _canJump = true;
+            else
+                _canJump = false;
+        }
         #endregion
     }
 }
