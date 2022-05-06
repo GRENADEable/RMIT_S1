@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 361837adaa2b2d945b597aa96748a361, type: 3}
-  m_Name: GameManagerMiniGame_Data
+  m_Script: {fileID: 11500000, guid: 3f8c6e7481e51614f96071d200192326, type: 3}
+  m_Name: PlayerVisual_1_Data
   m_EditorClassIdentifier: 
-  currState: 0
+  playerColour: {r: 1, g: 0, b: 0, a: 1}
+  playerName: Player 1

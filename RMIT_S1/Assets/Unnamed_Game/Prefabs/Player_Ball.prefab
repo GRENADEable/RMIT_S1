@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5076679331287908007}
   - component: {fileID: 2139217366414215979}
   - component: {fileID: 2082426385532473657}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player_Ball_Bod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4047436080782211064}
   - component: {fileID: 4103876642070746145}
   - component: {fileID: 7184303230675375148}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player_Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 7184303230675375149}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 5076679331287908007}
   m_Father: {fileID: 0}
@@ -187,7 +187,7 @@ Rigidbody:
   m_GameObject: {fileID: 7184303230675375149}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -221,8 +221,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveForceMulti: 10
   forceClamp: 8
-  jumpForceMulti: 10
-  sphereRadius: 0.55
+  jumpForceMulti: 12
+  sphereRadius: 1.05
   groundMask:
     serializedVersion: 2
     m_Bits: 256

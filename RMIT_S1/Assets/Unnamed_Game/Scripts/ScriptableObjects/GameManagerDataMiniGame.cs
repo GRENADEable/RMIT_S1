@@ -8,7 +8,7 @@ namespace Khatim_F2
         #region Public Variables
         [Space, Header("Enums")]
         public GameState currState = GameState.Game;
-        public enum GameState { Menu, Intro, Game, Paused, Outro, End };
+        public enum GameState { Menu, Intro, Starting, Game, Paused, Outro, End };
         #endregion
 
         #region Private Variables
@@ -79,6 +79,9 @@ namespace Khatim_F2
 
             if (state.Contains("Intro"))
                 currState = GameState.Intro;
+
+            if (state.Contains("Starting"))
+                currState = GameState.Starting;
 
             if (state.Contains("Game"))
                 currState = GameState.Game;

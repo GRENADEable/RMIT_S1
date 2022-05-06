@@ -35,6 +35,15 @@ namespace Khatim_F2
         private LayerMask groundMask = default;
         #endregion
 
+        #region Events
+        public delegate void SendEventsGameObject(GameObject obj);
+        /// <summary>
+        /// Event sent from PlayerControllerBall to GameManagerPlatformDuel Script;
+        /// Sends GameObject ref of the Player;
+        /// </summary>
+        public static event SendEventsGameObject OnPlayerIntialised;
+        #endregion
+
         #endregion
 
         #region Private Variables
@@ -88,6 +97,7 @@ namespace Khatim_F2
         {
             _rg = GetComponentInChildren<Rigidbody>();
             //_col = GetComponent<Collider>();
+            BallIntialise();
         }
 
         void Update()
@@ -99,6 +109,15 @@ namespace Khatim_F2
         #endregion
 
         #region My Functions
+        /// <summary>
+        /// Intialises the player ball;
+        /// </summary>
+        void BallIntialise()
+        {
+            _canJump = true;
+            IsSwitchedControls = false;
+            OnPlayerIntialised?.Invoke(gameObject);
+        }
 
         #region Player Checks
         /// <summary>
@@ -118,9 +137,9 @@ namespace Khatim_F2
             Vector3 movement;
 
             if (IsSwitchedControls)
-                movement = new Vector3(xMove, 0f, yMove).normalized;
-            else
                 movement = new Vector3(-xMove, 0f, -yMove).normalized;
+            else
+                movement = new Vector3(xMove, 0f, yMove).normalized;
 
             _rg.AddForce(moveForceMulti * Time.deltaTime * movement, ForceMode.Impulse);
             _rg.velocity = Vector3.ClampMagnitude(_rg.velocity, forceClamp);
