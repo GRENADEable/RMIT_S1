@@ -219,6 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fe8b3ff2983f7447aed717171374991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gmData: {fileID: 11400000, guid: 03e78d39d1486324f9ff28be5b9940de, type: 2}
   moveForceMulti: 10
   forceClamp: 8
   jumpForceMulti: 12
@@ -226,3 +227,4 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  _currPlayerIndex: 0

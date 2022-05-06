@@ -36,8 +36,12 @@ namespace Khatim_F2
         private GameObject timerPanel = default;
 
         [SerializeField]
-        [Tooltip("Timer Text")]
-        private TextMeshProUGUI timerText = default;
+        [Tooltip("Starting Round Timer Text")]
+        private TextMeshProUGUI startingRoundTimerText = default;
+
+        [SerializeField]
+        [Tooltip("Starting Round Timer Text")]
+        private TextMeshProUGUI gameRoundTimerText = default;
 
         [SerializeField]
         [Tooltip("HUD Panel")]
@@ -50,6 +54,10 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player UI Spawn Pos")]
         private Transform playerScorePos = default;
+
+        [SerializeField]
+        [Tooltip("Player Score Increment")]
+        private int playerScoreIncrement = 1;
         #endregion
 
         #region Game
@@ -57,6 +65,18 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player Spawn Pos")]
         private Transform playerSpawnPos = default;
+
+        [SerializeField]
+        [Tooltip("Starting Round Time")]
+        private float startingGameRoundTimer = default;
+
+        [SerializeField]
+        [Tooltip("Platform Anim Controller")]
+        private Animator platformWallsAnim = default;
+
+        [SerializeField]
+        [Tooltip("Player Death Box Col")]
+        private GameObject playerDeathBox = default;
         #endregion
 
         #region Events Bool
@@ -74,18 +94,18 @@ namespace Khatim_F2
         public static event SendEventsBool OnControlsJump;
         #endregion
 
-        #region Events Void
-        public delegate void SendEvents(Color clr, string playerName);
-        #endregion
-
         #endregion
 
         #region Private Variables
         private bool _isSwitchingControls;
+
         [Header("Game")]
-        private List<GameObject> _players = new List<GameObject>();
-        private int _currPlayerNo = default;
-        [SerializeField] private List<GameObject> _playersUI = new List<GameObject>();
+        private List<PlayerControllerBall> _playersBall = new List<PlayerControllerBall>();
+        private List<PlayerScore> _playersScore = new List<PlayerScore>();
+        public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
+        [SerializeField] private int _currPlayerNo = default;
+        [SerializeField] private int _totalPlayerNo = default;
+        private float _currGameRoundTime = default;
         #endregion
 
         #region Unity Callbacks
@@ -94,21 +114,25 @@ namespace Khatim_F2
         void OnEnable()
         {
             PlayerControllerBall.OnPlayerIntialised += OnPlayerIntialisedEventReceived;
+            PlayerControllerBall.OnPlayerFall += OnPlayerFallEventReceived;
         }
 
         void OnDisable()
         {
             PlayerControllerBall.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
+            PlayerControllerBall.OnPlayerFall -= OnPlayerFallEventReceived;
         }
 
         void OnDestroy()
         {
             PlayerControllerBall.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
+            PlayerControllerBall.OnPlayerFall -= OnPlayerFallEventReceived;
         }
         #endregion
 
         void Start()
         {
+            _currGameRoundTime = startingGameRoundTimer;
             StartCoroutine(IntroDelay());
 
             if (isCursorDisabled)
@@ -124,6 +148,12 @@ namespace Khatim_F2
                 OnControlsSwitched?.Invoke(_isSwitchingControls);
                 OnControlsJump?.Invoke(!_isSwitchingControls);
             }
+
+            if (Input.GetKeyDown(KeyCode.T))
+                _currGameRoundTime = 2;
+
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+                RoundTimer();
         }
         #endregion
 
@@ -133,11 +163,91 @@ namespace Khatim_F2
         /// </summary>
         void SetPlayersUI()
         {
-            for (int i = 0; i < _players.Count; i++)
+            int index = 0;
+
+            for (int i = 0; i < _playersBall.Count; i++)
             {
-                GameObject plyUI = Instantiate(playerScorePrefab, playerScorePos.position, Quaternion.identity, playerScorePos);
-                _playersUI.Add(plyUI);
+                GameObject plyScore = Instantiate(playerScorePrefab, playerScorePos.position, Quaternion.identity, playerScorePos);
+                plyScore.name = playerVisData[i].playerName;
+
+                _playersScore.Add(plyScore.GetComponent<PlayerScore>());
+                _playersScore[i].PlayerName = playerVisData[i].playerName;
+                _playersScore[i].PlayerPointIndex = index;
+
+                index++;
             }
+
+            gameRoundTimerText.text = startingGameRoundTimer.ToString();
+            _currGameRoundTime = startingGameRoundTimer;
+            platformWallsAnim.Play("Platform_Duel_Wall_Open");
+            gmData.ChangeGameState("Game");
+        }
+
+        /// <summary>
+        /// Round Timer and also updates the UI for it;
+        /// </summary>
+        void RoundTimer()
+        {
+            _currGameRoundTime -= Time.deltaTime;
+            gameRoundTimerText.text = _currGameRoundTime.ToString("f1");
+
+            if (_currGameRoundTime <= 0)
+            {
+                gmData.ChangeGameState("Starting");
+                EndRoundWithoutPoint();
+            }
+
+        }
+        /// <summary>
+        /// If one player stands, they win a point;
+        /// </summary>
+        void EndRoundWithPoint()
+        {
+            CloseWalls();
+
+            for (int i = 0; i < _playersBall.Count; i++)
+            {
+                if (_playersBall[i].gameObject.activeInHierarchy)
+                {
+                    _playersScore[_playersBall[i].PlayerIndex].UpdateScore(playerScoreIncrement);
+                    Debug.Log("Updating Score");
+                }
+
+                _playersBall[i].gameObject.SetActive(false);
+            }
+        }
+
+        /// <summary>
+        /// If the timer ends, no point;
+        /// </summary>
+        void EndRoundWithoutPoint()
+        {
+            CloseWalls();
+
+            for (int i = 0; i < _playersBall.Count; i++)
+                _playersBall[i].gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Resets the state of the game when the round ends;
+        /// </summary>
+        void CloseWalls()
+        {
+            platformWallsAnim.Play("Platform_Duel_Wall_Close");
+            gmData.ChangeGameState("Starting");
+            playerDeathBox.SetActive(false);
+            StartCoroutine(EndRoundPointDelay());
+        }
+
+        /// <summary>
+        /// Continues the game after the reset;
+        /// </summary>
+        void OpenWalls()
+        {
+            platformWallsAnim.Play("Platform_Duel_Wall_Open");
+            gmData.ChangeGameState("Game");
+            playerDeathBox.SetActive(true);
+            _currGameRoundTime = startingGameRoundTimer;
         }
         #endregion
 
@@ -155,37 +265,111 @@ namespace Khatim_F2
 
         /// <summary>
         /// Starts match with a Delay;
+        /// Starts counter, switches UI Panels and disables more players to join the match after counter is ended;
         /// </summary>
         /// <returns> Float Delay; </returns>
         IEnumerator StartMatchDelay()
         {
             timerPanel.SetActive(true);
-            timerText.text = "3";
+            startingRoundTimerText.text = "3";
             yield return new WaitForSeconds(1f);
-            timerText.text = "2";
+            startingRoundTimerText.text = "2";
             yield return new WaitForSeconds(1f);
-            timerText.text = "1";
+            startingRoundTimerText.text = "1";
             yield return new WaitForSeconds(1f);
             SetPlayersUI();
             timerPanel.SetActive(false);
             hudPanel.SetActive(true);
-            Debug.Log("Start");
+            _totalPlayerNo = PlayerNo;
+            PlayerInputManager.instance.enabled = false;
+        }
+
+        /// <summary>
+        /// Ends one round with a Delay;
+        /// Checks if all the players haven't falen off the map before giving the point;
+        /// </summary>
+        /// <returns> Float Delay; </returns>
+        //IEnumerator EndRoundPointDelay()
+        //{
+        //    platformWallsAnim.Play("Platform_Duel_Wall_Close");
+        //    gmData.ChangeGameState("Starting");
+        //    yield return new WaitForSeconds(1f);
+        //    playerDeathBox.SetActive(false);
+
+        //    for (int i = 0; i < _playersBall.Count; i++)
+        //    {
+        //        if (_playersBall[i].gameObject.activeInHierarchy)
+        //        {
+        //            _playersScore[_playersBall[i].PlayerIndex].UpdateScore(playerScoreIncrement);
+        //            Debug.Log("Updating Score");
+        //        }
+
+        //        //if (!_playersBall[i].gameObject.activeInHierarchy)
+        //        //{
+        //        //    Debug.Log("Draw");
+        //        //}
+
+        //        _playersBall[i].gameObject.SetActive(false);
+        //    }
+        //}
+
+        /// <summary>
+        /// Ends one round with a Delay;
+        /// Resets the state game back to the initial state;
+        /// </summary>
+        /// <returns> Float Delay; </returns>
+        IEnumerator EndRoundPointDelay()
+        {
+            yield return new WaitForSeconds(2f);
+
+            for (int i = 0; i < _playersBall.Count; i++)
+            {
+                _playersBall[i].transform.position = playerSpawnPos.position;
+                _playersBall[i].gameObject.SetActive(true);
+            }
+
+            OpenWalls();
+            gmData.ChangeGameState("Game");
         }
         #endregion
 
         #region Events
-        public void OnPlayerIntialisedEventReceived(GameObject player)
+        /// <summary>
+        /// Subbed to Event from PlayerControllerBall Script;
+        /// Adds the GameObject to hte list and starts the match with atleast 2 players joining;
+        /// </summary>
+        /// <param name="plyBall"> Player GameObject received from Event; </param>
+        void OnPlayerIntialisedEventReceived(PlayerControllerBall plyBall)
         {
-            _players.Add(player);
-            _players[_currPlayerNo].name = $"{playerVisData[_currPlayerNo].playerName}";
-            _players[_currPlayerNo].GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", playerVisData[_currPlayerNo].playerColour);
-            _players[_currPlayerNo].transform.position = playerSpawnPos.position;
-            _currPlayerNo++;
+            _playersBall.Add(plyBall);
+            _playersBall[PlayerNo].name = $"{playerVisData[PlayerNo].playerName}";
+            _playersBall[PlayerNo].GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", playerVisData[PlayerNo].playerColour);
+            _playersBall[PlayerNo].transform.position = playerSpawnPos.position;
+            _playersBall[PlayerNo].PlayerIndex = PlayerNo;
+            PlayerNo++;
 
-            if (_currPlayerNo == 2)
+            if (PlayerNo == 2)
             {
                 gmData.ChangeGameState("Starting");
                 StartCoroutine(StartMatchDelay());
+            }
+        }
+
+        /// <summary>
+        /// Subbed to Event from PlayerControllerBall Script;
+        /// Disables the Player GameObject;
+        /// </summary>
+        /// <param name="index"> Player GameObject affected according to the Index received; </param>
+        void OnPlayerFallEventReceived(int index)
+        {
+            _playersBall[index].gameObject.SetActive(false);
+            PlayerNo--;
+
+            if (PlayerNo <= 1)
+            {
+                //StartCoroutine(EndRoundPointDelay());
+                PlayerNo = _totalPlayerNo;
+                EndRoundWithPoint();
             }
         }
         #endregion

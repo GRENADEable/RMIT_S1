@@ -9,6 +9,13 @@ namespace Khatim_F2
     {
         #region Serialized Variables
 
+        #region Datas
+        [Space, Header("Data")]
+        [SerializeField]
+        [Tooltip("GameManager Scriptable Object")]
+        private GameManagerDataMiniGame gmData = default;
+        #endregion
+
         #region Player Movement
         [Space, Header("Player Movement")]
         [SerializeField]
@@ -36,12 +43,19 @@ namespace Khatim_F2
         #endregion
 
         #region Events
-        public delegate void SendEventsGameObject(GameObject obj);
+        public delegate void SendEventsScript(PlayerControllerBall plyBall);
         /// <summary>
         /// Event sent from PlayerControllerBall to GameManagerPlatformDuel Script;
         /// Sends GameObject ref of the Player;
         /// </summary>
-        public static event SendEventsGameObject OnPlayerIntialised;
+        public static event SendEventsScript OnPlayerIntialised;
+
+        public delegate void SendEventsInt(int index);
+        /// <summary>
+        /// Event sent from PlayerControllerBall to GameManagerPlatformDuel Script;
+        /// Sends PlayerIndex to disable the GameObject when Dead;
+        /// </summary>
+        public static event SendEventsInt OnPlayerFall;
         #endregion
 
         #endregion
@@ -53,6 +67,7 @@ namespace Khatim_F2
         private Vector3 _movement = default;
         private bool IsJumping { get => _isJumping; set => _isJumping = value; }
         private bool _isJumping = default;
+        private bool CanJump { get => _canJump; set => _canJump = value; }
         private bool _canJump = default;
         private bool IsSwitchedControls { get => _isSwitchedControls; set => _isSwitchedControls = value; }
         private bool _isSwitchedControls = default;
@@ -61,7 +76,8 @@ namespace Khatim_F2
         #region Player Components
         [Header("Player Components")]
         private Rigidbody _rg = default;
-        //private Collider _col = default;
+        public int PlayerIndex { get => _currPlayerIndex; set => _currPlayerIndex = value; }
+        private int _currPlayerIndex = default;
         #endregion
 
         #region Player Grounding
@@ -102,9 +118,18 @@ namespace Khatim_F2
 
         void Update()
         {
-            RollPlayer();
-            JumpPlayer();
-            GroundCheck();
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+            {
+                RollPlayer();
+                JumpPlayer();
+                GroundCheck();
+            }
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Death_Box"))
+                OnPlayerFall?.Invoke(PlayerIndex);
         }
         #endregion
 
@@ -114,9 +139,9 @@ namespace Khatim_F2
         /// </summary>
         void BallIntialise()
         {
-            _canJump = true;
+            CanJump = true;
             IsSwitchedControls = false;
-            OnPlayerIntialised?.Invoke(gameObject);
+            OnPlayerIntialised?.Invoke(this);
         }
 
         #region Player Checks
@@ -150,11 +175,10 @@ namespace Khatim_F2
         /// </summary>
         void JumpPlayer()
         {
-            if (_isGrounded && IsJumping && _canJump)
+            if (_isGrounded && IsJumping && CanJump)
             {
                 IsJumping = false;
                 _rg.AddForce(Vector3.up * jumpForceMulti, ForceMode.Impulse);
-                Debug.Log("Jumping");
             }
         }
         #endregion
@@ -177,18 +201,6 @@ namespace Khatim_F2
         /// </summary>
         /// <param name="context"> Parameter from the new Input System; </param>
         public void OnJumpPlayer(InputAction.CallbackContext context) => IsJumping = context.ReadValueAsButton();
-
-        //public void OnControlsGained()
-        //{
-        //    _rg.isKinematic = false;
-        //    _col.isTrigger = false;
-        //}
-
-        //public void OnControlsLost()
-        //{
-        //    _rg.isKinematic = true;
-        //    _col.isTrigger = true;
-        //}
         #endregion
 
         /// <summary>
@@ -212,9 +224,9 @@ namespace Khatim_F2
         void OnControlsJumpEventReceived(bool isJumping)
         {
             if (isJumping)
-                _canJump = true;
+                CanJump = true;
             else
-                _canJump = false;
+                CanJump = false;
         }
         #endregion
     }
