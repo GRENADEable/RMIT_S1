@@ -1239,13 +1239,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 937509298}
     - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
+      propertyPath: platform
+      value: 
+      objectReference: {fileID: 1927582878}
+    - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
       propertyPath: timerPanel
       value: 
       objectReference: {fileID: 937509299}
-    - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
-      propertyPath: platformAnim
-      value: 
-      objectReference: {fileID: 1927582880}
     - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
       propertyPath: playerDeathBox
       value: 

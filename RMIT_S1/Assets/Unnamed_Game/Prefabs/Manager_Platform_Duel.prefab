@@ -61,9 +61,16 @@ MonoBehaviour:
   playerScoreIncrement: 1
   playerSpawnPos: {fileID: 0}
   startingGameRoundTimer: 60
-  platformAnim: {fileID: 0}
-  _playersBall: []
-  _playersScore: []
+  platformWallsAnim: {fileID: 0}
+  playerDeathBox: {fileID: 0}
+  endRoundDelay: 2
+  platform: {fileID: 0}
+  platformRotSpeed: 15
+  platformRoundEndResetSpeed: 3.5
+  platformResetSpeed: 2
+  startingPlatformRotatingTimer: 3.5
+  resetPlatformTime: 1
+  _currPlatformRotateType: 2
 --- !u!114 &6142353415333904840
 MonoBehaviour:
   m_ObjectHideFlags: 0

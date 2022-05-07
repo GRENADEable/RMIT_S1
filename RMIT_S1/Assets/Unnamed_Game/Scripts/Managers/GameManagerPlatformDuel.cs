@@ -77,6 +77,40 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player Death Box Col")]
         private GameObject playerDeathBox = default;
+
+        [SerializeField]
+        [Tooltip("End Round Delay")]
+        private float endRoundDelay = default;
+        #endregion
+
+        #region Platform
+        [Space, Header("Platform")]
+        [SerializeField]
+        [Tooltip("Platform GameObject")]
+        private GameObject platform = default;
+
+        [SerializeField]
+        [Tooltip("Platform Rotation Speed")]
+        [Range(0f, 40f)]
+        private float platformRotSpeed = default;
+
+        [SerializeField]
+        [Tooltip("Platform Reset Speed when round ends")]
+        [Range(0f, 5f)]
+        private float platformRoundEndResetSpeed = default;
+
+        [SerializeField]
+        [Tooltip("Platform Reset Speed when switching Rotation types")]
+        [Range(0f, 5f)]
+        private float platformResetSpeed = default;
+
+        [SerializeField]
+        [Tooltip("Platform Rotation starting Time")]
+        private float startingPlatformRotatingTimer = default;
+
+        [SerializeField]
+        [Tooltip("Platform Rotation reset Time")]
+        private float resetPlatformTime = default;
         #endregion
 
         #region Events Bool
@@ -97,15 +131,26 @@ namespace Khatim_F2
         #endregion
 
         #region Private Variables
-        private bool _isSwitchingControls;
 
+        #region Game
         [Header("Game")]
+        private bool _isSwitchingControls;
         private List<PlayerControllerBall> _playersBall = new List<PlayerControllerBall>();
         private List<PlayerScore> _playersScore = new List<PlayerScore>();
         public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
-        [SerializeField] private int _currPlayerNo = default;
-        [SerializeField] private int _totalPlayerNo = default;
+        private int _currPlayerNo = default;
+        private int _totalPlayerNo = default;
         private float _currGameRoundTime = default;
+        #endregion
+
+        #region Platform
+        [Header("Platform")]
+        private float _currPlatformRotTime = default;
+        private Quaternion _intialPlatformRot = default;
+        private enum PlatformRotateType { Original, RotateX, RotateY, RotateZ };
+        private PlatformRotateType _currPlatformRotateType = PlatformRotateType.RotateY;
+        #endregion
+
         #endregion
 
         #region Unity Callbacks
@@ -133,7 +178,11 @@ namespace Khatim_F2
         void Start()
         {
             _currGameRoundTime = startingGameRoundTimer;
-            StartCoroutine(IntroDelay());
+            _intialPlatformRot = platform.transform.rotation;
+            _currPlatformRotTime = startingPlatformRotatingTimer;
+
+            gmData.ChangeGameState("Intro");
+            fadeBG.Play("Fade_In");
 
             if (isCursorDisabled)
                 gmData.DisableCursor();
@@ -153,11 +202,19 @@ namespace Khatim_F2
                 _currGameRoundTime = 2;
 
             if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+            {
                 RoundTimer();
+                RotatePlatform();
+            }
+
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Starting)
+                ResetRotatePlatform(true);
         }
         #endregion
 
         #region My Functions
+
+        #region Game
         /// <summary>
         /// Sets the UI of the player depending on how many players joined;
         /// </summary>
@@ -177,9 +234,11 @@ namespace Khatim_F2
                 index++;
             }
 
+            hudPanel.SetActive(true);
             gameRoundTimerText.text = startingGameRoundTimer.ToString();
             _currGameRoundTime = startingGameRoundTimer;
             platformWallsAnim.Play("Platform_Duel_Wall_Open");
+            _totalPlayerNo = PlayerNo;
             gmData.ChangeGameState("Game");
         }
 
@@ -198,6 +257,7 @@ namespace Khatim_F2
             }
 
         }
+
         /// <summary>
         /// If one player stands, they win a point;
         /// </summary>
@@ -208,10 +268,7 @@ namespace Khatim_F2
             for (int i = 0; i < _playersBall.Count; i++)
             {
                 if (_playersBall[i].gameObject.activeInHierarchy)
-                {
                     _playersScore[_playersBall[i].PlayerIndex].UpdateScore(playerScoreIncrement);
-                    Debug.Log("Updating Score");
-                }
 
                 _playersBall[i].gameObject.SetActive(false);
             }
@@ -227,7 +284,9 @@ namespace Khatim_F2
             for (int i = 0; i < _playersBall.Count; i++)
                 _playersBall[i].gameObject.SetActive(false);
         }
+        #endregion
 
+        #region Platform
         /// <summary>
         /// Resets the state of the game when the round ends;
         /// </summary>
@@ -249,20 +308,75 @@ namespace Khatim_F2
             playerDeathBox.SetActive(true);
             _currGameRoundTime = startingGameRoundTimer;
         }
+
+        /// <summary>
+        /// Platform Rotates according to Random Enum chosen;
+        /// </summary>
+        void RotatePlatform()
+        {
+            _currPlatformRotTime -= Time.deltaTime;
+
+            if (_currPlatformRotTime <= 0)
+            {
+                _currPlatformRotTime = startingPlatformRotatingTimer;
+                StartCoroutine(ResetRotatePlatformDelay());
+            }
+
+            switch (_currPlatformRotateType)
+            {
+                case PlatformRotateType.RotateX:
+                    platform.transform.Rotate(Vector3.right, platformRotSpeed * Time.deltaTime);
+                    break;
+                case PlatformRotateType.RotateY:
+                    platform.transform.Rotate(Vector3.up, platformRotSpeed * Time.deltaTime);
+                    break;
+                case PlatformRotateType.RotateZ:
+                    platform.transform.Rotate(Vector3.forward, platformRotSpeed * Time.deltaTime);
+                    break;
+
+                case PlatformRotateType.Original:
+                    ResetRotatePlatform(false);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Resets the Rotating Platform when round Ends;
+        /// </summary>
+        /// <param name="isRoundEnded"> If true, reset it quickly, else reset it slowly; </param>
+        void ResetRotatePlatform(bool isRoundEnded)
+        {
+            if (isRoundEnded)
+            {
+                platform.transform.rotation = Quaternion.Lerp(platform.transform.rotation,
+                 _intialPlatformRot, platformRoundEndResetSpeed * Time.deltaTime);
+            }
+            else
+            {
+                platform.transform.rotation = Quaternion.Lerp(platform.transform.rotation,
+                _intialPlatformRot, platformResetSpeed * Time.deltaTime);
+            }
+        }
+
+        /// <summary>
+        /// Chooses a Random Enum Type;
+        /// </summary>
+        /// <typeparam name="T"> Needs an Enum Value; </typeparam>
+        /// <returns> Current Enum Type; </returns>
+        static T GetRandomEnum<T>()
+        {
+            System.Array A = System.Enum.GetValues(typeof(T));
+            T V = (T)A.GetValue(UnityEngine.Random.Range(0, A.Length));
+            return V;
+        }
+        #endregion
+
         #endregion
 
         #region Coroutines
-        /// <summary>
-        /// Starts game with a Delay;
-        /// </summary>
-        /// <returns> Float Delay; </returns>
-        IEnumerator IntroDelay()
-        {
-            fadeBG.Play("Fade_In");
-            yield return new WaitForSeconds(0.5f);
-            gmData.ChangeGameState("Intro");
-        }
-
         /// <summary>
         /// Starts match with a Delay;
         /// Starts counter, switches UI Panels and disables more players to join the match after counter is ended;
@@ -279,39 +393,8 @@ namespace Khatim_F2
             yield return new WaitForSeconds(1f);
             SetPlayersUI();
             timerPanel.SetActive(false);
-            hudPanel.SetActive(true);
-            _totalPlayerNo = PlayerNo;
             PlayerInputManager.instance.enabled = false;
         }
-
-        /// <summary>
-        /// Ends one round with a Delay;
-        /// Checks if all the players haven't falen off the map before giving the point;
-        /// </summary>
-        /// <returns> Float Delay; </returns>
-        //IEnumerator EndRoundPointDelay()
-        //{
-        //    platformWallsAnim.Play("Platform_Duel_Wall_Close");
-        //    gmData.ChangeGameState("Starting");
-        //    yield return new WaitForSeconds(1f);
-        //    playerDeathBox.SetActive(false);
-
-        //    for (int i = 0; i < _playersBall.Count; i++)
-        //    {
-        //        if (_playersBall[i].gameObject.activeInHierarchy)
-        //        {
-        //            _playersScore[_playersBall[i].PlayerIndex].UpdateScore(playerScoreIncrement);
-        //            Debug.Log("Updating Score");
-        //        }
-
-        //        //if (!_playersBall[i].gameObject.activeInHierarchy)
-        //        //{
-        //        //    Debug.Log("Draw");
-        //        //}
-
-        //        _playersBall[i].gameObject.SetActive(false);
-        //    }
-        //}
 
         /// <summary>
         /// Ends one round with a Delay;
@@ -320,7 +403,7 @@ namespace Khatim_F2
         /// <returns> Float Delay; </returns>
         IEnumerator EndRoundPointDelay()
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(endRoundDelay);
 
             for (int i = 0; i < _playersBall.Count; i++)
             {
@@ -330,6 +413,17 @@ namespace Khatim_F2
 
             OpenWalls();
             gmData.ChangeGameState("Game");
+        }
+
+        /// <summary>
+        /// Reset platform with delay;
+        /// </summary>
+        /// <returns> Float Delay; </returns>
+        IEnumerator ResetRotatePlatformDelay()
+        {
+            _currPlatformRotateType = PlatformRotateType.Original;
+            yield return new WaitForSeconds(resetPlatformTime);
+            _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
         }
         #endregion
 
