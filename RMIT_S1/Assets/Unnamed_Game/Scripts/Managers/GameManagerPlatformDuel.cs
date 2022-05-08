@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 namespace Khatim_F2
 {
@@ -39,6 +41,14 @@ namespace Khatim_F2
         [Tooltip("Popup Obsatcle Text")]
         private TextMeshProUGUI popupObstacleText = default;
 
+        [Tooltip("Menu Button in an Array that will be used to disable them when clicking on other Buttons")]
+        [SerializeField]
+        private Button[] menuButtons;
+
+        [SerializeField]
+        [Tooltip("All the first button that the Event System will highlight")]
+        private GameObject[] firstSelectedButtons = default;
+
         [SerializeField]
         [Tooltip("Timer Panel")]
         private GameObject timerPanel = default;
@@ -46,6 +56,10 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("HUD Panel")]
         private GameObject hudPanel = default;
+
+        [SerializeField]
+        [Tooltip("Pause Panel")]
+        private GameObject pausePanel = default;
 
         [SerializeField]
         [Tooltip("Player UI GameObject Prefab")]
@@ -122,6 +136,14 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("End Round Delay")]
         private float endRoundDelayTimer = default;
+
+        [SerializeField]
+        [Tooltip("Min Random value for switching controls")]
+        private float minValSwitchControls = default;
+
+        [SerializeField]
+        [Tooltip("Min Random value for toggling jump controls")]
+        private float minValJumpControls = default;
         #endregion
 
         #region Events Bool
@@ -182,18 +204,21 @@ namespace Khatim_F2
         {
             PlayerControllerBall.OnPlayerIntialised += OnPlayerIntialisedEventReceived;
             PlayerControllerBall.OnPlayerFall += OnPlayerFallEventReceived;
+            PlayerControllerBall.OnGamePaused += OnGamePausedEventReceived;
         }
 
         void OnDisable()
         {
             PlayerControllerBall.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
             PlayerControllerBall.OnPlayerFall -= OnPlayerFallEventReceived;
+            PlayerControllerBall.OnGamePaused -= OnGamePausedEventReceived;
         }
 
         void OnDestroy()
         {
             PlayerControllerBall.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
             PlayerControllerBall.OnPlayerFall -= OnPlayerFallEventReceived;
+            PlayerControllerBall.OnGamePaused -= OnGamePausedEventReceived;
         }
         #endregion
 
@@ -240,11 +265,71 @@ namespace Khatim_F2
         #region My Functions
 
         #region UI
+        /// <summary>
+        /// Shows a popup Text with a parameter string;
+        /// </summary>
+        /// <param name="popupText"> What message to show on the text; </param>
         void PopupText(string popupText)
         {
             popupObstacleText.text = popupText;
             popupObstacleAreaAnim.Play("Pop_Obstacle_Anim");
         }
+
+        #region Buttons
+        /// <summary>
+        /// Function tied with Resume_Button Button;
+        /// Resumes the Game;
+        /// </summary>
+        public void OnClick_Resume()
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            pausePanel.SetActive(false);
+            hudPanel.SetActive(true);
+            gmData.ChangeGameState("Game");
+            gmData.TogglePause(false);
+            gmData.DisableCursor();
+        }
+
+        /// <summary>
+        /// Function tied with Restart_Button Button;
+        /// Restarts the game with a delay;
+        /// </summary>
+        public void OnClick_Restart() => StartCoroutine(RestartDelay());
+
+        /// <summary>
+        /// Button tied with Menu_Button;
+        /// Goes to the Menu with a delay;
+        /// </summary>
+        public void OnClick_Menu() => StartCoroutine(MenuDelay());
+
+        /// <summary>
+        /// Button tied with Quit_Button;
+        /// Quits the Game
+        /// </summary>
+        public void OnClick_Quit() => StartCoroutine(QuitGameDelay());
+
+        /// <summary>
+        /// Tied to any UI Butttons;
+        /// It will hightlight the button so that the user can navigate through the UI properly;
+        /// </summary>
+        /// <param name="index"> Which Button to highlight from th Array; </param>
+        public void OnClick_HighlightedButton(int index)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(firstSelectedButtons[index]);
+        }
+
+        /// <summary>
+        /// Tied to the UI Buttons;
+        /// All the buttons added in the Array gets disabled;
+        /// </summary>
+        public void OnClick_DisableButtons()
+        {
+            for (int i = 0; i < menuButtons.Length; i++)
+                menuButtons[i].interactable = false;
+        }
+        #endregion
+
         #endregion
 
         #region Game
@@ -472,6 +557,8 @@ namespace Khatim_F2
         #endregion
 
         #region Coroutines
+
+        #region Game
         /// <summary>
         /// Starts match with a Delay;
         /// Starts counter, switches UI Panels and disables more players to join the match after counter is ended;
@@ -529,10 +616,10 @@ namespace Khatim_F2
         /// <returns> Float Delay; </returns>
         IEnumerator SwitchControlsDelay()
         {
-            _switchControlTimer = Random.Range(0, startingGameRoundTimer);
+            _switchControlTimer = Random.Range(minValSwitchControls, startingGameRoundTimer);
             yield return new WaitForSeconds(_switchControlTimer);
             SwitchControls();
-            _switchControlTimer = Random.Range(0, startingGameRoundTimer / 2);
+            _switchControlTimer = Random.Range(minValSwitchControls, startingGameRoundTimer / 2);
             yield return new WaitForSeconds(_switchControlTimer);
             SwitchControls();
             StartCoroutine(SwitchControlsDelay());
@@ -544,14 +631,54 @@ namespace Khatim_F2
         /// <returns> Float Delay; </returns>
         IEnumerator JumpControlsDelay()
         {
-            _jumpControlTimer = Random.Range(0, startingGameRoundTimer / 2);
+            _jumpControlTimer = Random.Range(minValJumpControls, startingGameRoundTimer / 2);
             yield return new WaitForSeconds(_jumpControlTimer);
             ToggleJumpControl();
-            _jumpControlTimer = Random.Range(0, startingGameRoundTimer / 2);
+            _jumpControlTimer = Random.Range(minValJumpControls, startingGameRoundTimer / 2);
             yield return new WaitForSeconds(_jumpControlTimer);
             ToggleJumpControl();
             StartCoroutine(JumpControlsDelay());
         }
+        #endregion
+
+        #region Buttons
+        /// <summary>
+        /// Restarts the game with a Delay;
+        /// </summary>
+        /// <returns> Float Delay; </returns>
+        IEnumerator RestartDelay()
+        {
+            gmData.TogglePause(false);
+            fadeBG.Play("Fade_Out");
+            yield return new WaitForSeconds(0.5f);
+            gmData.ChangeLevel(Application.loadedLevel);
+        }
+
+        /// <summary>
+        /// Goes to Menu with a Delay;
+        /// </summary>
+        /// <returns> Float Delay; </returns>
+        IEnumerator MenuDelay()
+        {
+            gmData.TogglePause(false);
+            fadeBG.Play("Fade_Out");
+            yield return new WaitForSeconds(0.5f);
+            gmData.ChangeLevel(0);
+        }
+
+        /// <summary>
+        /// Quits the game with a Delay;
+        /// </summary>
+        /// <returns> Float Delay </returns>
+        IEnumerator QuitGameDelay()
+        {
+            gmData.TogglePause(false);
+            fadeBG.Play("Fade_Out");
+            yield return new WaitForSeconds(0.5f);
+            gmData.QuitGame();
+        }
+        #endregion
+
         #endregion
 
         #region Events
@@ -592,6 +719,20 @@ namespace Khatim_F2
                 EndRoundWithPoint();
                 //StartCoroutine(SwitchControlsDelay());
             }
+        }
+
+        /// <summary>
+        /// Subbed to Event from PlayerControllerBall Script;
+        /// Pauses the game;
+        /// </summary>
+        void OnGamePausedEventReceived()
+        {
+            gmData.ChangeGameState("Paused");
+            OnClick_HighlightedButton(0);
+            pausePanel.SetActive(true);
+            hudPanel.SetActive(false);
+            gmData.EnableCursor();
+            gmData.TogglePause(true);
         }
         #endregion
     }

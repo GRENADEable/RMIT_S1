@@ -54,6 +54,13 @@ namespace Khatim_F2
         /// Sends PlayerIndex to disable the GameObject when Dead;
         /// </summary>
         public static event SendEventsInt OnPlayerFall;
+
+        public delegate void SendEvents();
+        /// <summary>
+        /// Event sent from PlayerControllerBall to GameManagerPlatformDuel Script;
+        /// Sends event to pause game;
+        /// </summary>
+        public static event SendEvents OnGamePaused;
         #endregion
 
         #endregion
@@ -199,8 +206,23 @@ namespace Khatim_F2
         /// </summary>
         /// <param name="context"> Parameter from the new Input System; </param>
         public void OnJumpPlayer(InputAction.CallbackContext context) => IsJumping = context.ReadValueAsButton();
+
+        /// <summary>
+        /// Tied to new Input System;
+        /// Readds the Button Input from the player for Pausing;
+        /// </summary>
+        /// <param name="context"> Parameter from the new Input System; </param>
+        public void OnPlayerPause(InputAction.CallbackContext context)
+        {
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+            {
+                if (context.started)
+                    OnGamePaused?.Invoke();
+            }
+        }
         #endregion
 
+        #region Player Control Obstacles
         /// <summary>
         /// Subbed to event from GameManagerPlatformDuel Script;
         /// Inverts the controls of the players;
@@ -226,6 +248,8 @@ namespace Khatim_F2
             else
                 CanJump = false;
         }
+        #endregion
+
         #endregion
     }
 }

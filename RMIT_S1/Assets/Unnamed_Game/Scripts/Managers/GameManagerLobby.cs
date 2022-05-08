@@ -24,7 +24,7 @@ namespace Khatim_F2
         void Start()
         {
             gmData.EnableCursor();
-
+            gmData.ChangeGameState("Menu");
             fadeBG.Play("Fade_In");
         }
         #endregion
@@ -47,7 +47,7 @@ namespace Khatim_F2
         /// <summary>
         /// All the buttons added in the Array gets disabled;
         /// </summary>
-        void DisableButtons()
+        public void DisableButtons()
         {
             for (int i = 0; i < menuButtons.Length; i++)
                 menuButtons[i].interactable = false;
@@ -64,7 +64,6 @@ namespace Khatim_F2
         IEnumerator StartGameDelay()
         {
             fadeBG.Play("Fade_Out");
-            DisableButtons();
             yield return new WaitForSeconds(0.5f);
             gmData.ChangeLevel(1);
         }
@@ -76,7 +75,6 @@ namespace Khatim_F2
         IEnumerator QuitGameDelay()
         {
             fadeBG.Play("Fade_Out");
-            DisableButtons();
             yield return new WaitForSeconds(0.5f);
             gmData.QuitGame();
         }

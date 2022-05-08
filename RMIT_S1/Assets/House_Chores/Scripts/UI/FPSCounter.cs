@@ -9,7 +9,7 @@ namespace Khatim
         void Start()
         {
             DontDestroyOnLoad(this);
-            Application.targetFrameRate = 300;
+            Application.targetFrameRate = 144;
         }
 
         void Update() => deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
