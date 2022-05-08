@@ -286,9 +286,14 @@ namespace Khatim_F2
         public void OnClick_Resume()
         {
             EventSystem.current.SetSelectedGameObject(null);
+
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Paused)
+            {
+                gmData.ChangeGameState("Game");
+                hudPanel.SetActive(true);
+            }
+
             pausePanel.SetActive(false);
-            hudPanel.SetActive(true);
-            gmData.ChangeGameState("Game");
             gmData.TogglePause(false);
             gmData.DisableCursor();
         }
@@ -420,6 +425,8 @@ namespace Khatim_F2
             gmData.ChangeGameState("Starting");
             playerDeathBox.SetActive(false);
             StartCoroutine(EndRoundPointDelay());
+            StopCoroutine(SwitchControlsDelay());
+            StopCoroutine(JumpControlsDelay());
         }
 
         /// <summary>
@@ -431,6 +438,8 @@ namespace Khatim_F2
             gmData.ChangeGameState("Game");
             playerDeathBox.SetActive(true);
             _currGameRoundTime = startingGameRoundTimer;
+            StartCoroutine(SwitchControlsDelay());
+            StartCoroutine(JumpControlsDelay());
         }
 
         /// <summary>
@@ -739,7 +748,9 @@ namespace Khatim_F2
         /// </summary>
         void OnGamePausedEventReceived()
         {
-            gmData.ChangeGameState("Paused");
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+                gmData.ChangeGameState("Paused");
+
             OnClick_HighlightedButton(0);
             pausePanel.SetActive(true);
             hudPanel.SetActive(false);

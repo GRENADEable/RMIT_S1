@@ -198,14 +198,22 @@ namespace Khatim_F2
         /// Reads the Vector 2D Input from the Player for Movement;
         /// </summary>
         /// <param name="context"> Parameter from the new Input System; </param>
-        public void OnMovePlayer(InputAction.CallbackContext context) => _movement = context.ReadValue<Vector2>();
+        public void OnMovePlayer(InputAction.CallbackContext context)
+        {
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+                _movement = context.ReadValue<Vector2>();
+        }
 
         /// <summary>
         /// Tied to new Input System;
         /// Reads the Button Input from the Player for Jumping;
         /// </summary>
         /// <param name="context"> Parameter from the new Input System; </param>
-        public void OnJumpPlayer(InputAction.CallbackContext context) => IsJumping = context.ReadValueAsButton();
+        public void OnJumpPlayer(InputAction.CallbackContext context)
+        {
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+                IsJumping = context.ReadValueAsButton();
+        }
 
         /// <summary>
         /// Tied to new Input System;
@@ -214,7 +222,7 @@ namespace Khatim_F2
         /// <param name="context"> Parameter from the new Input System; </param>
         public void OnPlayerPause(InputAction.CallbackContext context)
         {
-            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+            if (gmData.currState != GameManagerDataMiniGame.GameState.Paused)
             {
                 if (context.started)
                     OnGamePaused?.Invoke();
