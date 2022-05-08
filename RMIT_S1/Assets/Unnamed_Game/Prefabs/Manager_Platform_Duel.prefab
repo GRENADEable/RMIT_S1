@@ -78,6 +78,7 @@ MonoBehaviour:
   endRoundDelayTimer: 2
   minValSwitchControls: 3
   minValJumpControls: 3
+  _intialPlatformScale: {x: 0, y: 0, z: 0}
   _currGameRoundTime: 0
   _switchControlTimer: 0
   _jumpControlTimer: 0

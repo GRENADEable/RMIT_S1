@@ -184,6 +184,7 @@ namespace Khatim_F2
         [Header("Platform")]
         private float _currPlatformRotTime = default;
         private Quaternion _intialPlatformRot = default;
+        [SerializeField] private Vector3 _intialPlatformScale = default;
         private enum PlatformRotateType { Original, RotateX, MinusRotateX, RotateY, MinusRotateY, RotateZ, MinusRotateZ };
         private PlatformRotateType _currPlatformRotateType = PlatformRotateType.RotateY;
         #endregion
@@ -227,6 +228,7 @@ namespace Khatim_F2
             SetRoundTimers();
 
             _intialPlatformRot = platform.transform.rotation;
+            _intialPlatformScale = platform.transform.localScale;
             _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
             _isJumpToggle = true;
 
@@ -255,6 +257,7 @@ namespace Khatim_F2
             {
                 RoundTimer();
                 RotatePlatform();
+                ShrinkPlatform();
             }
 
             if (gmData.currState == GameManagerDataMiniGame.GameState.Starting)
@@ -478,6 +481,12 @@ namespace Khatim_F2
             }
         }
 
+        void ShrinkPlatform()
+        {
+            float shrinkVal = Mathf.InverseLerp(0, startingGameRoundTimer, _currGameRoundTime);
+            platform.transform.localScale = new Vector3(shrinkVal, platform.transform.localScale.y, shrinkVal);
+        }
+
         /// <summary>
         /// Resets the Rotating Platform when round Ends;
         /// </summary>
@@ -488,6 +497,9 @@ namespace Khatim_F2
             {
                 platform.transform.rotation = Quaternion.Lerp(platform.transform.rotation,
                  _intialPlatformRot, platformRoundEndResetSpeed * Time.deltaTime);
+
+                platform.transform.localScale = Vector3.Lerp(platform.transform.localScale,
+                _intialPlatformScale, platformRoundEndResetSpeed * Time.deltaTime);
             }
             else
             {
