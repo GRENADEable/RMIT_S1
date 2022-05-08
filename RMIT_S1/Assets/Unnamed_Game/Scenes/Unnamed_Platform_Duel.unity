@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &35086584 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5981793601935533822, guid: 8df2c1bc4a1d36e4dbcb2b7cb3a1f025, type: 3}
+  m_PrefabInstance: {fileID: 937509296}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &300764757
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,6 +759,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &999954172 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3300967954857050966, guid: 8df2c1bc4a1d36e4dbcb2b7cb3a1f025, type: 3}
+  m_PrefabInstance: {fileID: 937509296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1143364283 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2862829569781193539, guid: 8df2c1bc4a1d36e4dbcb2b7cb3a1f025, type: 3}
@@ -1263,9 +1279,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1927582880}
     - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
+      propertyPath: popupObstacleText
+      value: 
+      objectReference: {fileID: 35086584}
+    - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
       propertyPath: gameRoundTimerText
       value: 
       objectReference: {fileID: 972778672}
+    - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
+      propertyPath: popupObstacleAreaAnim
+      value: 
+      objectReference: {fileID: 999954172}
     - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
       propertyPath: startingRoundTimerText
       value: 

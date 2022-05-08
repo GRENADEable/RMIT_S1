@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -92,19 +90,19 @@ namespace Khatim_F2
         #region Events
         void OnEnable()
         {
-            GameManagerPlatformDuel.OnControlsSwitched += OnControlsSwitchedEventReceived;
+            GameManagerPlatformDuel.OnControlsReversed += OnControlsSwitchedEventReceived;
             GameManagerPlatformDuel.OnControlsJump += OnControlsJumpEventReceived;
         }
 
         void OnDisable()
         {
-            GameManagerPlatformDuel.OnControlsSwitched -= OnControlsSwitchedEventReceived;
+            GameManagerPlatformDuel.OnControlsReversed -= OnControlsSwitchedEventReceived;
             GameManagerPlatformDuel.OnControlsJump -= OnControlsJumpEventReceived;
         }
 
         void OnDestroy()
         {
-            GameManagerPlatformDuel.OnControlsSwitched -= OnControlsSwitchedEventReceived;
+            GameManagerPlatformDuel.OnControlsReversed -= OnControlsSwitchedEventReceived;
             GameManagerPlatformDuel.OnControlsJump -= OnControlsJumpEventReceived;
         }
         #endregion

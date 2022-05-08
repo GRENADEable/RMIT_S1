@@ -28,14 +28,6 @@ namespace Khatim_F2
         #region UI
         [Space, Header("UI")]
         [SerializeField]
-        [Tooltip("Fade panel Animation Component")]
-        private Animator fadeBG = default;
-
-        [SerializeField]
-        [Tooltip("Timer Panel")]
-        private GameObject timerPanel = default;
-
-        [SerializeField]
         [Tooltip("Starting Round Timer Text")]
         private TextMeshProUGUI startingRoundTimerText = default;
 
@@ -44,12 +36,28 @@ namespace Khatim_F2
         private TextMeshProUGUI gameRoundTimerText = default;
 
         [SerializeField]
+        [Tooltip("Popup Obsatcle Text")]
+        private TextMeshProUGUI popupObstacleText = default;
+
+        [SerializeField]
+        [Tooltip("Timer Panel")]
+        private GameObject timerPanel = default;
+
+        [SerializeField]
         [Tooltip("HUD Panel")]
         private GameObject hudPanel = default;
 
         [SerializeField]
         [Tooltip("Player UI GameObject Prefab")]
         private GameObject playerScorePrefab = default;
+
+        [SerializeField]
+        [Tooltip("Fade panel Animation Component")]
+        private Animator fadeBG = default;
+
+        [SerializeField]
+        [Tooltip("Popup GameObject")]
+        private Animator popupObstacleAreaAnim = default;
 
         [SerializeField]
         [Tooltip("Player UI Spawn Pos")]
@@ -67,20 +75,12 @@ namespace Khatim_F2
         private Transform playerSpawnPos = default;
 
         [SerializeField]
-        [Tooltip("Starting Round Time")]
-        private float startingGameRoundTimer = default;
-
-        [SerializeField]
         [Tooltip("Platform Anim Controller")]
         private Animator platformWallsAnim = default;
 
         [SerializeField]
         [Tooltip("Player Death Box Col")]
         private GameObject playerDeathBox = default;
-
-        [SerializeField]
-        [Tooltip("End Round Delay")]
-        private float endRoundDelay = default;
         #endregion
 
         #region Platform
@@ -113,13 +113,24 @@ namespace Khatim_F2
         private float resetPlatformTime = default;
         #endregion
 
+        #region Game Timers
+        [Space, Header("Game Timers")]
+        [SerializeField]
+        [Tooltip("Starting Round Time")]
+        private float startingGameRoundTimer = default;
+
+        [SerializeField]
+        [Tooltip("End Round Delay")]
+        private float endRoundDelayTimer = default;
+        #endregion
+
         #region Events Bool
         public delegate void SendEventsBool(bool isSwitched);
         /// <summary>
         /// Event sent from GameManagerPlatformDuel to PlayerControllerBall Script;
         /// Inverts the Player Controls;
         /// </summary>
-        public static event SendEventsBool OnControlsSwitched;
+        public static event SendEventsBool OnControlsReversed;
 
         /// <summary>
         /// Event sent from GameManagerPlatformDuel to PlayerControllerBall Script;
@@ -132,23 +143,34 @@ namespace Khatim_F2
 
         #region Private Variables
 
+        #region UI
+
+        #endregion
+
         #region Game
         [Header("Game")]
-        private bool _isSwitchingControls;
+        private bool _isSwitchingControls = default;
+        private bool _isJumpToggle = default;
         private List<PlayerControllerBall> _playersBall = new List<PlayerControllerBall>();
         private List<PlayerScore> _playersScore = new List<PlayerScore>();
         public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
         private int _currPlayerNo = default;
         private int _totalPlayerNo = default;
-        private float _currGameRoundTime = default;
         #endregion
 
         #region Platform
         [Header("Platform")]
         private float _currPlatformRotTime = default;
         private Quaternion _intialPlatformRot = default;
-        private enum PlatformRotateType { Original, RotateX, RotateY, RotateZ };
+        private enum PlatformRotateType { Original, RotateX, MinusRotateX, RotateY, MinusRotateY, RotateZ, MinusRotateZ };
         private PlatformRotateType _currPlatformRotateType = PlatformRotateType.RotateY;
+        #endregion
+
+        #region Game Timers
+        [Header("Game Timers")]
+        [SerializeField] private float _currGameRoundTime = default;
+        [SerializeField] private float _switchControlTimer = default;
+        [SerializeField] private float _jumpControlTimer = default;
         #endregion
 
         #endregion
@@ -177,9 +199,11 @@ namespace Khatim_F2
 
         void Start()
         {
-            _currGameRoundTime = startingGameRoundTimer;
+            SetRoundTimers();
+
             _intialPlatformRot = platform.transform.rotation;
-            _currPlatformRotTime = startingPlatformRotatingTimer;
+            _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
+            _isJumpToggle = true;
 
             gmData.ChangeGameState("Intro");
             fadeBG.Play("Fade_In");
@@ -191,12 +215,13 @@ namespace Khatim_F2
         void Update()
         {
             // Testing Control Switch;
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                _isSwitchingControls = !_isSwitchingControls;
-                OnControlsSwitched?.Invoke(_isSwitchingControls);
-                OnControlsJump?.Invoke(!_isSwitchingControls);
-            }
+            //if (Input.GetKeyDown(KeyCode.Q))
+            //{
+            //    _isSwitchingControls = !_isSwitchingControls;
+            //    _isJumpToggle = !_isJumpToggle;
+            //    OnControlsReversed?.Invoke(_isSwitchingControls);
+            //    OnControlsJump?.Invoke(!_isJumpToggle);
+            //}
 
             if (Input.GetKeyDown(KeyCode.T))
                 _currGameRoundTime = 2;
@@ -214,13 +239,21 @@ namespace Khatim_F2
 
         #region My Functions
 
+        #region UI
+        void PopupText(string popupText)
+        {
+            popupObstacleText.text = popupText;
+            popupObstacleAreaAnim.Play("Pop_Obstacle_Anim");
+        }
+        #endregion
+
         #region Game
         /// <summary>
         /// Sets the UI of the player depending on how many players joined;
         /// </summary>
         void SetPlayersUI()
         {
-            int index = 0;
+            int playerIndex = 0;
 
             for (int i = 0; i < _playersBall.Count; i++)
             {
@@ -229,15 +262,13 @@ namespace Khatim_F2
 
                 _playersScore.Add(plyScore.GetComponent<PlayerScore>());
                 _playersScore[i].PlayerName = playerVisData[i].playerName;
-                _playersScore[i].PlayerPointIndex = index;
+                _playersScore[i].PlayerPointIndex = playerIndex;
 
-                index++;
+                playerIndex++;
             }
 
             hudPanel.SetActive(true);
-            gameRoundTimerText.text = startingGameRoundTimer.ToString();
-            _currGameRoundTime = startingGameRoundTimer;
-            platformWallsAnim.Play("Platform_Duel_Wall_Open");
+            platformWallsAnim.Play("Platform_Duel_Wall_Open_Anim");
             _totalPlayerNo = PlayerNo;
             gmData.ChangeGameState("Game");
         }
@@ -256,6 +287,11 @@ namespace Khatim_F2
                 EndRoundWithoutPoint();
             }
 
+            //if (_currGameRoundTime >= _reverseControlOnTimer && _currGameRoundTime <= _reverseControlOnTimer)
+            //    Debug.Log("Reversed Controls");
+
+            //if (_currGameRoundTime <= _reverseControlOffTimer)
+            //    Debug.Log("Normal Controls");
         }
 
         /// <summary>
@@ -292,7 +328,7 @@ namespace Khatim_F2
         /// </summary>
         void CloseWalls()
         {
-            platformWallsAnim.Play("Platform_Duel_Wall_Close");
+            platformWallsAnim.Play("Platform_Duel_Wall_Close_Anim");
             gmData.ChangeGameState("Starting");
             playerDeathBox.SetActive(false);
             StartCoroutine(EndRoundPointDelay());
@@ -303,7 +339,7 @@ namespace Khatim_F2
         /// </summary>
         void OpenWalls()
         {
-            platformWallsAnim.Play("Platform_Duel_Wall_Open");
+            platformWallsAnim.Play("Platform_Duel_Wall_Open_Anim");
             gmData.ChangeGameState("Game");
             playerDeathBox.SetActive(true);
             _currGameRoundTime = startingGameRoundTimer;
@@ -327,11 +363,25 @@ namespace Khatim_F2
                 case PlatformRotateType.RotateX:
                     platform.transform.Rotate(Vector3.right, platformRotSpeed * Time.deltaTime);
                     break;
+
                 case PlatformRotateType.RotateY:
                     platform.transform.Rotate(Vector3.up, platformRotSpeed * Time.deltaTime);
                     break;
+
                 case PlatformRotateType.RotateZ:
                     platform.transform.Rotate(Vector3.forward, platformRotSpeed * Time.deltaTime);
+                    break;
+
+                case PlatformRotateType.MinusRotateX:
+                    platform.transform.Rotate(-Vector3.right, platformRotSpeed * Time.deltaTime);
+                    break;
+
+                case PlatformRotateType.MinusRotateY:
+                    platform.transform.Rotate(-Vector3.up, platformRotSpeed * Time.deltaTime);
+                    break;
+
+                case PlatformRotateType.MinusRotateZ:
+                    platform.transform.Rotate(-Vector3.forward, platformRotSpeed * Time.deltaTime);
                     break;
 
                 case PlatformRotateType.Original:
@@ -374,6 +424,51 @@ namespace Khatim_F2
         }
         #endregion
 
+        #region Game Timers
+        /// <summary>
+        /// Intialises the round timers with the starting values;
+        /// </summary>
+        void SetRoundTimers()
+        {
+            _currGameRoundTime = startingGameRoundTimer;
+            _currPlatformRotTime = startingPlatformRotatingTimer;
+            gameRoundTimerText.text = startingGameRoundTimer.ToString();
+
+            //_reverseControlOnTimer = Random.Range(startingGameRoundTimer / 2, startingGameRoundTimer);
+            //_reverseControlOffTimer = Random.Range(0, startingGameRoundTimer / 2);
+        }
+
+        /// <summary>
+        /// Switches the contorls of the player when the game is running;
+        /// Shows the UI text of when the controls are switched;
+        /// </summary>
+        void SwitchControls()
+        {
+            _isSwitchingControls = !_isSwitchingControls;
+            OnControlsReversed?.Invoke(_isSwitchingControls);
+
+            if (_isSwitchingControls)
+                PopupText("Switched Controls");
+            else
+                PopupText("Normal Controls");
+        }
+
+        /// <summary>
+        /// Enables/Disables the player jump when the game is running;
+        /// Shows the UI text of when the jump is enabled/disabled;
+        /// </summary>
+        void ToggleJumpControl()
+        {
+            _isJumpToggle = !_isJumpToggle;
+            OnControlsJump?.Invoke(_isJumpToggle);
+
+            if (_isJumpToggle)
+                PopupText("Enabled Jump");
+            else
+                PopupText("Disabled Jump");
+        }
+        #endregion
+
         #endregion
 
         #region Coroutines
@@ -394,6 +489,8 @@ namespace Khatim_F2
             SetPlayersUI();
             timerPanel.SetActive(false);
             PlayerInputManager.instance.enabled = false;
+            StartCoroutine(SwitchControlsDelay());
+            StartCoroutine(JumpControlsDelay());
         }
 
         /// <summary>
@@ -403,7 +500,7 @@ namespace Khatim_F2
         /// <returns> Float Delay; </returns>
         IEnumerator EndRoundPointDelay()
         {
-            yield return new WaitForSeconds(endRoundDelay);
+            yield return new WaitForSeconds(endRoundDelayTimer);
 
             for (int i = 0; i < _playersBall.Count; i++)
             {
@@ -424,6 +521,36 @@ namespace Khatim_F2
             _currPlatformRotateType = PlatformRotateType.Original;
             yield return new WaitForSeconds(resetPlatformTime);
             _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
+        }
+
+        /// <summary>
+        /// Switches controls with delay;
+        /// </summary>
+        /// <returns> Float Delay; </returns>
+        IEnumerator SwitchControlsDelay()
+        {
+            _switchControlTimer = Random.Range(0, startingGameRoundTimer);
+            yield return new WaitForSeconds(_switchControlTimer);
+            SwitchControls();
+            _switchControlTimer = Random.Range(0, startingGameRoundTimer / 2);
+            yield return new WaitForSeconds(_switchControlTimer);
+            SwitchControls();
+            StartCoroutine(SwitchControlsDelay());
+        }
+
+        /// <summary>
+        /// Toggles Jump controls with delay;
+        /// </summary>
+        /// <returns> Float Delay; </returns>
+        IEnumerator JumpControlsDelay()
+        {
+            _jumpControlTimer = Random.Range(0, startingGameRoundTimer / 2);
+            yield return new WaitForSeconds(_jumpControlTimer);
+            ToggleJumpControl();
+            _jumpControlTimer = Random.Range(0, startingGameRoundTimer / 2);
+            yield return new WaitForSeconds(_jumpControlTimer);
+            ToggleJumpControl();
+            StartCoroutine(JumpControlsDelay());
         }
         #endregion
 
@@ -461,9 +588,9 @@ namespace Khatim_F2
 
             if (PlayerNo <= 1)
             {
-                //StartCoroutine(EndRoundPointDelay());
                 PlayerNo = _totalPlayerNo;
                 EndRoundWithPoint();
+                //StartCoroutine(SwitchControlsDelay());
             }
         }
         #endregion
