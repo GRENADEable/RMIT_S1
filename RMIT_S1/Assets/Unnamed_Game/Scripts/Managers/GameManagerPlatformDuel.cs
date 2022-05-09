@@ -80,6 +80,10 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player Score Increment")]
         private int playerScoreIncrement = 1;
+
+        [SerializeField]
+        [Tooltip("Obstacle Image Component")]
+        private Image obstacleImg = default;
         #endregion
 
         #region Game
@@ -192,6 +196,9 @@ namespace Khatim_F2
         #region Game Timers
         [Header("Game Timers")]
         [SerializeField] private float _currGameRoundTime = default;
+        [SerializeField] private float _currSwitchControlTimer = default;
+        [SerializeField] private float _currJumpControlTimer = default;
+
         [SerializeField] private float _switchControlTimer = default;
         [SerializeField] private float _jumpControlTimer = default;
         #endregion
@@ -427,6 +434,8 @@ namespace Khatim_F2
             StartCoroutine(EndRoundPointDelay());
             StopCoroutine(SwitchControlsDelay());
             StopCoroutine(JumpControlsDelay());
+            SwitchControls(false);
+            JumpControls(false);
         }
 
         /// <summary>
@@ -548,27 +557,35 @@ namespace Khatim_F2
         /// Switches the contorls of the player when the game is running;
         /// Shows the UI text of when the controls are switched;
         /// </summary>
-        void SwitchControls()
+        void SwitchControls(bool isSwitching)
         {
-            _isSwitchingControls = !_isSwitchingControls;
-            OnControlsReversed?.Invoke(_isSwitchingControls);
+            //_isSwitchingControls = !_isSwitchingControls;
+            //OnControlsReversed?.Invoke(_isSwitchingControls);
+            OnControlsReversed?.Invoke(isSwitching);
 
-            if (_isSwitchingControls)
+            if (isSwitching)
+            {
                 PopupText("Switched Controls");
+                obstacleImg.gameObject.SetActive(true);
+            }
             else
+            {
+                obstacleImg.gameObject.SetActive(false);
                 PopupText("Normal Controls");
+            }
         }
 
         /// <summary>
         /// Enables/Disables the player jump when the game is running;
         /// Shows the UI text of when the jump is enabled/disabled;
         /// </summary>
-        void ToggleJumpControl()
+        void JumpControls(bool isJumping)
         {
-            _isJumpToggle = !_isJumpToggle;
-            OnControlsJump?.Invoke(_isJumpToggle);
+            //_isJumpToggle = !_isJumpToggle;
+            //OnControlsJump?.Invoke(_isJumpToggle);
+            OnControlsJump?.Invoke(isJumping);
 
-            if (_isJumpToggle)
+            if (isJumping)
                 PopupText("Enabled Jump");
             else
                 PopupText("Disabled Jump");
@@ -639,10 +656,10 @@ namespace Khatim_F2
         {
             _switchControlTimer = Random.Range(minValSwitchControls, startingGameRoundTimer);
             yield return new WaitForSeconds(_switchControlTimer);
-            SwitchControls();
+            SwitchControls(true);
             _switchControlTimer = Random.Range(minValSwitchControls, startingGameRoundTimer / 2);
             yield return new WaitForSeconds(_switchControlTimer);
-            SwitchControls();
+            SwitchControls(false);
             StartCoroutine(SwitchControlsDelay());
         }
 
@@ -654,10 +671,10 @@ namespace Khatim_F2
         {
             _jumpControlTimer = Random.Range(minValJumpControls, startingGameRoundTimer / 2);
             yield return new WaitForSeconds(_jumpControlTimer);
-            ToggleJumpControl();
+            JumpControls(true);
             _jumpControlTimer = Random.Range(minValJumpControls, startingGameRoundTimer / 2);
             yield return new WaitForSeconds(_jumpControlTimer);
-            ToggleJumpControl();
+            JumpControls(false);
             StartCoroutine(JumpControlsDelay());
         }
         #endregion
@@ -738,7 +755,6 @@ namespace Khatim_F2
             {
                 PlayerNo = _totalPlayerNo;
                 EndRoundWithPoint();
-                //StartCoroutine(SwitchControlsDelay());
             }
         }
 

@@ -73,9 +73,9 @@ namespace Khatim_F2
         private bool IsJumping { get => _isJumping; set => _isJumping = value; }
         private bool _isJumping = default;
         private bool CanJump { get => _canJump; set => _canJump = value; }
-        private bool _canJump = default;
+        [SerializeField] private bool _canJump = default;
         private bool IsSwitchedControls { get => _isSwitchedControls; set => _isSwitchedControls = value; }
-        private bool _isSwitchedControls = default;
+        [SerializeField] private bool _isSwitchedControls = default;
         #endregion
 
         #region Player Components
@@ -105,6 +105,9 @@ namespace Khatim_F2
         {
             GameManagerPlatformDuel.OnControlsReversed -= OnControlsSwitchedEventReceived;
             GameManagerPlatformDuel.OnControlsJump -= OnControlsJumpEventReceived;
+
+            IsSwitchedControls = false;
+            CanJump = true;
         }
 
         void OnDestroy()

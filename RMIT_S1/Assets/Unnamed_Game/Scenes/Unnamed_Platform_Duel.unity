@@ -712,6 +712,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &937509304 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4848374863946563993, guid: 8df2c1bc4a1d36e4dbcb2b7cb3a1f025, type: 3}
+  m_PrefabInstance: {fileID: 937509296}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &966910658
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,6 +1347,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 937509299}
     - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
+      propertyPath: obstacleImg
+      value: 
+      objectReference: {fileID: 937509304}
+    - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
       propertyPath: playerDeathBox
       value: 
       objectReference: {fileID: 579803472}
@@ -1347,6 +1362,10 @@ PrefabInstance:
       propertyPath: playerSpawnPos
       value: 
       objectReference: {fileID: 1777615140}
+    - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
+      propertyPath: isCursorDisabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -5357065951988699166, guid: 51db5cbbf6ae888409cdc92afbabf21e, type: 3}
       propertyPath: platformWallsAnim
       value: 
