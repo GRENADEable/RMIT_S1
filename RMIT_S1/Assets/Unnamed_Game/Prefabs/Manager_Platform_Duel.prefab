@@ -54,20 +54,31 @@ MonoBehaviour:
   startingRoundTimerText: {fileID: 0}
   gameRoundTimerText: {fileID: 0}
   popupObstacleText: {fileID: 0}
-  menuButtons: []
+  menuButtons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  fadeBG: {fileID: 0}
+  popupObstacleAreaAnim: {fileID: 0}
+  switchedControlsImg: {fileID: 0}
+  jumpControlsImg: {fileID: 0}
+  obstacleSprites:
+  - {fileID: 21300000, guid: 00f6930851cafa9419c656aed6dbf52f, type: 3}
+  - {fileID: 21300000, guid: 8f7fb78e4d2f7d649bb072e0cef8dc8b, type: 3}
+  - {fileID: 21300000, guid: f11c5530740eb104aa381fee36f9f3f1, type: 3}
   firstSelectedButtons:
   - {fileID: 0}
   timerPanel: {fileID: 0}
   hudPanel: {fileID: 0}
   pausePanel: {fileID: 0}
   playerScorePrefab: {fileID: 8649101396995591117, guid: 7538344c2b0a8f341bd9d6376bd5af22, type: 3}
-  fadeBG: {fileID: 0}
-  popupObstacleAreaAnim: {fileID: 0}
   playerScorePos: {fileID: 0}
-  playerScoreIncrement: 1
   playerSpawnPos: {fileID: 0}
   platformWallsAnim: {fileID: 0}
   playerDeathBox: {fileID: 0}
+  playerScoreIncrement: 1
+  playerCountToStartMatch: 2
   platform: {fileID: 0}
   platformRotSpeed: 15
   platformRoundEndResetSpeed: 3.5
@@ -76,12 +87,9 @@ MonoBehaviour:
   resetPlatformTime: 1
   startingGameRoundTimer: 60
   endRoundDelayTimer: 2
-  minValSwitchControls: 3
-  minValJumpControls: 3
-  _intialPlatformScale: {x: 0, y: 0, z: 0}
+  _currObstacleType: 3
+  _isObstacleEventSent: 0
   _currGameRoundTime: 0
-  _switchControlTimer: 0
-  _jumpControlTimer: 0
 --- !u!114 &6142353415333904840
 MonoBehaviour:
   m_ObjectHideFlags: 0
