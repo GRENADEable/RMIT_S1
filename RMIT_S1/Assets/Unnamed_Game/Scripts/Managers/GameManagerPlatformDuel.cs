@@ -215,12 +215,12 @@ namespace Khatim_F2
 
         #region Game Timers
         [Header("Game Timers")]
-        [SerializeField] private ObstacleType _currObstacleType = ObstacleType.None;
+        private ObstacleType _currObstacleType = ObstacleType.None;
         private enum ObstacleType { All, DisabledJump, SwitchedControls, None };
         private bool _isObstacleEventSent = default;
 
-        [SerializeField] private float _currGameRoundTime = default;
-        [SerializeField] private float _currControlsChangeTimer = default;
+        private float _currGameRoundTime = default;
+        private float _currControlsChangeTimer = default;
         #endregion
 
         #endregion

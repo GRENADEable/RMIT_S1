@@ -50,7 +50,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f16b93a6420b60b4fa3cedcb90d54019, type: 2}
   - {fileID: 11400000, guid: bb83c181de33fdb4cac972629a275a66, type: 2}
   - {fileID: 11400000, guid: 348f495ea9bd02845bff43104565f9af, type: 2}
-  isCursorDisabled: 0
+  isCursorDisabled: 1
   startingRoundTimerText: {fileID: 0}
   gameRoundTimerText: {fileID: 0}
   popupObstacleText: {fileID: 0}
@@ -89,9 +89,6 @@ MonoBehaviour:
   resetPlatformTime: 1
   startingGameRoundTimer: 60
   endRoundDelayTimer: 2
-  _currObstacleType: 3
-  _currGameRoundTime: 0
-  _currControlsChangeTimer: 0
 --- !u!114 &6142353415333904840
 MonoBehaviour:
   m_ObjectHideFlags: 0
