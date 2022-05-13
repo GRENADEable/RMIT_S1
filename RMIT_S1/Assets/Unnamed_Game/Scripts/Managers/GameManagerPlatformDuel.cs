@@ -43,6 +43,10 @@ namespace Khatim_F2
         [Tooltip("Popup Obsatcle Text")]
         private TextMeshProUGUI popupObstacleText = default;
 
+        [SerializeField]
+        [Tooltip("Switch Controls Text")]
+        private TextMeshProUGUI switchControlsText = default;
+
         [Tooltip("Menu Button in an Array that will be used to disable them when clicking on other Buttons")]
         [SerializeField]
         private Button[] menuButtons;
@@ -88,6 +92,10 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player UI GameObject Prefab")]
         private GameObject playerScorePrefab = default;
+
+        [SerializeField]
+        [Tooltip("Switch Controls Panel")]
+        private GameObject switchControlsPanel = default;
         #endregion
 
         #region Transforms
@@ -158,7 +166,7 @@ namespace Khatim_F2
         private float startingGameRoundTimer = default;
 
         [SerializeField]
-        [Tooltip("End Round Delay")]
+        [Tooltip("End Round Timer")]
         private float endRoundDelayTimer = default;
         #endregion
 
@@ -209,9 +217,10 @@ namespace Khatim_F2
         [Header("Game Timers")]
         [SerializeField] private ObstacleType _currObstacleType = ObstacleType.None;
         private enum ObstacleType { All, DisabledJump, SwitchedControls, None };
-        [SerializeField] private bool _isObstacleEventSent = default;
+        private bool _isObstacleEventSent = default;
 
         [SerializeField] private float _currGameRoundTime = default;
+        [SerializeField] private float _currControlsChangeTimer = default;
         #endregion
 
         #endregion
@@ -259,11 +268,7 @@ namespace Khatim_F2
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Q))
-            {
-                _currObstacleType = GetRandomEnum<ObstacleType>();
-                PopupText("Controls Changed");
-                _isObstacleEventSent = true;
-            }
+                ChangeControls();
 
             if (Input.GetKeyDown(KeyCode.T))
                 _currGameRoundTime = 2;
@@ -434,11 +439,9 @@ namespace Khatim_F2
             platformWallsAnim.Play("Platform_Duel_Wall_Close_Anim");
             gmData.ChangeGameState("Starting");
             playerDeathBox.SetActive(false);
+            jumpControlsImg.sprite = obstacleSprites[1];
+            switchedControlsImg.gameObject.SetActive(false);
             StartCoroutine(EndRoundPointDelay());
-            //StopCoroutine(SwitchControlsDelay());
-            //StopCoroutine(JumpControlsDelay());
-            //SwitchControls(false);
-            //JumpControls(false);
         }
 
         /// <summary>
@@ -450,8 +453,6 @@ namespace Khatim_F2
             gmData.ChangeGameState("Game");
             playerDeathBox.SetActive(true);
             _currGameRoundTime = startingGameRoundTimer;
-            //StartCoroutine(SwitchControlsDelay());
-            //StartCoroutine(JumpControlsDelay());
         }
 
         /// <summary>
@@ -550,7 +551,19 @@ namespace Khatim_F2
         {
             _currGameRoundTime = startingGameRoundTimer;
             _currPlatformRotTime = startingPlatformRotatingTimer;
+            _currControlsChangeTimer = Random.Range(10f, startingGameRoundTimer / 2);
             gameRoundTimerText.text = startingGameRoundTimer.ToString();
+        }
+
+        /// <summary>
+        /// Changes the controls after the timer ends;
+        /// </summary>
+        void ChangeControls()
+        {
+            _currObstacleType = GetRandomEnum<ObstacleType>();
+            _currControlsChangeTimer = Random.Range(10f, startingGameRoundTimer / 2);
+            PopupText("Controls Changed");
+            _isObstacleEventSent = true;
         }
 
         /// <summary>
@@ -593,8 +606,23 @@ namespace Khatim_F2
             }
         }
 
+        /// <summary>
+        /// Manages the obstacles of this match such as disabled jump and switched controls;
+        /// </summary>
         void ObstacleManager()
         {
+            _currControlsChangeTimer -= Time.deltaTime;
+            switchControlsText.text = _currControlsChangeTimer.ToString("f1");
+
+            if (_currControlsChangeTimer <= 3f)
+                switchControlsPanel.SetActive(true);
+
+            if (_currControlsChangeTimer <= 0f)
+            {
+                switchControlsPanel.SetActive(false);
+                ChangeControls();
+            }
+
             switch (_currObstacleType)
             {
                 case ObstacleType.All:

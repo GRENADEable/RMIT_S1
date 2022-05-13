@@ -50,10 +50,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f16b93a6420b60b4fa3cedcb90d54019, type: 2}
   - {fileID: 11400000, guid: bb83c181de33fdb4cac972629a275a66, type: 2}
   - {fileID: 11400000, guid: 348f495ea9bd02845bff43104565f9af, type: 2}
-  isCursorDisabled: 1
+  isCursorDisabled: 0
   startingRoundTimerText: {fileID: 0}
   gameRoundTimerText: {fileID: 0}
   popupObstacleText: {fileID: 0}
+  switchControlsText: {fileID: 0}
   menuButtons:
   - {fileID: 0}
   - {fileID: 0}
@@ -73,6 +74,7 @@ MonoBehaviour:
   hudPanel: {fileID: 0}
   pausePanel: {fileID: 0}
   playerScorePrefab: {fileID: 8649101396995591117, guid: 7538344c2b0a8f341bd9d6376bd5af22, type: 3}
+  switchControlsPanel: {fileID: 0}
   playerScorePos: {fileID: 0}
   playerSpawnPos: {fileID: 0}
   platformWallsAnim: {fileID: 0}
@@ -88,8 +90,8 @@ MonoBehaviour:
   startingGameRoundTimer: 60
   endRoundDelayTimer: 2
   _currObstacleType: 3
-  _isObstacleEventSent: 0
   _currGameRoundTime: 0
+  _currControlsChangeTimer: 0
 --- !u!114 &6142353415333904840
 MonoBehaviour:
   m_ObjectHideFlags: 0
