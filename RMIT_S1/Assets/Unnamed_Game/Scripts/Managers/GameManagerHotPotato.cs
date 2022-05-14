@@ -58,6 +58,18 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Popup GameObject")]
         private Animator popupObstacleAreaAnim = default;
+
+        [SerializeField]
+        [Tooltip("Jump Controls Image Component")]
+        private Image jumpControlsImg = default;
+
+        [SerializeField]
+        [Tooltip("Speed Controls Image Component")]
+        private Image speedControlsImg = default;
+
+        [SerializeField]
+        [Tooltip("Obstacle Sprites")]
+        private Sprite[] obstacleSprites = default;
         #endregion
 
         #region GameObjects
@@ -77,9 +89,9 @@ namespace Khatim_F2
         [Tooltip("Pause Panel")]
         private GameObject pausePanel = default;
 
-        [SerializeField]
-        [Tooltip("Player UI GameObject Prefab")]
-        private GameObject playerScorePrefab = default;
+        //[SerializeField]
+        //[Tooltip("Player UI GameObject Prefab")]
+        //private GameObject playerScorePrefab = default;
 
         [SerializeField]
         [Tooltip("Switch Controls Panel")]
@@ -87,9 +99,9 @@ namespace Khatim_F2
         #endregion
 
         #region Transforms
-        [SerializeField]
-        [Tooltip("Player Score Spawn Pos")]
-        private Transform playerScorePos = default;
+        //[SerializeField]
+        //[Tooltip("Player Score Spawn Pos")]
+        //private Transform playerScorePos = default;
         #endregion
 
         #endregion
@@ -99,14 +111,6 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player Spawn Pos")]
         private GameObject playerSpawnPos = default;
-
-        [SerializeField]
-        [Tooltip("Player Death Box Col")]
-        private GameObject playerDeathBox = default;
-
-        [SerializeField]
-        [Tooltip("Player Score Increment")]
-        private int playerScoreIncrement = 1;
 
         [SerializeField]
         [Tooltip("Intial Starting Players")]
@@ -122,48 +126,53 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Starting Round Time")]
         private float startingGameRoundTimer = default;
+        #endregion
 
-        [SerializeField]
-        [Tooltip("End Round Timer")]
-        private float endRoundDelayTimer = default;
+        #region Events Bool
+        public delegate void SendEventsBool(bool isSwitched);
+
+        /// <summary>
+        /// Event sent from GameManagerPlatformDuel to PlayerControllerCapsule Script;
+        /// Stops the player from Jumping;
+        /// </summary>
+        public static event SendEventsBool OnControlsJump;
+
+        /// <summary>
+        /// Event sent from GameManagerPlatformDuel to PlayerControllerCapsule Script;
+        /// Changes the player's speed;
+        /// </summary>
+        public static event SendEventsBool OnControlsSpeed;
+        #endregion
+
+        #region Events Int
+        public delegate void SendEventsInt(int bombIndex);
+
+        public static event SendEventsInt OnBombChoose;
         #endregion
 
         #endregion
 
         #region Private Variables
 
-        #region UI
-
-        #endregion
-
         #region Game
         [Header("Game")]
-        private List<PlayerControllerCapsule> _playersCapsule = new List<PlayerControllerCapsule>();
-        [SerializeField] private List<CharacterController> _playersCharController = new List<CharacterController>();
+        [SerializeField] private List<PlayerControllerCapsule> _playersCapsule = new List<PlayerControllerCapsule>();
+        private List<CharacterController> _playersCharController = new List<CharacterController>();
         [SerializeField] private List<CapsuleCollider> _playersCapsuleCol = new List<CapsuleCollider>();
-        private List<PlayerScore> _playersScore = new List<PlayerScore>();
-        [SerializeField] private List<PlayerSpawns> _playerSpawns = new List<PlayerSpawns>();
-        [SerializeField] private int spawnIndex = default;
+        //private List<PlayerScore> _playersScore = new List<PlayerScore>();
+        private List<PlayerSpawns> _playerSpawns = new List<PlayerSpawns>();
+        private int spawnIndex = default;
 
         public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
-        private int _currPlayerNo = default;
-        private int _totalPlayerNo = default;
-        #endregion
-
-        #region Platform
-        [Header("Platform")]
-        private float _currPlatformRotTime = default;
-        private Quaternion _intialPlatformRot = default;
-        private Vector3 _intialPlatformScale = default;
-
-        private enum PlatformRotateType { Original, RotateX, MinusRotateX, RotateY, MinusRotateY, RotateZ, MinusRotateZ };
-        private PlatformRotateType _currPlatformRotateType = PlatformRotateType.RotateY;
+        [SerializeField] private int _currPlayerNo = default;
+        //[SerializeField] private int _totalPlayerNo = default;
+        [SerializeField] private int _currBombPlayerIndex = default;
         #endregion
 
         #region Game Timers
         [Header("Game Timers")]
         private ObstacleType _currObstacleType = ObstacleType.None;
-        private enum ObstacleType { All, DisabledJump, SwitchedControls, None };
+        private enum ObstacleType { All, DisabledJump, SuperSpeed, None };
         private bool _isObstacleEventSent = default;
 
         [SerializeField] private float _currGameRoundTime = default;
@@ -178,22 +187,25 @@ namespace Khatim_F2
         void OnEnable()
         {
             PlayerControllerCapsule.OnPlayerIntialised += OnPlayerIntialisedEventReceived;
-            PlayerControllerCapsule.OnPlayerFall += OnPlayerFallEventReceived;
+            //PlayerControllerCapsule.OnPlayerFall += OnPlayerFallEventReceived;
             PlayerControllerCapsule.OnGamePaused += OnGamePausedEventReceived;
+            PlayerControllerCapsule.OnPlayerPassBomb += OnPlayerPassBombEventReceived;
         }
 
         void OnDisable()
         {
             PlayerControllerCapsule.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
-            PlayerControllerCapsule.OnPlayerFall -= OnPlayerFallEventReceived;
+            //PlayerControllerCapsule.OnPlayerFall -= OnPlayerFallEventReceived;
             PlayerControllerCapsule.OnGamePaused -= OnGamePausedEventReceived;
+            PlayerControllerCapsule.OnPlayerPassBomb -= OnPlayerPassBombEventReceived;
         }
 
         void OnDestroy()
         {
             PlayerControllerCapsule.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
-            PlayerControllerCapsule.OnPlayerFall -= OnPlayerFallEventReceived;
+            //PlayerControllerCapsule.OnPlayerFall -= OnPlayerFallEventReceived;
             PlayerControllerCapsule.OnGamePaused -= OnGamePausedEventReceived;
+            PlayerControllerCapsule.OnPlayerPassBomb -= OnPlayerPassBombEventReceived;
         }
         #endregion
 
@@ -201,8 +213,6 @@ namespace Khatim_F2
         {
             SetRoundTimers();
             GetPlayerSpawns();
-
-            _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
 
             gmData.ChangeGameState("Intro");
             fadeBG.Play("Fade_In");
@@ -227,6 +237,29 @@ namespace Khatim_F2
         #region My Functions
 
         #region UI
+        /// <summary>
+        /// Sets the UI of the player depending on how many players joined;
+        /// </summary>
+        //void SetPlayersUI()
+        //{
+        //    int playerIndex = 0;
+
+        //    for (int i = 0; i < _playersCapsule.Count; i++)
+        //    {
+        //        GameObject plyScore = Instantiate(playerScorePrefab, playerScorePos.position, Quaternion.identity, playerScorePos);
+        //        plyScore.name = playerVisData[i].playerName;
+
+        //        _playersScore.Add(plyScore.GetComponent<PlayerScore>());
+        //        _playersScore[i].PlayerName = playerVisData[i].playerName;
+        //        _playersScore[i].PlayerPointIndex = playerIndex;
+
+        //        playerIndex++;
+        //    }
+
+        //    hudPanel.SetActive(true);
+        //    _totalPlayerNo = PlayerNo;
+        //}
+
         /// <summary>
         /// Shows a popup Text with a parameter string;
         /// </summary>
@@ -301,29 +334,17 @@ namespace Khatim_F2
 
         #region Game
         /// <summary>
-        /// Sets the UI of the player depending on how many players joined;
+        /// Randomly chooses the player that will hold the bomb;
         /// </summary>
-        void SetPlayersUI()
+        void ChooseBombPlayer()
         {
-            int playerIndex = 0;
-
-            for (int i = 0; i < _playersCapsule.Count; i++)
-            {
-                GameObject plyScore = Instantiate(playerScorePrefab, playerScorePos.position, Quaternion.identity, playerScorePos);
-                plyScore.name = playerVisData[i].playerName;
-
-                _playersScore.Add(plyScore.GetComponent<PlayerScore>());
-                _playersScore[i].PlayerName = playerVisData[i].playerName;
-                _playersScore[i].PlayerPointIndex = playerIndex;
-
-                playerIndex++;
-            }
-
-            hudPanel.SetActive(true);
-            _totalPlayerNo = PlayerNo;
-            gmData.ChangeGameState("Game");
+            _currBombPlayerIndex = Random.Range(0, _playersCapsule.Count);
+            OnBombChoose?.Invoke(_currBombPlayerIndex);
         }
 
+        /// <summary>
+        /// Gets all teh child spawnpoints and adds them to the list;
+        /// </summary>
         void GetPlayerSpawns()
         {
             PlayerSpawns[] playerSpawns;
@@ -333,28 +354,34 @@ namespace Khatim_F2
                 _playerSpawns.Add(playerSpawns[i]);
         }
 
+        /// <summary>
+        /// Eliminates the current player that is holding the bomb;
+        /// </summary>
+        void EliminatePlayer()
+        {
+            PopupText($"Player {_currBombPlayerIndex + 1} Elimnated");
+
+            _playersCapsule[_currBombPlayerIndex].gameObject.SetActive(false);
+            _playersCapsule.RemoveAt(_currBombPlayerIndex);
+
+            gmData.ChangeGameState("Starting");
+
+            //_totalPlayerNo--;
+            PlayerNo--;
+
+            StartCoroutine(ContinueMatchDelay());
+        }
+
+        /// <summary>
+        /// Sets the random spawnpoints of the player
+        /// </summary>
+        /// <returns> Returns Transform; </returns>
         Transform SetPlayerSpawns()
         {
             spawnIndex = Random.Range(0, _playerSpawns.Count);
             return _playerSpawns[spawnIndex].transform;
         }
 
-        /// <summary>
-        /// Round Timer and also updates the UI for it;
-        /// </summary>
-        void RoundTimer()
-        {
-            _currGameRoundTime -= Time.deltaTime;
-            gameRoundTimerText.text = _currGameRoundTime.ToString("f1");
-
-            if (_currGameRoundTime <= 0)
-            {
-                gmData.ChangeGameState("Starting");
-            }
-        }
-        #endregion
-
-        #region Platform
         /// <summary>
         /// Chooses a Random Enum Type;
         /// </summary>
@@ -366,6 +393,7 @@ namespace Khatim_F2
             T V = (T)A.GetValue(UnityEngine.Random.Range(0, A.Length));
             return V;
         }
+
         #endregion
 
         #region Game Timers
@@ -380,14 +408,65 @@ namespace Khatim_F2
         }
 
         /// <summary>
-        /// Changes the controls after the timer ends;
+        /// Round Timer and also updates the UI for it;
         /// </summary>
-        void ChangeControls()
+        void RoundTimer()
         {
-            _currObstacleType = GetRandomEnum<ObstacleType>();
-            _currControlsChangeTimer = Random.Range(10f, startingGameRoundTimer / 2);
-            PopupText("Controls Changed");
-            _isObstacleEventSent = true;
+            _currGameRoundTime -= Time.deltaTime;
+            gameRoundTimerText.text = _currGameRoundTime.ToString("f1");
+
+            if (_currGameRoundTime <= 0)
+            {
+                if (PlayerNo > 1)
+                {
+                    SetRoundTimers();
+                    EliminatePlayer();
+                    gmData.ChangeGameState("Starting");
+                    Debug.Log("Round Ended");
+                }
+            }
+        }
+        #endregion
+
+        #region Game Obstacles
+        /// <summary>
+        /// Enables/Disables the player jump when the game is running;
+        /// Shows the UI text of when the jump is enabled/disabled;
+        /// </summary>
+        void JumpControls(bool isJumping)
+        {
+            OnControlsJump?.Invoke(isJumping);
+
+            if (isJumping)
+            {
+                jumpControlsImg.sprite = obstacleSprites[0];
+                Debug.Log("Enabled Jump");
+            }
+            else
+            {
+                jumpControlsImg.sprite = obstacleSprites[1];
+                Debug.Log("Disabled Jump");
+            }
+        }
+
+        /// <summary>
+        /// Enables/Disables the player jump when the game is running;
+        /// Shows the UI text of when the jump is enabled/disabled;
+        /// </summary>
+        void SpeedyControls(bool isSpeeding)
+        {
+            OnControlsSpeed?.Invoke(isSpeeding);
+
+            if (isSpeeding)
+            {
+                speedControlsImg.sprite = obstacleSprites[2];
+                Debug.Log("Enabled Speeding");
+            }
+            else
+            {
+                speedControlsImg.sprite = obstacleSprites[3];
+                Debug.Log("Disabled Speeding");
+            }
         }
 
         /// <summary>
@@ -410,24 +489,55 @@ namespace Khatim_F2
             switch (_currObstacleType)
             {
                 case ObstacleType.All:
-
+                    if (_isObstacleEventSent)
+                    {
+                        _isObstacleEventSent = false;
+                        JumpControls(false);
+                        SpeedyControls(true);
+                    }
                     break;
 
                 case ObstacleType.DisabledJump:
-
+                    if (_isObstacleEventSent)
+                    {
+                        _isObstacleEventSent = false;
+                        JumpControls(false);
+                        SpeedyControls(false);
+                    }
                     break;
 
-                case ObstacleType.SwitchedControls:
-
+                case ObstacleType.SuperSpeed:
+                    if (_isObstacleEventSent)
+                    {
+                        _isObstacleEventSent = false;
+                        JumpControls(true);
+                        SpeedyControls(true);
+                    }
                     break;
 
                 case ObstacleType.None:
-
+                    if (_isObstacleEventSent)
+                    {
+                        _isObstacleEventSent = false;
+                        JumpControls(true);
+                        SpeedyControls(false);
+                    }
                     break;
 
                 default:
                     break;
             }
+        }
+
+        /// <summary>
+        /// Changes the controls after the timer ends;
+        /// </summary>
+        void ChangeControls()
+        {
+            _currObstacleType = GetRandomEnum<ObstacleType>();
+            _currControlsChangeTimer = Random.Range(10f, startingGameRoundTimer / 2);
+            PopupText("Controls Changed");
+            _isObstacleEventSent = true;
         }
         #endregion
 
@@ -450,27 +560,39 @@ namespace Khatim_F2
             yield return new WaitForSeconds(1f);
             startingRoundTimerText.text = "1";
             yield return new WaitForSeconds(1f);
-            SetPlayersUI();
+            //SetPlayersUI();
+            ChooseBombPlayer();
             timerPanel.SetActive(false);
+            hudPanel.SetActive(true);
             PlayerInputManager.instance.enabled = false;
+            gmData.ChangeGameState("Game");
         }
 
         /// <summary>
-        /// Ends one round with a Delay;
-        /// Resets the state game back to the initial state;
+        /// Continue match with a Delay;
+        /// Continue counter, switches UI Panels and disables more players to join the match after counter is ended;
         /// </summary>
         /// <returns> Float Delay; </returns>
-        IEnumerator EndRoundPointDelay()
+        IEnumerator ContinueMatchDelay()
         {
-            yield return new WaitForSeconds(endRoundDelayTimer);
-
-            for (int i = 0; i < _playersCapsule.Count; i++)
+            if (PlayerNo > 1)
             {
-                //_playersBall[i].transform.position = playerSpawnPos.position;
-                _playersCapsule[i].gameObject.SetActive(true);
+                timerPanel.SetActive(true);
+                startingRoundTimerText.text = "3";
+                yield return new WaitForSeconds(1f);
+                startingRoundTimerText.text = "2";
+                yield return new WaitForSeconds(1f);
+                startingRoundTimerText.text = "1";
+                yield return new WaitForSeconds(1f);
+                ChooseBombPlayer();
+                timerPanel.SetActive(false);
+                gmData.ChangeGameState("Game");
             }
-
-            gmData.ChangeGameState("Game");
+            else
+            {
+                gmData.ChangeGameState("End");
+                Debug.Log("Match Ended");
+            }
         }
         #endregion
 
@@ -548,16 +670,16 @@ namespace Khatim_F2
         /// Disables the Player GameObject;
         /// </summary>
         /// <param name="index"> Player GameObject affected according to the Index received; </param>
-        void OnPlayerFallEventReceived(int index)
-        {
-            _playersCapsule[index].gameObject.SetActive(false);
-            PlayerNo--;
+        //void OnPlayerFallEventReceived(int index)
+        //{
+        //    _playersCapsule[index].gameObject.SetActive(false);
+        //    PlayerNo--;
 
-            if (PlayerNo <= 1)
-            {
-                PlayerNo = _totalPlayerNo;
-            }
-        }
+        //    if (PlayerNo <= 1)
+        //    {
+        //        PlayerNo = _totalPlayerNo;
+        //    }
+        //}
 
         /// <summary>
         /// Subbed to Event from PlayerControllerBall Script;
@@ -573,6 +695,13 @@ namespace Khatim_F2
             hudPanel.SetActive(false);
             gmData.EnableCursor();
             gmData.TogglePause(true);
+        }
+
+        void OnPlayerPassBombEventReceived(int index)
+        {
+            _currBombPlayerIndex = index;
+            _playersCapsule[index].PlayerBomber = true;
+            _playersCapsuleCol[index].enabled = true;
         }
         #endregion
     }

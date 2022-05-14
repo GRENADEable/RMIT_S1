@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,6 +35,13 @@ namespace Khatim_F2
         private float jumpPower = 2f;
         #endregion
 
+        #region Bomber Variables
+        [Space, Header("Bomber Variables")]
+        [SerializeField]
+        [Tooltip("Self Bomber flag disable delay")]
+        private float selfBomberFlagDelay = default;
+        #endregion
+
         #region Player Grounding
         [Space, Header("Ground Check")]
         [SerializeField]
@@ -61,11 +70,13 @@ namespace Khatim_F2
         public static event SendEventsScript OnPlayerIntialised;
 
         public delegate void SendEventsInt(int index);
-        /// <summary>
-        /// Event sent from PlayerControllerBall to GameManagerPlatformDuel Script;
-        /// Sends PlayerIndex to disable the GameObject when Dead;
-        /// </summary>
-        public static event SendEventsInt OnPlayerFall;
+        ///// <summary>
+        ///// Event sent from PlayerControllerBall to GameManagerPlatformDuel Script;
+        ///// Sends PlayerIndex to disable the GameObject when Dead;
+        ///// </summary>
+        //public static event SendEventsInt OnPlayerFall;
+
+        public static event SendEventsInt OnPlayerPassBomb;
 
         public delegate void SendEvents();
         /// <summary>
@@ -86,23 +97,23 @@ namespace Khatim_F2
         [SerializeField] private bool _isJumping = default;
         private Vector3 _vel = default;
         [SerializeField] private float _currSpeed = default;
-        //private bool CanJump { get => _canJump; set => _canJump = value; }
-        //[SerializeField] private bool _canJump = default;
-        //private bool IsSwitchedControls { get => _isSwitchedControls; set => _isSwitchedControls = value; }
-        //[SerializeField] private bool _isSwitchedControls = default;
+        private bool CanJump { get => _canJump; set => _canJump = value; }
+        private bool _canJump = default;
         #endregion
 
         #region Player Components
         [Header("Player Components")]
         private CharacterController _charControl = default;
+        private CapsuleCollider _charCol = default;
         public int PlayerIndex { get => _currPlayerIndex; set => _currPlayerIndex = value; }
         [SerializeField] private int _currPlayerIndex = default;
+
+        public bool PlayerBomber { get => _isBomber; set => _isBomber = value; }
+        [SerializeField] private bool _isBomber = default;
         #endregion
 
-        #region Player Grounding
         [Header("Ground Check")]
-        [SerializeField] private bool _isGrounded = default;
-        #endregion
+        private bool _isGrounded = default;
 
         #endregion
 
@@ -111,29 +122,32 @@ namespace Khatim_F2
         #region Events
         void OnEnable()
         {
-            //GameManagerPlatformDuel.OnControlsReversed += OnControlsSwitchedEventReceived;
-            //GameManagerPlatformDuel.OnControlsJump += OnControlsJumpEventReceived;
+            GameManagerHotPotato.OnControlsJump += OnControlsJumpEventReceived;
+            GameManagerHotPotato.OnControlsSpeed += OnControlsSpeedEventReceived;
+            GameManagerHotPotato.OnBombChoose += OnBombChooseEventReceived;
         }
 
         void OnDisable()
         {
-            //GameManagerPlatformDuel.OnControlsReversed -= OnControlsSwitchedEventReceived;
-            //GameManagerPlatformDuel.OnControlsJump -= OnControlsJumpEventReceived;
+            GameManagerHotPotato.OnControlsJump -= OnControlsJumpEventReceived;
+            GameManagerHotPotato.OnControlsSpeed -= OnControlsSpeedEventReceived;
+            GameManagerHotPotato.OnBombChoose -= OnBombChooseEventReceived;
 
-            //IsSwitchedControls = false;
-            //CanJump = true;
+            CanJump = true;
         }
 
         void OnDestroy()
         {
-            //GameManagerPlatformDuel.OnControlsReversed -= OnControlsSwitchedEventReceived;
-            //GameManagerPlatformDuel.OnControlsJump -= OnControlsJumpEventReceived;
+            GameManagerHotPotato.OnControlsJump -= OnControlsJumpEventReceived;
+            GameManagerHotPotato.OnControlsSpeed -= OnControlsSpeedEventReceived;
+            GameManagerHotPotato.OnBombChoose -= OnBombChooseEventReceived;
         }
         #endregion
 
         void Start()
         {
             _charControl = GetComponent<CharacterController>();
+            _charCol = GetComponent<CapsuleCollider>();
             CapsuleIntialise();
         }
 
@@ -145,11 +159,20 @@ namespace Khatim_F2
 
         void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Death_Box"))
-                OnPlayerFall?.Invoke(PlayerIndex);
+            //if (other.CompareTag("Death_Box"))
+            //    OnPlayerFall?.Invoke(PlayerIndex);
 
             if (other.CompareTag("Player"))
-                Debug.Log($"Hitting {other.name}");
+            {
+                if (other.GetComponent<PlayerControllerCapsule>() != null &&
+                    !other.GetComponent<PlayerControllerCapsule>().PlayerBomber)
+                {
+                    OnPlayerPassBomb?.Invoke(other.GetComponent<PlayerControllerCapsule>().PlayerIndex);
+                    _charCol.enabled = false;
+                    StartCoroutine(BomberPassDelay());
+                    Debug.Log("Sending Event");
+                }
+            }
         }
 
         //void OnControllerColliderHit(ControllerColliderHit other)
@@ -165,8 +188,7 @@ namespace Khatim_F2
         /// </summary>
         void CapsuleIntialise()
         {
-            //CanJump = true;
-            //IsSwitchedControls = false;
+            CanJump = true;
             OnPlayerIntialised?.Invoke(this);
             _currSpeed = playerWalkSpeed;
         }
@@ -181,7 +203,7 @@ namespace Khatim_F2
 
             if (_isGrounded && _vel.y < 0)
             {
-                _isJumping = false;
+                IsJumping = false;
                 _vel.y = -2f;
             }
 
@@ -214,7 +236,7 @@ namespace Khatim_F2
         /// </summary>
         void JumpPlayer()
         {
-            if (_isGrounded && !_isJumping /*&& CanJump*/)
+            if (_isGrounded && !IsJumping && CanJump)
             {
                 IsJumping = true;
                 float jumpForce = Mathf.Sqrt(jumpPower * Mathf.Abs(gravity) * 2);
@@ -223,6 +245,14 @@ namespace Khatim_F2
         }
         #endregion
 
+        #endregion
+
+        #region Coroutines
+        IEnumerator BomberPassDelay()
+        {
+            yield return new WaitForSeconds(selfBomberFlagDelay);
+            _isBomber = false;
+        }
         #endregion
 
         #region Events
@@ -256,7 +286,8 @@ namespace Khatim_F2
         /// <param name="context"> Parameter from the new Input System; </param>
         public void OnPlayerPause(InputAction.CallbackContext context)
         {
-            if (gmData.currState != GameManagerDataMiniGame.GameState.Paused)
+            if (gmData.currState != GameManagerDataMiniGame.GameState.Paused &&
+                gmData.currState != GameManagerDataMiniGame.GameState.Starting)
             {
                 if (context.started)
                     OnGamePaused?.Invoke();
@@ -267,29 +298,40 @@ namespace Khatim_F2
         #region Player Control Obstacles
         /// <summary>
         /// Subbed to event from GameManagerPlatformDuel Script;
-        /// Inverts the controls of the players;
-        /// </summary>
-        /// <param name="isSwitch"> If True, switch Controls and vice versa; </param>
-        //void OnControlsSwitchedEventReceived(bool isSwitch)
-        //{
-        //    if (isSwitch)
-        //        IsSwitchedControls = true;
-        //    else
-        //        IsSwitchedControls = false;
-        //}
-
-        /// <summary>
-        /// Subbed to event from GameManagerPlatformDuel Script;
         /// Stops the player from Jumping;
         /// </summary>
         /// <param name="isJumping"> If True, Player can jump and vice versa; </param>
-        //void OnControlsJumpEventReceived(bool isJumping)
-        //{
-        //    if (isJumping)
-        //        CanJump = true;
-        //    else
-        //        CanJump = false;
-        //}
+        void OnControlsJumpEventReceived(bool isJumping)
+        {
+            if (isJumping)
+                CanJump = true;
+            else
+                CanJump = false;
+        }
+
+        /// <summary>
+        /// Subbed to event from GameManagerPlatformDuel Script;
+        /// Increased the Player's Speed;
+        /// </summary>
+        /// <param name="isSpeeding"> If True, Player can moves fast and vice versa; </param>
+        void OnControlsSpeedEventReceived(bool isSpeeding)
+        {
+            if (isSpeeding)
+                _currSpeed = playerRunSpeed;
+            else
+                _currSpeed = playerWalkSpeed;
+        }
+        #endregion
+
+        #region Game
+        void OnBombChooseEventReceived(int bombIndex)
+        {
+            if (bombIndex == PlayerIndex)
+            {
+                _charCol.enabled = true;
+                _isBomber = true;
+            }
+        }
         #endregion
 
         #endregion

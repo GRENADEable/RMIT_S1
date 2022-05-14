@@ -399,6 +399,7 @@ MonoBehaviour:
   playerRunSpeed: 14
   playerRotationSpeed: 10
   jumpPower: 5
+  selfBomberFlagDelay: 1
   gravity: -19.62
   sphereRadius: 0.3
   groundPos: {fileID: 2083094658657532633}
@@ -407,9 +408,8 @@ MonoBehaviour:
     m_Bits: 256
   _isJumping: 0
   _currSpeed: 0
-  _isRunning: 0
   _currPlayerIndex: 0
-  _isGrounded: 0
+  _isBomber: 0
 --- !u!1 &2867377793360847744
 GameObject:
   m_ObjectHideFlags: 0

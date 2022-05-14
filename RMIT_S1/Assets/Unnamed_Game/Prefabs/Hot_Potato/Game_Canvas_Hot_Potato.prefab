@@ -385,12 +385,12 @@ GameObject:
   - component: {fileID: 8838673835528496118}
   - component: {fileID: 5862881293373163416}
   m_Layer: 5
-  m_Name: Switch_Img
+  m_Name: Speed_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &822623799583455048
 RectTransform:
   m_ObjectHideFlags: 0
@@ -438,7 +438,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 00f6930851cafa9419c656aed6dbf52f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b540104a6ce86c2408af1454d777a716, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1979,7 +1979,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Khatim_F2.GameManagerPlatformDuel, Khatim.F2
+        m_TargetAssemblyTypeName: Khatim_F2.GameManagerHotPotato, Khatim.F2
         m_MethodName: OnClick_Resume
         m_Mode: 1
         m_Arguments:
