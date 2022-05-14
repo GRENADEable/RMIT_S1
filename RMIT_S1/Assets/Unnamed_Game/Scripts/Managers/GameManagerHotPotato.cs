@@ -89,19 +89,9 @@ namespace Khatim_F2
         [Tooltip("Pause Panel")]
         private GameObject pausePanel = default;
 
-        //[SerializeField]
-        //[Tooltip("Player UI GameObject Prefab")]
-        //private GameObject playerScorePrefab = default;
-
         [SerializeField]
         [Tooltip("Switch Controls Panel")]
         private GameObject switchControlsPanel = default;
-        #endregion
-
-        #region Transforms
-        //[SerializeField]
-        //[Tooltip("Player Score Spawn Pos")]
-        //private Transform playerScorePos = default;
         #endregion
 
         #endregion
@@ -115,10 +105,6 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Intial Starting Players")]
         private int playerCountToStartMatch = default;
-        #endregion
-
-        #region Platform
-
         #endregion
 
         #region Game Timers
@@ -156,16 +142,14 @@ namespace Khatim_F2
 
         #region Game
         [Header("Game")]
-        [SerializeField] private List<PlayerControllerCapsule> _playersCapsule = new List<PlayerControllerCapsule>();
+        [SerializeField] private List<PlayerControllerCapsule> _playersController = new List<PlayerControllerCapsule>();
         private List<CharacterController> _playersCharController = new List<CharacterController>();
-        [SerializeField] private List<CapsuleCollider> _playersCapsuleCol = new List<CapsuleCollider>();
-        //private List<PlayerScore> _playersScore = new List<PlayerScore>();
+        [SerializeField] private List<CapsuleCollider> _playersCol = new List<CapsuleCollider>();
         private List<PlayerSpawns> _playerSpawns = new List<PlayerSpawns>();
         private int spawnIndex = default;
 
         public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
         [SerializeField] private int _currPlayerNo = default;
-        //[SerializeField] private int _totalPlayerNo = default;
         [SerializeField] private int _currBombPlayerIndex = default;
         #endregion
 
@@ -187,7 +171,6 @@ namespace Khatim_F2
         void OnEnable()
         {
             PlayerControllerCapsule.OnPlayerIntialised += OnPlayerIntialisedEventReceived;
-            //PlayerControllerCapsule.OnPlayerFall += OnPlayerFallEventReceived;
             PlayerControllerCapsule.OnGamePaused += OnGamePausedEventReceived;
             PlayerControllerCapsule.OnPlayerPassBomb += OnPlayerPassBombEventReceived;
         }
@@ -195,7 +178,6 @@ namespace Khatim_F2
         void OnDisable()
         {
             PlayerControllerCapsule.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
-            //PlayerControllerCapsule.OnPlayerFall -= OnPlayerFallEventReceived;
             PlayerControllerCapsule.OnGamePaused -= OnGamePausedEventReceived;
             PlayerControllerCapsule.OnPlayerPassBomb -= OnPlayerPassBombEventReceived;
         }
@@ -203,7 +185,6 @@ namespace Khatim_F2
         void OnDestroy()
         {
             PlayerControllerCapsule.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
-            //PlayerControllerCapsule.OnPlayerFall -= OnPlayerFallEventReceived;
             PlayerControllerCapsule.OnGamePaused -= OnGamePausedEventReceived;
             PlayerControllerCapsule.OnPlayerPassBomb -= OnPlayerPassBombEventReceived;
         }
@@ -237,29 +218,6 @@ namespace Khatim_F2
         #region My Functions
 
         #region UI
-        /// <summary>
-        /// Sets the UI of the player depending on how many players joined;
-        /// </summary>
-        //void SetPlayersUI()
-        //{
-        //    int playerIndex = 0;
-
-        //    for (int i = 0; i < _playersCapsule.Count; i++)
-        //    {
-        //        GameObject plyScore = Instantiate(playerScorePrefab, playerScorePos.position, Quaternion.identity, playerScorePos);
-        //        plyScore.name = playerVisData[i].playerName;
-
-        //        _playersScore.Add(plyScore.GetComponent<PlayerScore>());
-        //        _playersScore[i].PlayerName = playerVisData[i].playerName;
-        //        _playersScore[i].PlayerPointIndex = playerIndex;
-
-        //        playerIndex++;
-        //    }
-
-        //    hudPanel.SetActive(true);
-        //    _totalPlayerNo = PlayerNo;
-        //}
-
         /// <summary>
         /// Shows a popup Text with a parameter string;
         /// </summary>
@@ -338,8 +296,19 @@ namespace Khatim_F2
         /// </summary>
         void ChooseBombPlayer()
         {
-            _currBombPlayerIndex = Random.Range(0, _playersCapsule.Count);
+            _currBombPlayerIndex = Random.Range(0, _playersController.Count);
             OnBombChoose?.Invoke(_currBombPlayerIndex);
+        }
+
+        void UpdatePlayerIndex()
+        {
+            int newIndex = 0;
+
+            for (int i = 0; i < _playersController.Count; i++)
+            {
+                _playersController[i].PlayerIndex = newIndex;
+                newIndex++;
+            }
         }
 
         /// <summary>
@@ -361,12 +330,12 @@ namespace Khatim_F2
         {
             PopupText($"Player {_currBombPlayerIndex + 1} Elimnated");
 
-            _playersCapsule[_currBombPlayerIndex].gameObject.SetActive(false);
-            _playersCapsule.RemoveAt(_currBombPlayerIndex);
+            _playersController[_currBombPlayerIndex].gameObject.SetActive(false);
+            _playersController.RemoveAt(_currBombPlayerIndex);
+            _playersCol.RemoveAt(_currBombPlayerIndex);
 
             gmData.ChangeGameState("Starting");
 
-            //_totalPlayerNo--;
             PlayerNo--;
 
             StartCoroutine(ContinueMatchDelay());
@@ -417,13 +386,12 @@ namespace Khatim_F2
 
             if (_currGameRoundTime <= 0)
             {
-                if (PlayerNo > 1)
-                {
-                    SetRoundTimers();
-                    EliminatePlayer();
-                    gmData.ChangeGameState("Starting");
-                    Debug.Log("Round Ended");
-                }
+                SetRoundTimers();
+                EliminatePlayer();
+                JumpControls(true);
+                SpeedyControls(false);
+                gmData.ChangeGameState("Starting");
+                Debug.Log("Round Ended");
             }
         }
         #endregion
@@ -548,7 +516,6 @@ namespace Khatim_F2
         #region Game
         /// <summary>
         /// Starts match with a Delay;
-        /// Starts counter, switches UI Panels and disables more players to join the match after counter is ended;
         /// </summary>
         /// <returns> Float Delay; </returns>
         IEnumerator StartMatchDelay()
@@ -560,7 +527,6 @@ namespace Khatim_F2
             yield return new WaitForSeconds(1f);
             startingRoundTimerText.text = "1";
             yield return new WaitForSeconds(1f);
-            //SetPlayersUI();
             ChooseBombPlayer();
             timerPanel.SetActive(false);
             hudPanel.SetActive(true);
@@ -570,7 +536,6 @@ namespace Khatim_F2
 
         /// <summary>
         /// Continue match with a Delay;
-        /// Continue counter, switches UI Panels and disables more players to join the match after counter is ended;
         /// </summary>
         /// <returns> Float Delay; </returns>
         IEnumerator ContinueMatchDelay()
@@ -584,15 +549,28 @@ namespace Khatim_F2
                 yield return new WaitForSeconds(1f);
                 startingRoundTimerText.text = "1";
                 yield return new WaitForSeconds(1f);
+                UpdatePlayerIndex();
                 ChooseBombPlayer();
                 timerPanel.SetActive(false);
                 gmData.ChangeGameState("Game");
             }
             else
             {
+                StartCoroutine(EndMatchDelay());
                 gmData.ChangeGameState("End");
                 Debug.Log("Match Ended");
             }
+        }
+
+        /// <summary>
+        /// Ends match with a Delay
+        /// </summary>
+        /// <returns> Float Delay; </returns>
+        IEnumerator EndMatchDelay()
+        {
+            PopupText($"Winner is {_playersController[0].name}");
+            yield return new WaitForSeconds(3f);
+            StartCoroutine(MenuDelay());
         }
         #endregion
 
@@ -644,15 +622,15 @@ namespace Khatim_F2
         /// <param name="plyBall"> Player GameObject received from Event; </param>
         void OnPlayerIntialisedEventReceived(PlayerControllerCapsule plyBall)
         {
-            _playersCapsule.Add(plyBall);
+            _playersController.Add(plyBall);
             _playersCharController.Add(plyBall.GetComponent<CharacterController>());
-            _playersCapsuleCol.Add(plyBall.GetComponent<CapsuleCollider>());
+            _playersCol.Add(plyBall.GetComponent<CapsuleCollider>());
 
-            _playersCapsule[PlayerNo].name = $"{playerVisData[PlayerNo].playerName}";
-            _playersCapsule[PlayerNo].GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", playerVisData[PlayerNo].playerColour);
-            _playersCapsule[PlayerNo].PlayerIndex = PlayerNo;
+            _playersController[PlayerNo].name = $"{playerVisData[PlayerNo].playerName}";
+            _playersController[PlayerNo].GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", playerVisData[PlayerNo].playerColour);
+            _playersController[PlayerNo].PlayerIndex = PlayerNo;
 
-            _playersCapsule[PlayerNo].transform.position = SetPlayerSpawns().position;
+            _playersController[PlayerNo].transform.position = SetPlayerSpawns().position;
             _playersCharController[PlayerNo].enabled = true;
 
             PlayerNo++;
@@ -664,22 +642,6 @@ namespace Khatim_F2
                 StartCoroutine(StartMatchDelay());
             }
         }
-
-        /// <summary>
-        /// Subbed to Event from PlayerControllerBall Script;
-        /// Disables the Player GameObject;
-        /// </summary>
-        /// <param name="index"> Player GameObject affected according to the Index received; </param>
-        //void OnPlayerFallEventReceived(int index)
-        //{
-        //    _playersCapsule[index].gameObject.SetActive(false);
-        //    PlayerNo--;
-
-        //    if (PlayerNo <= 1)
-        //    {
-        //        PlayerNo = _totalPlayerNo;
-        //    }
-        //}
 
         /// <summary>
         /// Subbed to Event from PlayerControllerBall Script;
@@ -700,8 +662,9 @@ namespace Khatim_F2
         void OnPlayerPassBombEventReceived(int index)
         {
             _currBombPlayerIndex = index;
-            _playersCapsule[index].PlayerBomber = true;
-            _playersCapsuleCol[index].enabled = true;
+            _playersController[index].PlayerBomber = true;
+            _playersController[index].BombObj.SetActive(true);
+            _playersCol[index].enabled = true;
         }
         #endregion
     }

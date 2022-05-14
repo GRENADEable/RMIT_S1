@@ -40,6 +40,11 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Self Bomber flag disable delay")]
         private float selfBomberFlagDelay = default;
+
+        [SerializeField]
+        [Tooltip("Bomber GameObject")]
+        private GameObject bombObj = default;
+        public GameObject BombObj { get => bombObj; set => bombObj = value; }
         #endregion
 
         #region Player Grounding
@@ -64,23 +69,21 @@ namespace Khatim_F2
         #region Events
         public delegate void SendEventsScript(PlayerControllerCapsule plyCapsule);
         /// <summary>
-        /// Event sent from PlayerControllerBall to GameManagerPlatformDuel Script;
+        /// Event sent from PlayerControllerBall to GameManagerHotPotato Script;
         /// Sends GameObject ref of the Player;
         /// </summary>
         public static event SendEventsScript OnPlayerIntialised;
 
         public delegate void SendEventsInt(int index);
-        ///// <summary>
-        ///// Event sent from PlayerControllerBall to GameManagerPlatformDuel Script;
-        ///// Sends PlayerIndex to disable the GameObject when Dead;
-        ///// </summary>
-        //public static event SendEventsInt OnPlayerFall;
-
+        /// <summary>
+        /// Event sent from PlayerControllerBall to GameManagerHotPotato Script;
+        /// Sends PlayerIndex to pass the bomb to the indexed Player;
+        /// </summary>
         public static event SendEventsInt OnPlayerPassBomb;
 
         public delegate void SendEvents();
         /// <summary>
-        /// Event sent from PlayerControllerBall to GameManagerPlatformDuel Script;
+        /// Event sent from PlayerControllerBall to GameManagerHotPotato Script;
         /// Sends event to pause game;
         /// </summary>
         public static event SendEvents OnGamePaused;
@@ -99,6 +102,7 @@ namespace Khatim_F2
         [SerializeField] private float _currSpeed = default;
         private bool CanJump { get => _canJump; set => _canJump = value; }
         private bool _canJump = default;
+        private bool _isGrounded = default;
         #endregion
 
         #region Player Components
@@ -111,9 +115,6 @@ namespace Khatim_F2
         public bool PlayerBomber { get => _isBomber; set => _isBomber = value; }
         [SerializeField] private bool _isBomber = default;
         #endregion
-
-        [Header("Ground Check")]
-        private bool _isGrounded = default;
 
         #endregion
 
@@ -134,6 +135,7 @@ namespace Khatim_F2
             GameManagerHotPotato.OnBombChoose -= OnBombChooseEventReceived;
 
             CanJump = true;
+            _currSpeed = playerWalkSpeed;
         }
 
         void OnDestroy()
@@ -159,9 +161,6 @@ namespace Khatim_F2
 
         void OnTriggerEnter(Collider other)
         {
-            //if (other.CompareTag("Death_Box"))
-            //    OnPlayerFall?.Invoke(PlayerIndex);
-
             if (other.CompareTag("Player"))
             {
                 if (other.GetComponent<PlayerControllerCapsule>() != null &&
@@ -169,17 +168,12 @@ namespace Khatim_F2
                 {
                     OnPlayerPassBomb?.Invoke(other.GetComponent<PlayerControllerCapsule>().PlayerIndex);
                     _charCol.enabled = false;
+                    BombObj.SetActive(false);
                     StartCoroutine(BomberPassDelay());
                     Debug.Log("Sending Event");
                 }
             }
         }
-
-        //void OnControllerColliderHit(ControllerColliderHit other)
-        //{
-        //    if (other.collider.CompareTag("Player"))
-        //        Debug.Log($"Hitting {other.collider.name}");
-        //}
         #endregion
 
         #region My Functions
@@ -248,6 +242,10 @@ namespace Khatim_F2
         #endregion
 
         #region Coroutines
+        /// <summary>
+        /// Delays the bomb pass flag bool;
+        /// </summary>
+        /// <returns> Float Delay; </returns>
         IEnumerator BomberPassDelay()
         {
             yield return new WaitForSeconds(selfBomberFlagDelay);
@@ -328,6 +326,7 @@ namespace Khatim_F2
         {
             if (bombIndex == PlayerIndex)
             {
+                BombObj.SetActive(true);
                 _charCol.enabled = true;
                 _isBomber = true;
             }
