@@ -97,7 +97,7 @@ GameObject:
   m_Layer: 3
   m_Name: Player_Ball
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -201,18 +201,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: be7431be-1ad6-45ff-bc1e-ed3d9dec4df1
     m_ActionName: UI/Cancel[/Keyboard/escape,/DualShock4GamepadHID/buttonEast]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 46069f75-4ec5-4d08-9477-6e7812973767
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c2ff4ff2-f2b3-43d7-8ca5-5f0409e237df
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 978583de-64fc-41b6-8e94-56d394b8eead
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: KB_1
   m_DefaultActionMap: Player
@@ -267,3 +255,5 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  _canJump: 0
+  _isSwitchedControls: 0

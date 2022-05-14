@@ -98,11 +98,7 @@ namespace Khatim_F2
         [Space, Header("Game")]
         [SerializeField]
         [Tooltip("Player Spawn Pos")]
-        private Transform playerSpawnPos = default;
-
-        [SerializeField]
-        [Tooltip("Platform Anim Controller")]
-        private Animator platformWallsAnim = default;
+        private GameObject playerSpawnPos = default;
 
         [SerializeField]
         [Tooltip("Player Death Box Col")]
@@ -118,33 +114,7 @@ namespace Khatim_F2
         #endregion
 
         #region Platform
-        [Space, Header("Platform")]
-        [SerializeField]
-        [Tooltip("Platform GameObject")]
-        private GameObject platform = default;
 
-        [SerializeField]
-        [Tooltip("Platform Rotation Speed")]
-        [Range(0f, 40f)]
-        private float platformRotSpeed = default;
-
-        [SerializeField]
-        [Tooltip("Platform Reset Speed when round ends")]
-        [Range(0f, 5f)]
-        private float platformRoundEndResetSpeed = default;
-
-        [SerializeField]
-        [Tooltip("Platform Reset Speed when switching Rotation types")]
-        [Range(0f, 5f)]
-        private float platformResetSpeed = default;
-
-        [SerializeField]
-        [Tooltip("Platform Rotation starting Time")]
-        private float startingPlatformRotatingTimer = default;
-
-        [SerializeField]
-        [Tooltip("Platform Rotation reset Time")]
-        private float resetPlatformTime = default;
         #endregion
 
         #region Game Timers
@@ -168,8 +138,12 @@ namespace Khatim_F2
 
         #region Game
         [Header("Game")]
-        private List<PlayerControllerBall> _playersBall = new List<PlayerControllerBall>();
+        private List<PlayerControllerCapsule> _playersCapsule = new List<PlayerControllerCapsule>();
+        [SerializeField] private List<CharacterController> _playersCharController = new List<CharacterController>();
+        [SerializeField] private List<CapsuleCollider> _playersCapsuleCol = new List<CapsuleCollider>();
         private List<PlayerScore> _playersScore = new List<PlayerScore>();
+        [SerializeField] private List<PlayerSpawns> _playerSpawns = new List<PlayerSpawns>();
+        [SerializeField] private int spawnIndex = default;
 
         public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
         private int _currPlayerNo = default;
@@ -203,32 +177,31 @@ namespace Khatim_F2
         #region Events
         void OnEnable()
         {
-            PlayerControllerBall.OnPlayerIntialised += OnPlayerIntialisedEventReceived;
-            PlayerControllerBall.OnPlayerFall += OnPlayerFallEventReceived;
-            PlayerControllerBall.OnGamePaused += OnGamePausedEventReceived;
+            PlayerControllerCapsule.OnPlayerIntialised += OnPlayerIntialisedEventReceived;
+            PlayerControllerCapsule.OnPlayerFall += OnPlayerFallEventReceived;
+            PlayerControllerCapsule.OnGamePaused += OnGamePausedEventReceived;
         }
 
         void OnDisable()
         {
-            PlayerControllerBall.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
-            PlayerControllerBall.OnPlayerFall -= OnPlayerFallEventReceived;
-            PlayerControllerBall.OnGamePaused -= OnGamePausedEventReceived;
+            PlayerControllerCapsule.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
+            PlayerControllerCapsule.OnPlayerFall -= OnPlayerFallEventReceived;
+            PlayerControllerCapsule.OnGamePaused -= OnGamePausedEventReceived;
         }
 
         void OnDestroy()
         {
-            PlayerControllerBall.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
-            PlayerControllerBall.OnPlayerFall -= OnPlayerFallEventReceived;
-            PlayerControllerBall.OnGamePaused -= OnGamePausedEventReceived;
+            PlayerControllerCapsule.OnPlayerIntialised -= OnPlayerIntialisedEventReceived;
+            PlayerControllerCapsule.OnPlayerFall -= OnPlayerFallEventReceived;
+            PlayerControllerCapsule.OnGamePaused -= OnGamePausedEventReceived;
         }
         #endregion
 
         void Start()
         {
             SetRoundTimers();
+            GetPlayerSpawns();
 
-            _intialPlatformRot = platform.transform.rotation;
-            _intialPlatformScale = platform.transform.localScale;
             _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
 
             gmData.ChangeGameState("Intro");
@@ -246,13 +219,8 @@ namespace Khatim_F2
             if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
             {
                 RoundTimer();
-                RotatePlatform();
-                ShrinkPlatform();
                 ObstacleManager();
             }
-
-            if (gmData.currState == GameManagerDataMiniGame.GameState.Starting)
-                ResetPlatform(true);
         }
         #endregion
 
@@ -339,7 +307,7 @@ namespace Khatim_F2
         {
             int playerIndex = 0;
 
-            for (int i = 0; i < _playersBall.Count; i++)
+            for (int i = 0; i < _playersCapsule.Count; i++)
             {
                 GameObject plyScore = Instantiate(playerScorePrefab, playerScorePos.position, Quaternion.identity, playerScorePos);
                 plyScore.name = playerVisData[i].playerName;
@@ -352,9 +320,23 @@ namespace Khatim_F2
             }
 
             hudPanel.SetActive(true);
-            platformWallsAnim.Play("Platform_Duel_Wall_Open_Anim");
             _totalPlayerNo = PlayerNo;
             gmData.ChangeGameState("Game");
+        }
+
+        void GetPlayerSpawns()
+        {
+            PlayerSpawns[] playerSpawns;
+            playerSpawns = playerSpawnPos.GetComponentsInChildren<PlayerSpawns>();
+
+            for (int i = 0; i < playerSpawns.Length; i++)
+                _playerSpawns.Add(playerSpawns[i]);
+        }
+
+        Transform SetPlayerSpawns()
+        {
+            spawnIndex = Random.Range(0, _playerSpawns.Count);
+            return _playerSpawns[spawnIndex].transform;
         }
 
         /// <summary>
@@ -368,136 +350,11 @@ namespace Khatim_F2
             if (_currGameRoundTime <= 0)
             {
                 gmData.ChangeGameState("Starting");
-                EndRoundWithoutPoint();
             }
-        }
-
-        /// <summary>
-        /// If one player stands, they win a point;
-        /// </summary>
-        void EndRoundWithPoint()
-        {
-            CloseWalls();
-
-            for (int i = 0; i < _playersBall.Count; i++)
-            {
-                if (_playersBall[i].gameObject.activeInHierarchy)
-                    _playersScore[_playersBall[i].PlayerIndex].UpdateScore(playerScoreIncrement);
-
-                _playersBall[i].gameObject.SetActive(false);
-            }
-        }
-
-        /// <summary>
-        /// If the timer ends, no point;
-        /// </summary>
-        void EndRoundWithoutPoint()
-        {
-            CloseWalls();
-
-            for (int i = 0; i < _playersBall.Count; i++)
-                _playersBall[i].gameObject.SetActive(false);
         }
         #endregion
 
         #region Platform
-        /// <summary>
-        /// Resets the state of the game when the round ends;
-        /// </summary>
-        void CloseWalls()
-        {
-            platformWallsAnim.Play("Platform_Duel_Wall_Close_Anim");
-            gmData.ChangeGameState("Starting");
-            playerDeathBox.SetActive(false);
-            StartCoroutine(EndRoundPointDelay());
-        }
-
-        /// <summary>
-        /// Continues the game after the reset;
-        /// </summary>
-        void OpenWalls()
-        {
-            platformWallsAnim.Play("Platform_Duel_Wall_Open_Anim");
-            gmData.ChangeGameState("Game");
-            playerDeathBox.SetActive(true);
-            _currGameRoundTime = startingGameRoundTimer;
-        }
-
-        /// <summary>
-        /// Platform Rotates according to Random Enum chosen;
-        /// </summary>
-        void RotatePlatform()
-        {
-            _currPlatformRotTime -= Time.deltaTime;
-
-            if (_currPlatformRotTime <= 0)
-            {
-                _currPlatformRotTime = startingPlatformRotatingTimer;
-                StartCoroutine(ResetRotatePlatformDelay());
-            }
-
-            switch (_currPlatformRotateType)
-            {
-                case PlatformRotateType.RotateX:
-                    platform.transform.Rotate(Vector3.right, platformRotSpeed * Time.deltaTime);
-                    break;
-
-                case PlatformRotateType.RotateY:
-                    platform.transform.Rotate(Vector3.up, platformRotSpeed * Time.deltaTime);
-                    break;
-
-                case PlatformRotateType.RotateZ:
-                    platform.transform.Rotate(Vector3.forward, platformRotSpeed * Time.deltaTime);
-                    break;
-
-                case PlatformRotateType.MinusRotateX:
-                    platform.transform.Rotate(-Vector3.right, platformRotSpeed * Time.deltaTime);
-                    break;
-
-                case PlatformRotateType.MinusRotateY:
-                    platform.transform.Rotate(-Vector3.up, platformRotSpeed * Time.deltaTime);
-                    break;
-
-                case PlatformRotateType.MinusRotateZ:
-                    platform.transform.Rotate(-Vector3.forward, platformRotSpeed * Time.deltaTime);
-                    break;
-
-                case PlatformRotateType.Original:
-                    ResetPlatform(false);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        void ShrinkPlatform()
-        {
-            float shrinkVal = Mathf.InverseLerp(0, startingGameRoundTimer, _currGameRoundTime);
-            platform.transform.localScale = new Vector3(shrinkVal, platform.transform.localScale.y, shrinkVal);
-        }
-
-        /// <summary>
-        /// Resets the Rotating Platform when round Ends;
-        /// </summary>
-        /// <param name="isRoundEnded"> If true, reset it quickly, else reset it slowly; </param>
-        void ResetPlatform(bool isRoundEnded)
-        {
-            if (isRoundEnded)
-            {
-                platform.transform.rotation = Quaternion.Lerp(platform.transform.rotation,
-                 _intialPlatformRot, platformRoundEndResetSpeed * Time.deltaTime);
-
-                platform.transform.localScale = Vector3.Lerp(platform.transform.localScale,
-                _intialPlatformScale, platformRoundEndResetSpeed * Time.deltaTime);
-            }
-            else
-            {
-                platform.transform.rotation = Quaternion.Lerp(platform.transform.rotation,
-                _intialPlatformRot, platformResetSpeed * Time.deltaTime);
-            }
-        }
-
         /// <summary>
         /// Chooses a Random Enum Type;
         /// </summary>
@@ -518,7 +375,6 @@ namespace Khatim_F2
         void SetRoundTimers()
         {
             _currGameRoundTime = startingGameRoundTimer;
-            _currPlatformRotTime = startingPlatformRotatingTimer;
             _currControlsChangeTimer = Random.Range(10f, startingGameRoundTimer / 2);
             gameRoundTimerText.text = startingGameRoundTimer.ToString();
         }
@@ -608,25 +464,13 @@ namespace Khatim_F2
         {
             yield return new WaitForSeconds(endRoundDelayTimer);
 
-            for (int i = 0; i < _playersBall.Count; i++)
+            for (int i = 0; i < _playersCapsule.Count; i++)
             {
-                _playersBall[i].transform.position = playerSpawnPos.position;
-                _playersBall[i].gameObject.SetActive(true);
+                //_playersBall[i].transform.position = playerSpawnPos.position;
+                _playersCapsule[i].gameObject.SetActive(true);
             }
 
-            OpenWalls();
             gmData.ChangeGameState("Game");
-        }
-
-        /// <summary>
-        /// Reset platform with delay;
-        /// </summary>
-        /// <returns> Float Delay; </returns>
-        IEnumerator ResetRotatePlatformDelay()
-        {
-            _currPlatformRotateType = PlatformRotateType.Original;
-            yield return new WaitForSeconds(resetPlatformTime);
-            _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
         }
         #endregion
 
@@ -676,14 +520,21 @@ namespace Khatim_F2
         /// Adds the GameObject to hte list and starts the match with atleast 2 players joining;
         /// </summary>
         /// <param name="plyBall"> Player GameObject received from Event; </param>
-        void OnPlayerIntialisedEventReceived(PlayerControllerBall plyBall)
+        void OnPlayerIntialisedEventReceived(PlayerControllerCapsule plyBall)
         {
-            _playersBall.Add(plyBall);
-            _playersBall[PlayerNo].name = $"{playerVisData[PlayerNo].playerName}";
-            _playersBall[PlayerNo].GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", playerVisData[PlayerNo].playerColour);
-            _playersBall[PlayerNo].transform.position = playerSpawnPos.position;
-            _playersBall[PlayerNo].PlayerIndex = PlayerNo;
+            _playersCapsule.Add(plyBall);
+            _playersCharController.Add(plyBall.GetComponent<CharacterController>());
+            _playersCapsuleCol.Add(plyBall.GetComponent<CapsuleCollider>());
+
+            _playersCapsule[PlayerNo].name = $"{playerVisData[PlayerNo].playerName}";
+            _playersCapsule[PlayerNo].GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", playerVisData[PlayerNo].playerColour);
+            _playersCapsule[PlayerNo].PlayerIndex = PlayerNo;
+
+            _playersCapsule[PlayerNo].transform.position = SetPlayerSpawns().position;
+            _playersCharController[PlayerNo].enabled = true;
+
             PlayerNo++;
+            _playerSpawns.RemoveAt(spawnIndex);
 
             if (PlayerNo == playerCountToStartMatch)
             {
@@ -699,13 +550,12 @@ namespace Khatim_F2
         /// <param name="index"> Player GameObject affected according to the Index received; </param>
         void OnPlayerFallEventReceived(int index)
         {
-            _playersBall[index].gameObject.SetActive(false);
+            _playersCapsule[index].gameObject.SetActive(false);
             PlayerNo--;
 
             if (PlayerNo <= 1)
             {
                 PlayerNo = _totalPlayerNo;
-                EndRoundWithPoint();
             }
         }
 
