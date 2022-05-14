@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 namespace Khatim_F2
 {
-    public class GameManagerPlatformDuel : MonoBehaviour
+    public class GameManagerHotPotato : MonoBehaviour
     {
         #region Serialized Variables
 
@@ -58,18 +58,6 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Popup GameObject")]
         private Animator popupObstacleAreaAnim = default;
-
-        [SerializeField]
-        [Tooltip("Switched Controls Image Component")]
-        private Image switchedControlsImg = default;
-
-        [SerializeField]
-        [Tooltip("Jump Controls Image Component")]
-        private Image jumpControlsImg = default;
-
-        [SerializeField]
-        [Tooltip("Obstacle Sprites")]
-        private Sprite[] obstacleSprites = default;
         #endregion
 
         #region GameObjects
@@ -170,21 +158,6 @@ namespace Khatim_F2
         private float endRoundDelayTimer = default;
         #endregion
 
-        #region Events Bool
-        public delegate void SendEventsBool(bool isSwitched);
-        /// <summary>
-        /// Event sent from GameManagerPlatformDuel to PlayerControllerBall Script;
-        /// Inverts the Player Controls;
-        /// </summary>
-        public static event SendEventsBool OnControlsReversed;
-
-        /// <summary>
-        /// Event sent from GameManagerPlatformDuel to PlayerControllerBall Script;
-        /// Stops the player from Jumping;
-        /// </summary>
-        public static event SendEventsBool OnControlsJump;
-        #endregion
-
         #endregion
 
         #region Private Variables
@@ -267,9 +240,6 @@ namespace Khatim_F2
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-                ChangeControls();
-
             if (Input.GetKeyDown(KeyCode.T))
                 _currGameRoundTime = 2;
 
@@ -439,8 +409,6 @@ namespace Khatim_F2
             platformWallsAnim.Play("Platform_Duel_Wall_Close_Anim");
             gmData.ChangeGameState("Starting");
             playerDeathBox.SetActive(false);
-            jumpControlsImg.sprite = obstacleSprites[1];
-            switchedControlsImg.gameObject.SetActive(false);
             StartCoroutine(EndRoundPointDelay());
         }
 
@@ -567,46 +535,6 @@ namespace Khatim_F2
         }
 
         /// <summary>
-        /// Switches the contorls of the player when the game is running;
-        /// Shows the UI text of when the controls are switched;
-        /// </summary>
-        void SwitchControls(bool isSwitching)
-        {
-            OnControlsReversed?.Invoke(isSwitching);
-
-            if (isSwitching)
-            {
-                switchedControlsImg.gameObject.SetActive(true);
-                Debug.Log("Switched Controls");
-            }
-            else
-            {
-                switchedControlsImg.gameObject.SetActive(false);
-                Debug.Log("Normal Controls");
-            }
-        }
-
-        /// <summary>
-        /// Enables/Disables the player jump when the game is running;
-        /// Shows the UI text of when the jump is enabled/disabled;
-        /// </summary>
-        void JumpControls(bool isJumping)
-        {
-            OnControlsJump?.Invoke(isJumping);
-
-            if (isJumping)
-            {
-                jumpControlsImg.sprite = obstacleSprites[1];
-                Debug.Log("Enabled Jump");
-            }
-            else
-            {
-                jumpControlsImg.sprite = obstacleSprites[2];
-                Debug.Log("Disabled Jump");
-            }
-        }
-
-        /// <summary>
         /// Manages the obstacles of this match such as disabled jump and switched controls;
         /// </summary>
         void ObstacleManager()
@@ -626,39 +554,19 @@ namespace Khatim_F2
             switch (_currObstacleType)
             {
                 case ObstacleType.All:
-                    if (_isObstacleEventSent)
-                    {
-                        _isObstacleEventSent = false;
-                        JumpControls(false);
-                        SwitchControls(true);
-                    }
+
                     break;
 
                 case ObstacleType.DisabledJump:
-                    if (_isObstacleEventSent)
-                    {
-                        _isObstacleEventSent = false;
-                        JumpControls(false);
-                        SwitchControls(false);
-                    }
+
                     break;
 
                 case ObstacleType.SwitchedControls:
-                    if (_isObstacleEventSent)
-                    {
-                        _isObstacleEventSent = false;
-                        JumpControls(true);
-                        SwitchControls(true);
-                    }
+
                     break;
 
                 case ObstacleType.None:
-                    if (_isObstacleEventSent)
-                    {
-                        _isObstacleEventSent = false;
-                        JumpControls(true);
-                        SwitchControls(false);
-                    }
+
                     break;
 
                 default:
