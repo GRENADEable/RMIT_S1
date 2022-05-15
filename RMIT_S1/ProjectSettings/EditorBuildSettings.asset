@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Unnamed_Game/Scenes/Unnamed_Menu.unity
     guid: 2bd13ff5abd0dbc43b7a69db74d0e206
   - enabled: 1
+    path: Assets/Unnamed_Game/Scenes/Unnamed_Platform_Duel.unity
+    guid: 3826c03f4bcd6e14692bff11cacd8cc9
+  - enabled: 1
     path: Assets/Unnamed_Game/Scenes/Unnamed_Hot_Potato.unity
     guid: 6422160dd915b24488449d81e221d678
   m_configObjects: {}

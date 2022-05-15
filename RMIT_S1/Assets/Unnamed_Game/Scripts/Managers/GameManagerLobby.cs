@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Khatim_F2
 {
@@ -18,6 +19,10 @@ namespace Khatim_F2
         [Tooltip("Menu Button in an Array that will be used to disable them when clicking on other Buttons")]
         [SerializeField]
         private Button[] menuButtons;
+
+        [SerializeField]
+        [Tooltip("All the first button that the Event System will highlight")]
+        private GameObject[] firstSelectedButtons = default;
         #endregion
 
         #region Unity Callbacks
@@ -36,7 +41,7 @@ namespace Khatim_F2
         /// Button tied with Start_Button;
         /// Starts the Game
         /// </summary>
-        public void OnClick_StartGame() => StartCoroutine(StartGameDelay());
+        public void OnClick_StartGame(int index) => StartCoroutine(StartGameDelay(index));
 
         /// <summary>
         /// Button tied with Quit_Button;
@@ -47,10 +52,21 @@ namespace Khatim_F2
         /// <summary>
         /// All the buttons added in the Array gets disabled;
         /// </summary>
-        public void DisableButtons()
+        public void OnClick_DisableButtons()
         {
             for (int i = 0; i < menuButtons.Length; i++)
                 menuButtons[i].interactable = false;
+        }
+
+        /// <summary>
+        /// Tied to any UI Butttons;
+        /// It will hightlight the button so that the user can navigate through the UI properly;
+        /// </summary>
+        /// <param name="index"> Which Button to highlight from th Array; </param>
+        public void OnClick_HighlightedButton(int index)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(firstSelectedButtons[index]);
         }
         #endregion
 
@@ -61,11 +77,11 @@ namespace Khatim_F2
         /// Starts the game with a Delay;
         /// </summary>
         /// <returns> Float Delay </returns>
-        IEnumerator StartGameDelay()
+        IEnumerator StartGameDelay(int sceneIndex)
         {
             fadeBG.Play("Fade_Out");
             yield return new WaitForSeconds(0.5f);
-            gmData.ChangeLevel(1);
+            gmData.ChangeLevel(sceneIndex);
         }
 
         /// <summary>
