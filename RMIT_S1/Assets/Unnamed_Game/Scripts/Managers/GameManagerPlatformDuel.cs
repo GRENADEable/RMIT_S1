@@ -268,7 +268,7 @@ namespace Khatim_F2
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Q))
-                ChangeControls();
+                _currControlsChangeTimer = 2;
 
             if (Input.GetKeyDown(KeyCode.T))
                 _currGameRoundTime = 2;
@@ -616,6 +616,8 @@ namespace Khatim_F2
 
             if (_currControlsChangeTimer <= 3f)
                 switchControlsPanel.SetActive(true);
+            else
+                switchControlsPanel.SetActive(false);
 
             if (_currControlsChangeTimer <= 0f)
             {

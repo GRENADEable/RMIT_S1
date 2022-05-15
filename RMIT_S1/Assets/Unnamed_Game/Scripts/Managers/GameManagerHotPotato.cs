@@ -114,6 +114,26 @@ namespace Khatim_F2
         private float startingGameRoundTimer = default;
         #endregion
 
+        #region Ocean
+        [Space, Header("Ocean")]
+        [SerializeField]
+        [Tooltip("Ocean GameObject")]
+        private GameObject oceanGround = default;
+
+        [SerializeField]
+        [Tooltip("Ocean raise Speed")]
+        private float oceanRaiseSpeed = default;
+
+        [SerializeField]
+        [Tooltip("Ocean Reset Speed when round ends")]
+        [Range(0f, 10f)]
+        private float oceanRoundEndResetSpeed = default;
+
+        [SerializeField]
+        [Tooltip("Ocean end Position")]
+        private Transform oceanEndPos = default;
+        #endregion
+
         #region Events Bool
         public delegate void SendEventsBool(bool isSwitched);
 
@@ -142,15 +162,15 @@ namespace Khatim_F2
 
         #region Game
         [Header("Game")]
-        [SerializeField] private List<PlayerControllerCapsule> _playersController = new List<PlayerControllerCapsule>();
+        private List<PlayerControllerCapsule> _playersController = new List<PlayerControllerCapsule>();
         private List<CharacterController> _playersCharController = new List<CharacterController>();
-        [SerializeField] private List<CapsuleCollider> _playersCol = new List<CapsuleCollider>();
+        private List<CapsuleCollider> _playersCol = new List<CapsuleCollider>();
         private List<PlayerSpawns> _playerSpawns = new List<PlayerSpawns>();
         private int spawnIndex = default;
 
         public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
-        [SerializeField] private int _currPlayerNo = default;
-        [SerializeField] private int _currBombPlayerIndex = default;
+        private int _currPlayerNo = default;
+        private int _currBombPlayerIndex = default;
         #endregion
 
         #region Game Timers
@@ -159,8 +179,15 @@ namespace Khatim_F2
         private enum ObstacleType { All, DisabledJump, SuperSpeed, None };
         private bool _isObstacleEventSent = default;
 
-        [SerializeField] private float _currGameRoundTime = default;
-        [SerializeField] private float _currControlsChangeTimer = default;
+        private float _currGameRoundTime = default;
+        private float _currControlsChangeTimer = default;
+        #endregion
+
+        #region Ocean
+        [Header("Ocean")]
+        private OceanType _currOceanType = OceanType.None;
+        private enum OceanType { Raise, Hold, Reset, None };
+        private Vector3 _intialOceanPos = default;
         #endregion
 
         #endregion
@@ -198,6 +225,8 @@ namespace Khatim_F2
             gmData.ChangeGameState("Intro");
             fadeBG.Play("Fade_In");
 
+            _intialOceanPos = oceanGround.transform.position;
+
             if (isCursorDisabled)
                 gmData.DisableCursor();
         }
@@ -207,11 +236,16 @@ namespace Khatim_F2
             if (Input.GetKeyDown(KeyCode.T))
                 _currGameRoundTime = 2;
 
+            if (Input.GetKeyDown(KeyCode.Q))
+                _currControlsChangeTimer = 2;
+
             if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
             {
                 RoundTimer();
                 ObstacleManager();
             }
+
+            OceanGround();
         }
         #endregion
 
@@ -339,6 +373,7 @@ namespace Khatim_F2
             PlayerNo--;
 
             StartCoroutine(ContinueMatchDelay());
+            //Debug.Log("Round Ended");
         }
 
         /// <summary>
@@ -390,8 +425,6 @@ namespace Khatim_F2
                 EliminatePlayer();
                 JumpControls(true);
                 SpeedyControls(false);
-                gmData.ChangeGameState("Starting");
-                Debug.Log("Round Ended");
             }
         }
         #endregion
@@ -447,6 +480,9 @@ namespace Khatim_F2
 
             if (_currControlsChangeTimer <= 3f)
                 switchControlsPanel.SetActive(true);
+            else
+                switchControlsPanel.SetActive(false);
+
 
             if (_currControlsChangeTimer <= 0f)
             {
@@ -507,6 +543,29 @@ namespace Khatim_F2
             PopupText("Controls Changed");
             _isObstacleEventSent = true;
         }
+
+        void OceanGround()
+        {
+            switch (_currOceanType)
+            {
+                case OceanType.Raise:
+                    oceanGround.transform.position = Vector3.MoveTowards(oceanGround.transform.position, oceanEndPos.position, oceanRaiseSpeed * Time.deltaTime);
+                    break;
+
+                case OceanType.Hold:
+                    break;
+
+                case OceanType.Reset:
+                    oceanGround.transform.position = Vector3.MoveTowards(oceanGround.transform.position, _intialOceanPos, oceanRoundEndResetSpeed * Time.deltaTime);
+                    break;
+
+                case OceanType.None:
+                    break;
+
+                default:
+                    break;
+            }
+        }
         #endregion
 
         #endregion
@@ -531,6 +590,7 @@ namespace Khatim_F2
             timerPanel.SetActive(false);
             hudPanel.SetActive(true);
             PlayerInputManager.instance.enabled = false;
+            _currOceanType = OceanType.Raise;
             gmData.ChangeGameState("Game");
         }
 
@@ -542,6 +602,7 @@ namespace Khatim_F2
         {
             if (PlayerNo > 1)
             {
+                _currOceanType = OceanType.Reset;
                 timerPanel.SetActive(true);
                 startingRoundTimerText.text = "3";
                 yield return new WaitForSeconds(1f);
@@ -549,17 +610,24 @@ namespace Khatim_F2
                 yield return new WaitForSeconds(1f);
                 startingRoundTimerText.text = "1";
                 yield return new WaitForSeconds(1f);
+
                 UpdatePlayerIndex();
                 ChooseBombPlayer();
+
                 timerPanel.SetActive(false);
+
+                _currOceanType = OceanType.Raise;
                 gmData.ChangeGameState("Game");
             }
             else
             {
                 StartCoroutine(EndMatchDelay());
+
+                _currOceanType = OceanType.Reset;
                 gmData.ChangeGameState("End");
-                Debug.Log("Match Ended");
+                //Debug.Log("Match Ended");
             }
+
         }
 
         /// <summary>

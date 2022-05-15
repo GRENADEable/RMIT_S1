@@ -178,7 +178,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 1.75
   m_Radius: 0.25
-  m_SlopeLimit: 45
+  m_SlopeLimit: 55
   m_StepOffset: 0.1
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0.001
@@ -301,7 +301,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gmData: {fileID: 11400000, guid: 03e78d39d1486324f9ff28be5b9940de, type: 2}
   playerWalkSpeed: 7
-  playerRunSpeed: 10
+  playerRunSpeed: 11
+  playerSlowSpeed: 2
   playerRotationSpeed: 10
   jumpPower: 5
   selfBomberFlagDelay: 1

@@ -27,6 +27,10 @@ namespace Khatim_F2
         private float playerRunSpeed = default;
 
         [SerializeField]
+        [Tooltip("Player Slow Speed")]
+        private float playerSlowSpeed = default;
+
+        [SerializeField]
         [Tooltip("Player Rotation Speed")]
         [Range(0f, 15f)] private float playerRotationSpeed = default;
 
@@ -97,9 +101,10 @@ namespace Khatim_F2
         [Header("Player Movemnt")]
         private Vector3 _movement = default;
         private bool IsJumping { get => _isJumping; set => _isJumping = value; }
-        [SerializeField] private bool _isJumping = default;
+        private bool _isJumping = default;
+        private bool _isSlowed = default;
         private Vector3 _vel = default;
-        [SerializeField] private float _currSpeed = default;
+        private float _currSpeed = default;
         private bool CanJump { get => _canJump; set => _canJump = value; }
         private bool _canJump = default;
         private bool _isGrounded = default;
@@ -173,6 +178,15 @@ namespace Khatim_F2
                     Debug.Log("Sending Event");
                 }
             }
+
+            if (other.CompareTag("Water_Slow"))
+                _isSlowed = true;
+        }
+
+        void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Water_Slow"))
+                _isSlowed = false;
         }
         #endregion
 
@@ -215,14 +229,17 @@ namespace Khatim_F2
             Vector3 movement;
 
             //if (IsSwitchedControls)
-            //    movement = new Vector3(-xMove, 0f, -yMove).normalized;
+            //    movement = new Vector3(-_movement.x, 0f, -_movement.y).normalized;
             //else
             movement = new Vector3(_movement.x, 0f, _movement.y).normalized;
 
             if (movement != Vector3.zero)
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(movement), playerRotationSpeed * Time.deltaTime);
 
-            _charControl.Move(_currSpeed * Time.deltaTime * movement);
+            if (_isSlowed)
+                _charControl.Move(playerSlowSpeed * Time.deltaTime * movement);
+            else
+                _charControl.Move(_currSpeed * Time.deltaTime * movement);
         }
 
         /// <summary>

@@ -10,6 +10,7 @@ TagManager:
   - Remote
   - Toaster_R
   - Toaster_L
+  - Water_Slow
   layers:
   - Default
   - TransparentFX
