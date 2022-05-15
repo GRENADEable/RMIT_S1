@@ -78,6 +78,10 @@ namespace Khatim_F2
         private GameObject[] firstSelectedButtons = default;
 
         [SerializeField]
+        [Tooltip("Player float Name Prefab")]
+        private GameObject playerFloatPrefab = default;
+
+        [SerializeField]
         [Tooltip("Timer Panel")]
         private GameObject timerPanel = default;
 
@@ -166,6 +170,7 @@ namespace Khatim_F2
         private List<CharacterController> _playersCharController = new List<CharacterController>();
         private List<CapsuleCollider> _playersCol = new List<CapsuleCollider>();
         private List<PlayerSpawns> _playerSpawns = new List<PlayerSpawns>();
+        private List<PlayerFloatingName> _playersFloatName = new List<PlayerFloatingName>();
         private int spawnIndex = default;
 
         public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
@@ -586,11 +591,19 @@ namespace Khatim_F2
             yield return new WaitForSeconds(1f);
             startingRoundTimerText.text = "1";
             yield return new WaitForSeconds(1f);
+
             ChooseBombPlayer();
             timerPanel.SetActive(false);
             hudPanel.SetActive(true);
+
             PlayerInputManager.instance.enabled = false;
             _currOceanType = OceanType.Raise;
+
+            for (int i = 0; i < _playersFloatName.Count; i++)
+                Destroy(_playersFloatName[i].gameObject);
+
+            _playersFloatName.Clear();
+
             gmData.ChangeGameState("Game");
         }
 
@@ -604,6 +617,7 @@ namespace Khatim_F2
             {
                 _currOceanType = OceanType.Reset;
                 timerPanel.SetActive(true);
+
                 startingRoundTimerText.text = "3";
                 yield return new WaitForSeconds(1f);
                 startingRoundTimerText.text = "2";
@@ -690,16 +704,27 @@ namespace Khatim_F2
         /// <param name="plyBall"> Player GameObject received from Event; </param>
         void OnPlayerIntialisedEventReceived(PlayerControllerCapsule plyBall)
         {
+            // Sets up all the player controllers;
             _playersController.Add(plyBall);
             _playersCharController.Add(plyBall.GetComponent<CharacterController>());
             _playersCol.Add(plyBall.GetComponent<CapsuleCollider>());
 
+            // Sets ui the Visual Datas;
             _playersController[PlayerNo].name = $"{playerVisData[PlayerNo].playerName}";
             _playersController[PlayerNo].GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", playerVisData[PlayerNo].playerColour);
             _playersController[PlayerNo].PlayerIndex = PlayerNo;
 
+            // Spawns the Players
             _playersController[PlayerNo].transform.position = SetPlayerSpawns().position;
             _playersCharController[PlayerNo].enabled = true;
+
+            // Sets Up Player floating Names;
+            GameObject plyFloatName = Instantiate(playerFloatPrefab, _playersController[PlayerNo].transform.position, Quaternion.identity, plyBall.transform);
+            PlayerFloatingName floatingName = plyFloatName.GetComponent<PlayerFloatingName>();
+            _playersFloatName.Add(floatingName);
+            floatingName.FloatingNameText.text = playerVisData[PlayerNo].playerName;
+            floatingName.FollowPos = plyBall.gameObject.transform;
+            floatingName.name = $"{playerVisData[PlayerNo].playerName}_Name_Canvas_World";
 
             PlayerNo++;
             _playerSpawns.RemoveAt(spawnIndex);

@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 7184303230675375148}
   m_Layer: 3
   m_Name: Player_Ball
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -251,6 +251,7 @@ MonoBehaviour:
   moveForceMulti: 10
   forceClamp: 8
   jumpForceMulti: 12
+  forceCollisionMulti: 3
   sphereRadius: 1.05
   groundMask:
     serializedVersion: 2

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 namespace Khatim_F2
@@ -13,16 +14,21 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player Score Text")]
         private TextMeshProUGUI playerPoints = default;
+
+        [SerializeField]
+        [Tooltip("Player Image")]
+        private Image _playerImg = default;
+        public Image PlayerImg { get => _playerImg; set => _playerImg = value; }
         #endregion
 
         #region Private Variables
         public string PlayerName { get => _playerName; set => _playerName = value; }
-        [SerializeField] private string _playerName = default;
+        private string _playerName = default;
 
         public int PlayerPointIndex { get => _currPointIndex; set => _currPointIndex = value; }
-        [SerializeField] private int _currPointIndex = default;
+        private int _currPointIndex = default;
         public int PlayerPoints { get => _currPoints; set => _currPoints = value; }
-        [SerializeField] private int _currPoints = default;
+        private int _currPoints = default;
         #endregion
 
         #region Unity Callbacks
@@ -44,15 +50,7 @@ namespace Khatim_F2
         }
         #endregion
 
-        void Start()
-        {
-            IntialiseUI();
-        }
-
-        void Update()
-        {
-
-        }
+        void Start() => IntialiseUI();
         #endregion
 
         #region My Functions
@@ -66,6 +64,10 @@ namespace Khatim_F2
             playerName.text = $"{PlayerName}";
         }
 
+        /// <summary>
+        /// Updates the score of the player who wins the round;
+        /// </summary>
+        /// <param name="score"> Score increment Value; </param>
         public void UpdateScore(int score)
         {
             PlayerPoints += score;

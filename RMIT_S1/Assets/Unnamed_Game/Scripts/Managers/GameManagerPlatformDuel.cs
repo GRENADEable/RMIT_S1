@@ -78,6 +78,10 @@ namespace Khatim_F2
         private GameObject[] firstSelectedButtons = default;
 
         [SerializeField]
+        [Tooltip("Player float Name Prefab")]
+        private GameObject playerFloatPrefab = default;
+
+        [SerializeField]
         [Tooltip("Timer Panel")]
         private GameObject timerPanel = default;
 
@@ -189,14 +193,11 @@ namespace Khatim_F2
 
         #region Private Variables
 
-        #region UI
-
-        #endregion
-
         #region Game
         [Header("Game")]
         private List<PlayerControllerBall> _playersBall = new List<PlayerControllerBall>();
         private List<PlayerScore> _playersScore = new List<PlayerScore>();
+        private List<PlayerFloatingName> _playersFloatName = new List<PlayerFloatingName>();
 
         public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
         private int _currPlayerNo = default;
@@ -219,8 +220,8 @@ namespace Khatim_F2
         private enum ObstacleType { All, DisabledJump, SwitchedControls, None };
         private bool _isObstacleEventSent = default;
 
-        [SerializeField] private float _currGameRoundTime = default;
-        [SerializeField] private float _currControlsChangeTimer = default;
+        private float _currGameRoundTime = default;
+        private float _currControlsChangeTimer = default;
         #endregion
 
         #endregion
@@ -299,6 +300,37 @@ namespace Khatim_F2
             popupObstacleAreaAnim.Play("Pop_Obstacle_Anim");
         }
 
+        /// <summary>
+        /// Sets the UI of the player depending on how many players joined;
+        /// </summary>
+        void SetPlayersUI()
+        {
+            int playerIndex = 0;
+
+            for (int i = 0; i < _playersBall.Count; i++)
+            {
+                GameObject plyScore = Instantiate(playerScorePrefab, playerScorePos.position, Quaternion.identity, playerScorePos);
+                plyScore.name = playerVisData[i].playerName;
+
+                _playersScore.Add(plyScore.GetComponent<PlayerScore>());
+                _playersScore[i].PlayerName = playerVisData[i].playerName;
+                _playersScore[i].PlayerPointIndex = playerIndex;
+                _playersScore[i].PlayerImg.color = playerVisData[i].playerColour;
+
+                playerIndex++;
+            }
+
+            for (int i = 0; i < _playersFloatName.Count; i++)
+                Destroy(_playersFloatName[i].gameObject);
+
+            _playersFloatName.Clear();
+
+            hudPanel.SetActive(true);
+            platformWallsAnim.Play("Platform_Duel_Wall_Open_Anim");
+            _totalPlayerNo = PlayerNo;
+            gmData.ChangeGameState("Game");
+        }
+
         #region Buttons
         /// <summary>
         /// Function tied with Resume_Button Button;
@@ -363,56 +395,20 @@ namespace Khatim_F2
 
         #region Game
         /// <summary>
-        /// Sets the UI of the player depending on how many players joined;
-        /// </summary>
-        void SetPlayersUI()
-        {
-            int playerIndex = 0;
-
-            for (int i = 0; i < _playersBall.Count; i++)
-            {
-                GameObject plyScore = Instantiate(playerScorePrefab, playerScorePos.position, Quaternion.identity, playerScorePos);
-                plyScore.name = playerVisData[i].playerName;
-
-                _playersScore.Add(plyScore.GetComponent<PlayerScore>());
-                _playersScore[i].PlayerName = playerVisData[i].playerName;
-                _playersScore[i].PlayerPointIndex = playerIndex;
-
-                playerIndex++;
-            }
-
-            hudPanel.SetActive(true);
-            platformWallsAnim.Play("Platform_Duel_Wall_Open_Anim");
-            _totalPlayerNo = PlayerNo;
-            gmData.ChangeGameState("Game");
-        }
-
-        /// <summary>
-        /// Round Timer and also updates the UI for it;
-        /// </summary>
-        void RoundTimer()
-        {
-            _currGameRoundTime -= Time.deltaTime;
-            gameRoundTimerText.text = _currGameRoundTime.ToString("f1");
-
-            if (_currGameRoundTime <= 0)
-            {
-                gmData.ChangeGameState("Starting");
-                EndRoundWithoutPoint();
-            }
-        }
-
-        /// <summary>
         /// If one player stands, they win a point;
         /// </summary>
         void EndRoundWithPoint()
         {
             CloseWalls();
+            Debug.Log("Round Ended with Point");
 
             for (int i = 0; i < _playersBall.Count; i++)
             {
                 if (_playersBall[i].gameObject.activeInHierarchy)
+                {
                     _playersScore[_playersBall[i].PlayerIndex].UpdateScore(playerScoreIncrement);
+                    PopupText($"{_playersScore[i].PlayerName} Won");
+                }
 
                 _playersBall[i].gameObject.SetActive(false);
             }
@@ -424,6 +420,8 @@ namespace Khatim_F2
         void EndRoundWithoutPoint()
         {
             CloseWalls();
+            PopupText("Nobody Won");
+            Debug.Log("Round Ended without Point");
 
             for (int i = 0; i < _playersBall.Count; i++)
                 _playersBall[i].gameObject.SetActive(false);
@@ -441,6 +439,7 @@ namespace Khatim_F2
             playerDeathBox.SetActive(false);
             jumpControlsImg.sprite = obstacleSprites[1];
             switchedControlsImg.gameObject.SetActive(false);
+
             StartCoroutine(EndRoundPointDelay());
         }
 
@@ -545,6 +544,21 @@ namespace Khatim_F2
 
         #region Game Timers
         /// <summary>
+        /// Round Timer and also updates the UI for it;
+        /// </summary>
+        void RoundTimer()
+        {
+            _currGameRoundTime -= Time.deltaTime;
+            gameRoundTimerText.text = _currGameRoundTime.ToString("f1");
+
+            if (_currGameRoundTime <= 0)
+            {
+                gmData.ChangeGameState("Starting");
+                EndRoundWithoutPoint();
+            }
+        }
+
+        /// <summary>
         /// Intialises the round timers with the starting values;
         /// </summary>
         void SetRoundTimers()
@@ -554,7 +568,9 @@ namespace Khatim_F2
             _currControlsChangeTimer = Random.Range(10f, startingGameRoundTimer / 2);
             gameRoundTimerText.text = startingGameRoundTimer.ToString();
         }
+        #endregion
 
+        #region Obstacles
         /// <summary>
         /// Changes the controls after the timer ends;
         /// </summary>
@@ -772,11 +788,21 @@ namespace Khatim_F2
         /// <param name="plyBall"> Player GameObject received from Event; </param>
         void OnPlayerIntialisedEventReceived(PlayerControllerBall plyBall)
         {
+            // Sets up the ball variables;
             _playersBall.Add(plyBall);
             _playersBall[PlayerNo].name = $"{playerVisData[PlayerNo].playerName}";
             _playersBall[PlayerNo].GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", playerVisData[PlayerNo].playerColour);
             _playersBall[PlayerNo].transform.position = playerSpawnPos.position;
             _playersBall[PlayerNo].PlayerIndex = PlayerNo;
+
+            // Sets Up Player floating Names;
+            GameObject plyFloatName = Instantiate(playerFloatPrefab, playerSpawnPos.position, Quaternion.identity, plyBall.transform);
+            PlayerFloatingName floatingName = plyFloatName.GetComponent<PlayerFloatingName>();
+            _playersFloatName.Add(floatingName);
+            floatingName.FloatingNameText.text = playerVisData[PlayerNo].playerName;
+            floatingName.FollowPos = plyBall.gameObject.transform;
+            floatingName.name = $"{playerVisData[PlayerNo].playerName}_Name_Canvas_World";
+
             PlayerNo++;
 
             if (PlayerNo == playerCountToStartMatch)

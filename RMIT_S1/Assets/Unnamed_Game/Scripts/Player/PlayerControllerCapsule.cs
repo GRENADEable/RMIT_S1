@@ -287,7 +287,9 @@ namespace Khatim_F2
         /// <param name="context"> Parameter from the new Input System; </param>
         public void OnJumpPlayer(InputAction.CallbackContext context)
         {
-            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Game ||
+                gmData.currState == GameManagerDataMiniGame.GameState.Intro ||
+                gmData.currState == GameManagerDataMiniGame.GameState.Starting)
             {
                 IsJumping = context.ReadValueAsButton();
                 JumpPlayer();

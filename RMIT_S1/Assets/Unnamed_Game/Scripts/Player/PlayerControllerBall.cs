@@ -27,6 +27,10 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player Speed Multiplier")]
         private float jumpForceMulti = default;
+
+        [SerializeField]
+        [Tooltip("Player Collision Multiplier")]
+        private float forceCollisionMulti = default;
         #endregion
 
         #region Player Grounding
@@ -125,18 +129,24 @@ namespace Khatim_F2
 
         void Update()
         {
-            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
-            {
-                RollPlayer();
-                JumpPlayer();
-                GroundCheck();
-            }
+            //if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+            //{
+            RollPlayer();
+            JumpPlayer();
+            GroundCheck();
+            //}
         }
 
         void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Death_Box"))
                 OnPlayerFall?.Invoke(PlayerIndex);
+        }
+
+        void OnCollisionEnter(Collision other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+                other.gameObject.GetComponent<Rigidbody>().AddForce(_movement * forceCollisionMulti, ForceMode.Impulse);
         }
         #endregion
 
@@ -200,8 +210,7 @@ namespace Khatim_F2
         /// <param name="context"> Parameter from the new Input System; </param>
         public void OnMovePlayer(InputAction.CallbackContext context)
         {
-            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
-                _movement = context.ReadValue<Vector2>();
+            _movement = context.ReadValue<Vector2>();
         }
 
         /// <summary>
@@ -211,7 +220,9 @@ namespace Khatim_F2
         /// <param name="context"> Parameter from the new Input System; </param>
         public void OnJumpPlayer(InputAction.CallbackContext context)
         {
-            if (gmData.currState == GameManagerDataMiniGame.GameState.Game)
+            if (gmData.currState == GameManagerDataMiniGame.GameState.Game ||
+                gmData.currState == GameManagerDataMiniGame.GameState.Intro ||
+                gmData.currState == GameManagerDataMiniGame.GameState.Starting)
                 IsJumping = context.ReadValueAsButton();
         }
 

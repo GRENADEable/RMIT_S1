@@ -1207,8 +1207,8 @@ GameObject:
   - component: {fileID: 1827009525}
   - component: {fileID: 1827009524}
   m_Layer: 0
-  m_Name: Camera
-  m_TagString: Untagged
+  m_Name: Main_Cam
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1449,6 +1449,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f11c5530740eb104aa381fee36f9f3f1, type: 3}
   firstSelectedButtons:
   - {fileID: 2039688048}
+  playerFloatPrefab: {fileID: 153906214111216454, guid: 8f55b20ff70d6e04b9ce496fb2d60ee1, type: 3}
   timerPanel: {fileID: 937509299}
   hudPanel: {fileID: 937509298}
   pausePanel: {fileID: 1709425274}
@@ -1468,5 +1469,3 @@ MonoBehaviour:
   resetPlatformTime: 1
   startingGameRoundTimer: 60
   endRoundDelayTimer: 2
-  _currGameRoundTime: 0
-  _currControlsChangeTimer: 0
