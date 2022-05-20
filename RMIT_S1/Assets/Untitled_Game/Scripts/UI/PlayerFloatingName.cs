@@ -28,7 +28,7 @@ namespace Khatim_F2
             _floatingNameText = GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        void Update()
+        void LateUpdate()
         {
             transform.position = FollowPos.transform.position + uiOffset;
             transform.LookAt(_cam.transform.position);
