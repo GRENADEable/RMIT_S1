@@ -189,6 +189,15 @@ namespace Khatim_F2
         public static event SendEventsBool OnControlsJump;
         #endregion
 
+        #region Events Void
+        public delegate void SendEvents();
+        /// <summary>
+        /// Event sent from GameManagerPlatformDuel to CrowdManager Scripts;
+        /// Stops the current Anim and players the PogAnim;
+        /// </summary>
+        public static event SendEvents OnPogAnim;
+        #endregion
+
         #endregion
 
         #region Private Variables
@@ -826,6 +835,7 @@ namespace Khatim_F2
             {
                 PlayerNo = _totalPlayerNo;
                 EndRoundWithPoint();
+                OnPogAnim?.Invoke();
             }
         }
 

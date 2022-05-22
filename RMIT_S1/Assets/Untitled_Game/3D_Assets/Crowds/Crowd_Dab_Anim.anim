@@ -119,7 +119,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Crowd_1_Arms/Arm_L_Pivot
+    path: Crowd_Arms/Arm_L_Pivot
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -225,7 +225,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Crowd_1_Arms/Arm_R_Pivot
+    path: Crowd_Arms/Arm_R_Pivot
   m_PositionCurves: []
   m_ScaleCurves: []
   m_FloatCurves: []
@@ -238,14 +238,14 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3702062178
+      path: 3482618274
       attribute: 4
       script: {fileID: 0}
       typeID: 4
       customType: 4
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3947437041
+      path: 4168445489
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -379,7 +379,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: Crowd_1_Arms/Arm_L_Pivot
+    path: Crowd_Arms/Arm_L_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -488,7 +488,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: Crowd_1_Arms/Arm_L_Pivot
+    path: Crowd_Arms/Arm_L_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -597,7 +597,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: Crowd_1_Arms/Arm_L_Pivot
+    path: Crowd_Arms/Arm_L_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -706,7 +706,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: Crowd_1_Arms/Arm_R_Pivot
+    path: Crowd_Arms/Arm_R_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -815,7 +815,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: Crowd_1_Arms/Arm_R_Pivot
+    path: Crowd_Arms/Arm_R_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -924,7 +924,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: Crowd_1_Arms/Arm_R_Pivot
+    path: Crowd_Arms/Arm_R_Pivot
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves:
@@ -935,7 +935,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Crowd_1_Arms/Arm_L_Pivot
+    path: Crowd_Arms/Arm_L_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -945,7 +945,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Crowd_1_Arms/Arm_L_Pivot
+    path: Crowd_Arms/Arm_L_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -955,7 +955,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Crowd_1_Arms/Arm_L_Pivot
+    path: Crowd_Arms/Arm_L_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -965,7 +965,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Crowd_1_Arms/Arm_R_Pivot
+    path: Crowd_Arms/Arm_R_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -975,7 +975,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Crowd_1_Arms/Arm_R_Pivot
+    path: Crowd_Arms/Arm_R_Pivot
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -985,7 +985,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Crowd_1_Arms/Arm_R_Pivot
+    path: Crowd_Arms/Arm_R_Pivot
     classID: 4
     script: {fileID: 0}
   m_HasGenericRootTransform: 0

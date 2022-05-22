@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 9086564795018685774}
   - component: {fileID: 3936346887379283431}
   m_Layer: 0
-  m_Name: Arm_R
+  m_Name: Arm_R_Bod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -248,7 +248,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4fc20ae90ea26f048a1db7b0e0866a25, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 3615522916049381992}
   - component: {fileID: 3615522916049381995}
   m_Layer: 0
-  m_Name: Crowd_1_Bod
+  m_Name: Crowd_Bod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,7 +329,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4fc20ae90ea26f048a1db7b0e0866a25, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 3579701235717314343}
   - component: {fileID: 3912286921028326453}
   m_Layer: 0
-  m_Name: Arm_L
+  m_Name: Arm_L_Bod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,7 +462,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4fc20ae90ea26f048a1db7b0e0866a25, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -525,7 +525,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8112895001813184737}
   m_Layer: 0
-  m_Name: Crowd_1_Arms
+  m_Name: Crowd_Arms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
