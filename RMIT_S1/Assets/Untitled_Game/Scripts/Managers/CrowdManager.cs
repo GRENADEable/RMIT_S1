@@ -77,7 +77,7 @@ namespace Khatim_F2
         {
             for (int i = 0; i < crowdsAnim.Length; i++)
             {
-                crowdsAnim[i].SetInteger("ClapIndex", 4);
+                crowdsAnim[i].SetInteger("ClapIndex", 5);
                 crowdsAnim[i].SetTrigger("Clap");
             }
             yield return new WaitForSeconds(4);

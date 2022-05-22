@@ -74,6 +74,22 @@ namespace Khatim_F2
 
         #region GameObjects
         [SerializeField]
+        [Tooltip("Game Canvas")]
+        private GameObject gameCanvas = default;
+
+        [SerializeField]
+        [Tooltip("Intro Canvas GameObject")]
+        private GameObject introCanvas = default;
+
+        [SerializeField]
+        [Tooltip("Intro Timeline GameObject")]
+        private GameObject introTimeline = default;
+
+        [SerializeField]
+        [Tooltip("Intro Virtual Cams GameObject")]
+        private GameObject introVCams = default;
+
+        [SerializeField]
         [Tooltip("All the first button that the Event System will highlight")]
         private GameObject[] firstSelectedButtons = default;
 
@@ -269,7 +285,6 @@ namespace Khatim_F2
             _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
 
             gmData.ChangeGameState("Intro");
-            fadeBG.Play("Fade_In");
 
             if (isCursorDisabled)
                 gmData.DisableCursor();
@@ -297,6 +312,21 @@ namespace Khatim_F2
         #endregion
 
         #region My Functions
+
+        #region Timeline
+        /// <summary>
+        /// Tied to Signal Emitter from Timeline;
+        /// Switches from cutscene to gameplay;
+        /// </summary>
+        public void OnIntroEnd()
+        {
+            introTimeline.SetActive(false);
+            introVCams.SetActive(false);
+            introCanvas.SetActive(false);
+            gameCanvas.SetActive(true);
+            fadeBG.Play("Fade_In");
+        }
+        #endregion
 
         #region UI
         /// <summary>
@@ -817,6 +847,7 @@ namespace Khatim_F2
             if (PlayerNo == playerCountToStartMatch)
             {
                 gmData.ChangeGameState("Starting");
+                OnIntroEnd();
                 StartCoroutine(StartMatchDelay());
             }
         }
