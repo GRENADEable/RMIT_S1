@@ -28,7 +28,7 @@ namespace Khatim_F2
         #region Unity Callbacks
         void Start()
         {
-            gmData.EnableCursor();
+            gmData.DisableCursor();
             gmData.ChangeGameState("Menu");
             fadeBG.Play("Fade_In");
         }

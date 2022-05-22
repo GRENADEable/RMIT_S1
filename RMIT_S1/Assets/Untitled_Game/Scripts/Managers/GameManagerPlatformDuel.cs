@@ -74,14 +74,6 @@ namespace Khatim_F2
 
         #region GameObjects
         [SerializeField]
-        [Tooltip("Game Canvas")]
-        private GameObject gameCanvas = default;
-
-        [SerializeField]
-        [Tooltip("Intro Canvas GameObject")]
-        private GameObject introCanvas = default;
-
-        [SerializeField]
         [Tooltip("Intro Timeline GameObject")]
         private GameObject introTimeline = default;
 
@@ -285,6 +277,7 @@ namespace Khatim_F2
             _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
 
             gmData.ChangeGameState("Intro");
+            gmData.DisableCursor();
 
             if (isCursorDisabled)
                 gmData.DisableCursor();
@@ -322,8 +315,6 @@ namespace Khatim_F2
         {
             introTimeline.SetActive(false);
             introVCams.SetActive(false);
-            introCanvas.SetActive(false);
-            gameCanvas.SetActive(true);
             fadeBG.Play("Fade_In");
         }
         #endregion
@@ -787,6 +778,7 @@ namespace Khatim_F2
         IEnumerator RestartDelay()
         {
             gmData.TogglePause(false);
+            introTimeline.SetActive(false);
             fadeBG.Play("Fade_Out");
             yield return new WaitForSeconds(0.5f);
             gmData.ChangeLevel(Application.loadedLevel);
@@ -799,6 +791,7 @@ namespace Khatim_F2
         IEnumerator MenuDelay()
         {
             gmData.TogglePause(false);
+            introTimeline.SetActive(false);
             fadeBG.Play("Fade_Out");
             yield return new WaitForSeconds(0.5f);
             gmData.ChangeLevel(0);
@@ -811,6 +804,7 @@ namespace Khatim_F2
         IEnumerator QuitGameDelay()
         {
             gmData.TogglePause(false);
+            introTimeline.SetActive(false);
             fadeBG.Play("Fade_Out");
             yield return new WaitForSeconds(0.5f);
             gmData.QuitGame();
