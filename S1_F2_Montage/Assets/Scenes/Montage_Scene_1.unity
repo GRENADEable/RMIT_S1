@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.0032084724, g: 0.0065324716, b: 0.011803577, a: 1}
+  m_IndirectSpecularColor: {r: 0.0020445925, g: 0.0047500655, b: 0.009455113, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -474,7 +474,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -651,7 +651,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.00000001004282, y: 0.973249, z: -0.22975291, w: -0.00000004254207}
+  m_LocalRotation: {x: -0.000000003195649, y: 0.973249, z: -0.22975294, w: -0.000000013536988}
   m_LocalPosition: {x: 0.0000017484556, y: 10, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1426,6 +1426,8 @@ PlayableDirector:
     value: {fileID: 2000381061}
   - key: {fileID: -8189935597943965896, guid: 96f1dbd1c1492404d8d160df09783c2c, type: 2}
     value: {fileID: 705507993}
+  - key: {fileID: -4522994371009285913, guid: 96f1dbd1c1492404d8d160df09783c2c, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References:
     - f0063ac94bc1d7647a79425d626c5b36: {fileID: 1904688082}
@@ -2433,7 +2435,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904688081}
-  m_LocalRotation: {x: -0.00000001004282, y: 0.973249, z: -0.22975291, w: -0.00000004254207}
+  m_LocalRotation: {x: -0.000000003195649, y: 0.973249, z: -0.22975294, w: -0.000000013536988}
   m_LocalPosition: {x: 0.0000017484556, y: 10, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2939,6 +2941,7 @@ MonoBehaviour:
   matSkybox: {fileID: 2100000, guid: aff6310acbf9fa14ba58000305cb3bb8, type: 2}
   montageTimeline: {fileID: 1469128002}
   crwdManage: {fileID: 2119469308}
+  _isTimelinePlayed: 0
 --- !u!4 &2119469307
 Transform:
   m_ObjectHideFlags: 0
@@ -7078,31 +7081,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2663040456353982991}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Khatim_F2.GameManagerPlatformDuel, Khatim.F2
-        m_MethodName: OnClick_Menu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MadInc.GameManager, MadInc
-        m_MethodName: OnClick_DisableButtons
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!224 &2663040456353982989
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7387,19 +7366,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2663040457329017636}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Khatim_F2.GameManagerPlatformDuel, Khatim.F2
-        m_MethodName: OnClick_Resume
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!222 &2663040457329017639
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7640,31 +7607,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2663040457655073854}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Khatim_F2.GameManagerPlatformDuel, Khatim.F2
-        m_MethodName: OnClick_Restart
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Khatim_F2.GameManagerPlatformDuel, Khatim.F2
-        m_MethodName: OnClick_DisableButtons
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2663040458090023844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8033,31 +7976,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2663040458240611061}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Khatim_F2.GameManagerPlatformDuel, Khatim.F2
-        m_MethodName: OnClick_Quit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MadInc.GameManager, MadInc
-        m_MethodName: OnClick_DisableButtons
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!224 &2663040458240611067
 RectTransform:
   m_ObjectHideFlags: 0

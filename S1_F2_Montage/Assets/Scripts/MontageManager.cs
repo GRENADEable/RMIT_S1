@@ -17,11 +17,19 @@ public class MontageManager : MonoBehaviour
     private CrowdManager crwdManage = default;
     #endregion
 
+    #region Private Variables
+    [SerializeField] private bool _isTimelinePlayed = default;
+    #endregion
+
     #region Unity Callbacks
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !_isTimelinePlayed)
+        {
+            _isTimelinePlayed = true;
             montageTimeline.Play();
+            Debug.Log("Playing Montage");
+        }
     }
     #endregion
 
@@ -37,13 +45,5 @@ public class MontageManager : MonoBehaviour
     /// Enables crowd control;
     /// </summary>
     public void OnCrowdAlive() => crwdManage.enabled = true;
-    #endregion
-
-    #region Coroutines
-
-    #endregion
-
-    #region Events
-
     #endregion
 }
