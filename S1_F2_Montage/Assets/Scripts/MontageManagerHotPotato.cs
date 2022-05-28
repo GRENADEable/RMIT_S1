@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class MontageManager : MonoBehaviour
+public class MontageManagerHotPotato : MonoBehaviour
 {
     #region Serialized Variables
     [SerializeField]
@@ -11,10 +11,6 @@ public class MontageManager : MonoBehaviour
     [SerializeField]
     [Tooltip("Montage Timeline")]
     private PlayableDirector montageTimeline = default;
-
-    [SerializeField]
-    [Tooltip("Crowd Manager Script")]
-    private CrowdManager crwdManage = default;
     #endregion
 
     #region Private Variables
@@ -39,11 +35,5 @@ public class MontageManager : MonoBehaviour
     /// Changes skybox;
     /// </summary>
     public void OnSkyboxChange() => RenderSettings.skybox = matSkybox;
-
-    /// <summary>
-    /// Subbed to Timeline event;
-    /// Enables crowd control;
-    /// </summary>
-    public void OnCrowdAlive() => crwdManage.enabled = true;
     #endregion
 }
