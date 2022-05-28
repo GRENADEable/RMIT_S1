@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
@@ -23,14 +24,20 @@ namespace Khatim_F2
         private PlayerVisualData[] playerVisData = default;
 
         [SerializeField]
+        [Tooltip("Player Input Manager")]
+        private PlayerInputManager plyInputManager = default;
+
+        [SerializeField]
         [Tooltip("Do you want to disable Cursor?")]
         private bool isCursorDisabled = default;
         #endregion
 
         #region UI
         [Space, Header("UI")]
+        //[SerializeField]
+        //[Tooltip("Controls Text")]
+        //private TextMeshProUGUI controlsCountdownText = default;
 
-        #region UI
         [SerializeField]
         [Tooltip("Starting Round Timer Text")]
         private TextMeshProUGUI startingRoundTimerText = default;
@@ -47,17 +54,9 @@ namespace Khatim_F2
         [Tooltip("Switch Controls Text")]
         private TextMeshProUGUI switchControlsText = default;
 
+        [SerializeField]
         [Tooltip("Menu Button in an Array that will be used to disable them when clicking on other Buttons")]
-        [SerializeField]
         private Button[] menuButtons;
-
-        [SerializeField]
-        [Tooltip("Fade panel Animation Component")]
-        private Animator fadeBG = default;
-
-        [SerializeField]
-        [Tooltip("Popup GameObject")]
-        private Animator popupObstacleAreaAnim = default;
 
         [SerializeField]
         [Tooltip("Switched Controls Image Component")]
@@ -72,11 +71,27 @@ namespace Khatim_F2
         private Sprite[] obstacleSprites = default;
         #endregion
 
-        #region GameObjects
+        #region Animators
+        [Space, Header("Animators")]
         [SerializeField]
-        [Tooltip("Intro Timeline GameObject")]
-        private GameObject introTimeline = default;
+        [Tooltip("Intro Timeline")]
+        private PlayableDirector introTimeline = default;
 
+        [SerializeField]
+        [Tooltip("Fade panel Animation Component")]
+        private Animator fadeBG = default;
+
+        [SerializeField]
+        [Tooltip("Popup GameObject")]
+        private Animator popupObstacleAreaAnim = default;
+
+        [SerializeField]
+        [Tooltip("Platform Anim Controller")]
+        private Animator platformWallsAnim = default;
+        #endregion
+
+        #region GameObjects
+        [Space, Header("GameObjects")]
         [SerializeField]
         [Tooltip("Intro Virtual Cams GameObject")]
         private GameObject introVCams = default;
@@ -88,6 +103,10 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player float Name Prefab")]
         private GameObject playerFloatPrefab = default;
+
+        [SerializeField]
+        [Tooltip("Controls Panel")]
+        private GameObject controlsPanel = default;
 
         [SerializeField]
         [Tooltip("Timer Panel")]
@@ -108,30 +127,29 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Switch Controls Panel")]
         private GameObject switchControlsPanel = default;
-        #endregion
-
-        #region Transforms
-        [SerializeField]
-        [Tooltip("Player Score Spawn Pos")]
-        private Transform playerScorePos = default;
-        #endregion
-
-        #endregion
-
-        #region Game
-        [Space, Header("Game")]
-        [SerializeField]
-        [Tooltip("Player Spawn Pos")]
-        private Transform playerSpawnPos = default;
-
-        [SerializeField]
-        [Tooltip("Platform Anim Controller")]
-        private Animator platformWallsAnim = default;
 
         [SerializeField]
         [Tooltip("Player Death Box Col")]
         private GameObject playerDeathBox = default;
 
+        [SerializeField]
+        [Tooltip("Platform GameObject")]
+        private GameObject platform = default;
+        #endregion
+
+        #region Transforms
+        [Space, Header("Transforms")]
+        [SerializeField]
+        [Tooltip("Player Score Spawn Pos")]
+        private Transform playerScorePos = default;
+
+        [SerializeField]
+        [Tooltip("Player Spawn Pos")]
+        private Transform playerSpawnPos = default;
+        #endregion
+
+        #region Ints
+        [Space, Header("Ints")]
         [SerializeField]
         [Tooltip("Player Score Increment")]
         private int playerScoreIncrement = 1;
@@ -141,12 +159,8 @@ namespace Khatim_F2
         private int playerCountToStartMatch = default;
         #endregion
 
-        #region Platform
-        [Space, Header("Platform")]
-        [SerializeField]
-        [Tooltip("Platform GameObject")]
-        private GameObject platform = default;
-
+        #region Flaots
+        [Space, Header("Floats")]
         [SerializeField]
         [Tooltip("Platform Rotation Speed")]
         [Range(0f, 40f)]
@@ -169,10 +183,7 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Platform Rotation reset Time")]
         private float resetPlatformTime = default;
-        #endregion
 
-        #region Game Timers
-        [Space, Header("Game Timers")]
         [SerializeField]
         [Tooltip("Starting Round Time")]
         private float startingGameRoundTimer = default;
@@ -210,35 +221,46 @@ namespace Khatim_F2
 
         #region Private Variables
 
-        #region Game
-        [Header("Game")]
+        #region Lists
+        [Header("Lists")]
         private List<PlayerControllerBall> _playersBall = new List<PlayerControllerBall>();
         private List<PlayerScore> _playersScore = new List<PlayerScore>();
         private List<PlayerFloatingName> _playersFloatName = new List<PlayerFloatingName>();
-
-        public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
-        private int _currPlayerNo = default;
-        private int _totalPlayerNo = default;
         #endregion
 
-        #region Platform
-        [Header("Platform")]
+        #region Int
+        [Header("Int")]
+        private int _totalPlayerNo = default;
+        public int PlayerNo { get => _currPlayerNo; set => _currPlayerNo = value; }
+        private int _currPlayerNo = default;
+        #endregion
+
+        #region Flaots
+        [Header("Flaots")]
         private float _currPlatformRotTime = default;
+        private float _currGameRoundTime = default;
+        private float _currControlsChangeTimer = default;
+
+        #endregion
+
+        #region Bools
+        [Header("Bools")]
+        private bool _isObstacleEventSent = default;
+        #endregion
+
+        #region Vector3 & Quaternions
+        [Header("Vector3 & Quaternions")]
         private Quaternion _intialPlatformRot = default;
         private Vector3 _intialPlatformScale = default;
+        #endregion
+
+        #region Enums
+        [Header("Enums")]
+        private ObstacleType _currObstacleType = ObstacleType.None;
+        private enum ObstacleType { All, DisabledJump, SwitchedControls, None };
 
         private enum PlatformRotateType { Original, RotateX, MinusRotateX, RotateY, MinusRotateY, RotateZ, MinusRotateZ };
         private PlatformRotateType _currPlatformRotateType = PlatformRotateType.RotateY;
-        #endregion
-
-        #region Game Timers
-        [Header("Game Timers")]
-        private ObstacleType _currObstacleType = ObstacleType.None;
-        private enum ObstacleType { All, DisabledJump, SwitchedControls, None };
-        private bool _isObstacleEventSent = default;
-
-        private float _currGameRoundTime = default;
-        private float _currControlsChangeTimer = default;
         #endregion
 
         #endregion
@@ -270,6 +292,8 @@ namespace Khatim_F2
 
         void Start()
         {
+            //StartCoroutine(ControlsDelay());
+
             SetRoundTimers();
 
             _intialPlatformRot = platform.transform.rotation;
@@ -277,7 +301,8 @@ namespace Khatim_F2
             _currPlatformRotateType = GetRandomEnum<PlatformRotateType>();
 
             gmData.ChangeGameState("Intro");
-            gmData.DisableCursor();
+
+            fadeBG.Play("Fade_In");
 
             if (isCursorDisabled)
                 gmData.DisableCursor();
@@ -313,13 +338,21 @@ namespace Khatim_F2
         /// </summary>
         public void OnIntroEnd()
         {
-            introTimeline.SetActive(false);
+            introTimeline.gameObject.SetActive(false);
             introVCams.SetActive(false);
             fadeBG.Play("Fade_In");
         }
         #endregion
 
         #region UI
+        public void OnClick_ContinueToGame()
+        {
+            plyInputManager.enabled = true;
+            controlsPanel.SetActive(false);
+            introTimeline.Play();
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+
         /// <summary>
         /// Shows a popup Text with a parameter string;
         /// </summary>
@@ -608,7 +641,7 @@ namespace Khatim_F2
         {
             _currObstacleType = GetRandomEnum<ObstacleType>();
             _currControlsChangeTimer = Random.Range(10f, startingGameRoundTimer / 2);
-            PopupText("Controls Changed");
+            //PopupText("Controls Changed");
             _isObstacleEventSent = true;
         }
 
@@ -679,6 +712,7 @@ namespace Khatim_F2
                         _isObstacleEventSent = false;
                         JumpControls(false);
                         SwitchControls(true);
+                        PopupText("Controls Switched, No Jump");
                     }
                     break;
 
@@ -688,6 +722,7 @@ namespace Khatim_F2
                         _isObstacleEventSent = false;
                         JumpControls(false);
                         SwitchControls(false);
+                        PopupText("Controls Normal, No Jump");
                     }
                     break;
 
@@ -697,6 +732,7 @@ namespace Khatim_F2
                         _isObstacleEventSent = false;
                         JumpControls(true);
                         SwitchControls(true);
+                        PopupText("Controls Switched, Jump");
                     }
                     break;
 
@@ -706,6 +742,7 @@ namespace Khatim_F2
                         _isObstacleEventSent = false;
                         JumpControls(true);
                         SwitchControls(false);
+                        PopupText("Controls Normals, Jump");
                     }
                     break;
 
@@ -720,6 +757,27 @@ namespace Khatim_F2
         #region Coroutines
 
         #region Game
+        //IEnumerator ControlsDelay()
+        //{
+        //    controlsCountdownText.text = "6";
+        //    yield return new WaitForSeconds(1);
+        //    controlsCountdownText.text = "5";
+        //    yield return new WaitForSeconds(1);
+        //    controlsCountdownText.text = "4";
+        //    yield return new WaitForSeconds(1);
+        //    controlsCountdownText.text = "3";
+        //    yield return new WaitForSeconds(1);
+        //    controlsCountdownText.text = "2";
+        //    yield return new WaitForSeconds(1);
+        //    controlsCountdownText.text = "1";
+        //    yield return new WaitForSeconds(1);
+        //    controlsCountdownText.text = "0";
+        //    yield return new WaitForSeconds(1);
+        //    plyInputManager.enabled = true;
+        //    controlsPanel.SetActive(false);
+        //    introTimeline.Play();
+        //}
+
         /// <summary>
         /// Starts match with a Delay;
         /// Starts counter, switches UI Panels and disables more players to join the match after counter is ended;
@@ -736,7 +794,7 @@ namespace Khatim_F2
             yield return new WaitForSeconds(1f);
             SetPlayersUI();
             timerPanel.SetActive(false);
-            PlayerInputManager.instance.enabled = false;
+            plyInputManager.enabled = false;
         }
 
         /// <summary>
@@ -778,7 +836,7 @@ namespace Khatim_F2
         IEnumerator RestartDelay()
         {
             gmData.TogglePause(false);
-            introTimeline.SetActive(false);
+            introTimeline.gameObject.SetActive(false);
             fadeBG.Play("Fade_Out");
             yield return new WaitForSeconds(0.5f);
             gmData.ChangeLevel(Application.loadedLevel);
@@ -791,7 +849,7 @@ namespace Khatim_F2
         IEnumerator MenuDelay()
         {
             gmData.TogglePause(false);
-            introTimeline.SetActive(false);
+            introTimeline.gameObject.SetActive(false);
             fadeBG.Play("Fade_Out");
             yield return new WaitForSeconds(0.5f);
             gmData.ChangeLevel(0);
@@ -804,7 +862,7 @@ namespace Khatim_F2
         IEnumerator QuitGameDelay()
         {
             gmData.TogglePause(false);
-            introTimeline.SetActive(false);
+            introTimeline.gameObject.SetActive(false);
             fadeBG.Play("Fade_Out");
             yield return new WaitForSeconds(0.5f);
             gmData.QuitGame();

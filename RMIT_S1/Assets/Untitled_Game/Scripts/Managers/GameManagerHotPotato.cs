@@ -23,14 +23,16 @@ namespace Khatim_F2
         private PlayerVisualData[] playerVisData = default;
 
         [SerializeField]
+        [Tooltip("Player Input Manager")]
+        private PlayerInputManager plyInputManager = default;
+
+        [SerializeField]
         [Tooltip("Do you want to disable Cursor?")]
         private bool isCursorDisabled = default;
         #endregion
 
         #region UI
         [Space, Header("UI")]
-
-        #region UI
         [SerializeField]
         [Tooltip("Starting Round Timer Text")]
         private TextMeshProUGUI startingRoundTimerText = default;
@@ -52,14 +54,6 @@ namespace Khatim_F2
         private Button[] menuButtons;
 
         [SerializeField]
-        [Tooltip("Fade panel Animation Component")]
-        private Animator fadeBG = default;
-
-        [SerializeField]
-        [Tooltip("Popup GameObject")]
-        private Animator popupObstacleAreaAnim = default;
-
-        [SerializeField]
         [Tooltip("Jump Controls Image Component")]
         private Image jumpControlsImg = default;
 
@@ -72,7 +66,19 @@ namespace Khatim_F2
         private Sprite[] obstacleSprites = default;
         #endregion
 
+        #region Animators
+        [Space, Header("Animators")]
+        [SerializeField]
+        [Tooltip("Fade panel Animation Component")]
+        private Animator fadeBG = default;
+
+        [SerializeField]
+        [Tooltip("Popup GameObject")]
+        private Animator popupObstacleAreaAnim = default;
+        #endregion
+
         #region GameObjects
+        [Space, Header("GameObjects")]
         [SerializeField]
         [Tooltip("All the first button that the Event System will highlight")]
         private GameObject[] firstSelectedButtons = default;
@@ -80,6 +86,10 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Player float Name Prefab")]
         private GameObject playerFloatPrefab = default;
+
+        [SerializeField]
+        [Tooltip("Controls Panel")]
+        private GameObject controlsPanel = default;
 
         [SerializeField]
         [Tooltip("Timer Panel")]
@@ -96,33 +106,35 @@ namespace Khatim_F2
         [SerializeField]
         [Tooltip("Switch Controls Panel")]
         private GameObject switchControlsPanel = default;
-        #endregion
 
-        #endregion
-
-        #region Game
-        [Space, Header("Game")]
         [SerializeField]
         [Tooltip("Player Spawn Pos")]
         private GameObject playerSpawnPos = default;
 
         [SerializeField]
+        [Tooltip("Ocean GameObject")]
+        private GameObject oceanGround = default;
+        #endregion
+
+        #region Transforms
+        [Space, Header("Transforms")]
+        [SerializeField]
+        [Tooltip("Ocean end Position")]
+        private Transform oceanEndPos = default;
+        #endregion
+
+        #region Ints
+        [Space, Header("Ints")]
+        [SerializeField]
         [Tooltip("Intial Starting Players")]
         private int playerCountToStartMatch = default;
         #endregion
 
-        #region Game Timers
-        [Space, Header("Game Timers")]
+        #region Floats
+        [Space, Header("Floats")]
         [SerializeField]
         [Tooltip("Starting Round Time")]
         private float startingGameRoundTimer = default;
-        #endregion
-
-        #region Ocean
-        [Space, Header("Ocean")]
-        [SerializeField]
-        [Tooltip("Ocean GameObject")]
-        private GameObject oceanGround = default;
 
         [SerializeField]
         [Tooltip("Ocean raise Speed")]
@@ -132,10 +144,6 @@ namespace Khatim_F2
         [Tooltip("Ocean Reset Speed when round ends")]
         [Range(0f, 10f)]
         private float oceanRoundEndResetSpeed = default;
-
-        [SerializeField]
-        [Tooltip("Ocean end Position")]
-        private Transform oceanEndPos = default;
         #endregion
 
         #region Events Bool
@@ -257,6 +265,13 @@ namespace Khatim_F2
         #region My Functions
 
         #region UI
+        public void OnClick_ContinueToGame()
+        {
+            plyInputManager.enabled = true;
+            controlsPanel.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+
         /// <summary>
         /// Shows a popup Text with a parameter string;
         /// </summary>
@@ -503,6 +518,7 @@ namespace Khatim_F2
                         _isObstacleEventSent = false;
                         JumpControls(false);
                         SpeedyControls(true);
+                        PopupText("Speed , No Jump");
                     }
                     break;
 
@@ -512,6 +528,7 @@ namespace Khatim_F2
                         _isObstacleEventSent = false;
                         JumpControls(false);
                         SpeedyControls(false);
+                        PopupText("No Speed , No Jump");
                     }
                     break;
 
@@ -521,6 +538,7 @@ namespace Khatim_F2
                         _isObstacleEventSent = false;
                         JumpControls(true);
                         SpeedyControls(true);
+                        PopupText("Speed , Jump");
                     }
                     break;
 
@@ -530,6 +548,7 @@ namespace Khatim_F2
                         _isObstacleEventSent = false;
                         JumpControls(true);
                         SpeedyControls(false);
+                        PopupText("No Speed , Jump");
                     }
                     break;
 
@@ -545,10 +564,12 @@ namespace Khatim_F2
         {
             _currObstacleType = GetRandomEnum<ObstacleType>();
             _currControlsChangeTimer = Random.Range(10f, startingGameRoundTimer / 2);
-            PopupText("Controls Changed");
             _isObstacleEventSent = true;
         }
 
+        /// <summary>
+        /// Changes the Ocean movement behaviour;
+        /// </summary>
         void OceanGround()
         {
             switch (_currOceanType)
@@ -596,7 +617,7 @@ namespace Khatim_F2
             timerPanel.SetActive(false);
             hudPanel.SetActive(true);
 
-            PlayerInputManager.instance.enabled = false;
+            plyInputManager.enabled = false;
             _currOceanType = OceanType.Raise;
 
             for (int i = 0; i < _playersFloatName.Count; i++)

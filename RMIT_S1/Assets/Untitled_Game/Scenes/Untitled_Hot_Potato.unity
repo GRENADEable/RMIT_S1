@@ -151,7 +151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &291136404
 GameObject:
@@ -291,6 +291,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 300764757}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &465407178 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5633301880761828794, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
+  m_PrefabInstance: {fileID: 1303159019235231665}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &579803472
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +431,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.5613208, b: 0.5613208, a: 1}
-  m_Intensity: 0.88
+  m_Intensity: 1.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -684,7 +689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b9c39c476e07a98469bee74066f2b8ec, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b9c39c476e07a98469bee74066f2b8ec, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1044,7 +1049,7 @@ Transform:
   m_LocalScale: {x: 10, y: 5, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1204950934
 Rigidbody:
@@ -1344,7 +1349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 2121198781}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1614887165
@@ -1359,7 +1364,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1777615139
 GameObject:
@@ -1553,6 +1558,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2121198781 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8537998797565709999, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
+  m_PrefabInstance: {fileID: 1303159019235231665}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &40476834968776612 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1340398470752561173, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
@@ -1696,6 +1706,34 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2877991444137952382}
+    - target: {fileID: 8397374809854115520, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397374809854115520, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397374809854115520, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2877991444137952382}
+    - target: {fileID: 8397374809854115520, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397374809854115520, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick_ContinueToGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397374809854115520, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Khatim_F2.GameManagerHotPotato, Khatim.F2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397374809854115520, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09ff5b9773f151e4c80abc4fc33c17bb, type: 3}
 --- !u!114 &1303159019235231666 stripped
@@ -1716,7 +1754,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2877991444137952381}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
   m_Name: 
@@ -1805,6 +1843,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f16b93a6420b60b4fa3cedcb90d54019, type: 2}
   - {fileID: 11400000, guid: bb83c181de33fdb4cac972629a275a66, type: 2}
   - {fileID: 11400000, guid: 348f495ea9bd02845bff43104565f9af, type: 2}
+  plyInputManager: {fileID: 1694076054436877418}
   isCursorDisabled: 1
   startingRoundTimerText: {fileID: 2862829569401658099}
   gameRoundTimerText: {fileID: 5940032362691171968}
@@ -1815,8 +1854,6 @@ MonoBehaviour:
   - {fileID: 3314562306993208301}
   - {fileID: 3314562305618193886}
   - {fileID: 3314562307506328872}
-  fadeBG: {fileID: 262134743741687188}
-  popupObstacleAreaAnim: {fileID: 3300967955119112934}
   jumpControlsImg: {fileID: 1303159019235231666}
   speedControlsImg: {fileID: 619772635}
   obstacleSprites:
@@ -1824,20 +1861,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f11c5530740eb104aa381fee36f9f3f1, type: 3}
   - {fileID: 21300000, guid: ddafbe37329754641bee2a9cfc5cf887, type: 3}
   - {fileID: 21300000, guid: b540104a6ce86c2408af1454d777a716, type: 3}
+  fadeBG: {fileID: 262134743741687188}
+  popupObstacleAreaAnim: {fileID: 3300967955119112934}
   firstSelectedButtons:
   - {fileID: 3314562306665055481}
   playerFloatPrefab: {fileID: 153906214111216454, guid: 068a546137dafa24482ea76fe0f33224, type: 3}
+  controlsPanel: {fileID: 465407178}
   timerPanel: {fileID: 3314562306511008214}
   hudPanel: {fileID: 2209108451758421371}
   pausePanel: {fileID: 3314562306615545989}
   switchControlsPanel: {fileID: 5737736955642245106}
   playerSpawnPos: {fileID: 1777615139}
+  oceanGround: {fileID: 1204950929}
+  oceanEndPos: {fileID: 77203297}
   playerCountToStartMatch: 2
   startingGameRoundTimer: 40
-  oceanGround: {fileID: 1204950929}
   oceanRaiseSpeed: 0.45
   oceanRoundEndResetSpeed: 7
-  oceanEndPos: {fileID: 77203297}
 --- !u!4 &2877991444137952383
 Transform:
   m_ObjectHideFlags: 0
